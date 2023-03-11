@@ -23,6 +23,7 @@ contract Hospital {
     // events
     event registered();
     event createOneMC();
+    event presidentChanged()
 
     //modifiers
     modifier validIC(string _ic) {
@@ -62,7 +63,20 @@ contract Hospital {
     function createMC(uint256 memory _hospitalId, string memory _password) verifyPassword(_password) {
         emit createOneMC();
     }
+    
+    function changePresident(uint256 memory _hospitalId, string memory _password, string memory _ic) 
+        verifyPassword(_password),validIC(_ic)
+    {
+        registeredHospital[ _hospitalId].president = msg.sender;
+        registeredHospital[ _hospitalId].president_ic = keccak256(abi.encode(_ic));
+        emit presidentChanged();
+    }
 
+    function changePassword(uint256 memory _hospitalId, string memory oldpassword, string memory newpassword)
+        onlyOwner(_hospitalId), verifyPassword(oldpassword)
+    {
+        registeredHospital[ _hospitalId].password = keccak256(abi.encode(newpassword));
+    }
 
     //getters
     function getHospitalId(address _president) public view returns(uint256) {
