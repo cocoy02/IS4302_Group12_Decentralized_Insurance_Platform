@@ -72,7 +72,7 @@ contract Insurance {
     }
 
     function setExpiryDate(uint256 date, uint256 insuranceId) public companyOnly(insuranceId) {
-	    require(expiryDate != 0, "Expiry date has already been initialised");
+	    require(expiryDate != 0, "Expiry date has been initialised");
         insurances[insuranceId].expiryDate = date;
     }
 
