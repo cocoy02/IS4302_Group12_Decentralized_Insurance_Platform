@@ -62,15 +62,17 @@ contract Insurance {
     //modifier to ensure a function is callable only by its policy owner    
     modifier policyOwnerOnly(uint256 insuranceId) {
         require(insurances[insuranceId].policyOwner == msg.sender);
+        _;
     }
 
     //modifier to ensure a function is callable only by its insurance company   
     modifier companyOnly(uint256 insuranceId) {
         require(insurances[insuranceId].company == msg.sender);
+        _;
     }
 
     // SETTERS 
-    
+
     function setBeneficiary(Stakeholder s1, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
         insurances[insuranceId].beneficiary = s1;
     }
@@ -112,6 +114,7 @@ contract Insurance {
     }
 
     function autoTrigger() public {
-        //if not enough, after one month, check again. otherwise, terminate the insurance until stakeholder could pay
+        // if not enough, after one month, check again.
+        // otherwise, terminate the insurance until stakeholder could pay
     }
 }
