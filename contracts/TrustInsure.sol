@@ -12,25 +12,26 @@ contract TrustInsure {
         owner = msg.sender;
     }
  
-    function getCredit(address recipient, uint256 weiAmt)
+    function getInsure(address recipient, uint256 weiAmt)
         public
         returns (uint256)
     {
-        uint256 amt = weiAmt / (1000000000000000000/100); // Convert weiAmt to Dice Token
+        uint256 amt = weiAmt / (1000000000000000000/100);
+        if (amt >= 200) amt += 5;
         erc20Contract.mint(recipient, amt);
         return amt; 
     }
 
-    function checkCredit(address ad) public view returns (uint256) {
+    function checkInsure(address ad) public view returns (uint256) {
         uint256 credit = erc20Contract.balanceOf(ad);
         return credit;
     }
 
-    function transferFromCredit(address from, address to, uint256 amt) public {
+    function transferFromInsure(address from, address to, uint256 amt) public {
         erc20Contract.transferFrom(from, to, amt);
     }
 
-    function transferCredit( address to, uint256 amt) public {
+    function transferInsure( address to, uint256 amt) public {
         erc20Contract.transferFrom(to, amt);
     }
 }
