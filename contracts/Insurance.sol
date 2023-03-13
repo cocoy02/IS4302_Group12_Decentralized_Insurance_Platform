@@ -4,6 +4,7 @@ contract Insurance {
     
     enum insuranceType { life, accident }
     enum premiumStatus { processing, paid, unpaid }
+    enum reasonType { suicide, others }
 
     struct insurance {
         uint256 ID;
@@ -17,20 +18,23 @@ contract Insurance {
         premiumStatus status;//
         uint256 issueDate;
         uint256 expiryDate;//
+        bool approved;
+        reasonType reason;
     }
     
     uint256 public numInsurance = 0;
     mapping(uint256 => insurance) public insurances;
 
     //function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
-    function add(
+    function createInsurance(
         Stakeholder policyOwner,
         Stakeholder lifeAssured,
         Stakeholder payingAccount,
         insuranceCompany company,
         uint256 insuredAmount,
         insuranceType insType,
-        uint256 issueDate
+        uint256 issueDate,
+        reasonType reason
     ) public payable returns(uint256) {
         require(msg.value == 0.01 ether, "0.01 ETH is needed to initialise a new insurance"); // registering fee for insurance, not the payment for the actual insurance
         
@@ -45,7 +49,9 @@ contract Insurance {
             insType,
             premiumStatus.unpaid, // initialise premium status to unpaid
             issueDate,
-            0 // initialise expiry date to 0
+            0, // initialise expiry date to 0
+            false,
+            reason
         );
         
         uint256 newInsuranceId = numInsurance++;
@@ -63,17 +69,41 @@ contract Insurance {
         require(insurances[insuranceId].company == msg.sender);
     }
 
+    // SETTERS 
+    
     function setBeneficiary(Stakeholder s1, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
         insurances[insuranceId].beneficiary = s1;
     }
 
-    function setStatus(premiumStatus state, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
+    function updateStatus(premiumStatus state, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
         insurances[insuranceId].status = state;
     }
 
     function setExpiryDate(uint256 date, uint256 insuranceId) public companyOnly(insuranceId) {
-	    require(expiryDate != 0, "Expiry date has been initialised");
+	    require(expiryDate != 0, "Expiry date has already been initialised");
         insurances[insuranceId].expiryDate = date;
+    }
+
+    // GETTERS
+
+    function getInsurance(uint256 insuranceId) public returns (Insurance) {
+        return insurances[insuranceId];
+    }
+
+    function getInsuranceState(uint256 insuranceId) public returns (bool) {
+        return insurances[insuranceId].approved;
+    }
+
+    function getReason(uint256 insuranceId) public returns (reasonType) {
+        return insurances[insuranceId].reason;
+    }
+
+    function getIssueDate(uint256 insuranceId) public returns (uint256) {
+        return insurances[insuranceId].issueDate;
+    }
+
+    function getExpiryDate(uint256 insuranceId) public returns (uint256) {
+        return insurances[insuranceId].expiryDate;
     }
 
     function checkIfDuplicate() public {
