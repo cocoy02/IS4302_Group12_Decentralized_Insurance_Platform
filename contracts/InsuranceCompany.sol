@@ -10,9 +10,9 @@ contract InsuranceCompany {
         uint256 credit;
         string name;
         address owner;
+        uint256 completed; //number range to stars
         mapping(uint256 => Insurance) products;
         mapping(uint256 => Insurance) insuranceId;
-        uint256 completed; //number range to stars
     }
 
     uint256 numOfCompany = 0;
@@ -28,7 +28,8 @@ contract InsuranceCompany {
         insuranceCompany memory newCompany = insuranceCompany(
             0,
             name,
-            msg.sender
+            msg.sender,
+            0
         );
         
         uint256 companyId = numOfCompany++;
@@ -82,6 +83,25 @@ contract InsuranceCompany {
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
         company.insurance[insuranceId] = insurance;
+        company.completed++;
+    }
+
+    function updateCredit(uint256 companyId) public validCompanyId(companyId) {
+        InsuranceCompany company = companies[companyId];
+        uint256 completed = company.completed;
+        if(completed >=50 && completed <=200) {
+            company.credit = 1;
+        } else if(completed >200 && completed <=350) {
+            company.credit = 2;
+        } else if(completed >350 && completed <=450) {
+            company.credit = 3;
+        } else if(completed >450 && completed <=800) {
+            company.credit = 4;
+        } else if(completed >800 && completed <=2000) {
+            company.credit = 5;
+        } else if(completed >2000) {
+            company.credit = 999;
+        } 
     }
 
     function autoTransfer(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
@@ -103,10 +123,6 @@ contract InsuranceCompany {
         recipient.transfer(value);  
         insuranceInstance.updateStatus(Insurance.premiumStatus.paid, insuranceId);
         emit transfer(recipient, value);
-    }
-
-    function addCredit(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
-        //add credit rule
     }
 
     function getCredit(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
