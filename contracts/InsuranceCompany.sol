@@ -1,5 +1,6 @@
 pragma solidity ^0.5.0;
 import "./Insurance.sol";
+import "./StakeHolder.sol";
 
 contract InsuranceCompany {
 
@@ -9,17 +10,16 @@ contract InsuranceCompany {
         uint256 credit;
         string name;
         address owner;
+        uint256 completed; //number range to stars
         mapping(uint256 => Insurance) products;
         mapping(uint256 => Insurance) insuranceId;
-        // uint256 completed;
-        // uint256 created;
     }
 
     uint256 numOfCompany = 0;
     mapping(uint256 => insuranceCompany) public companies;
 
-    event createInsurance (uint256 insuranceId);
-    event autoTransfer (address beneficiary, uint256 amount);
+    event create (uint256 insuranceId);
+    event transfer (address beneficiary, uint256 amount);
     
     //function to create a new insurance company requires at least 0.01ETH to create
     function add(string memory name) public payable returns(uint256) {
@@ -28,15 +28,15 @@ contract InsuranceCompany {
         insuranceCompany memory newCompany = insuranceCompany(
             0,
             name,
-            msg.sender
+            msg.sender,
+            0
         );
         
         uint256 companyId = numOfCompany++;
-        companies[Id] = newCompany; //commit to state variable
-        return Id;   //return new Id
+        companies[Id] = newCompany; 
+        return Id; 
     }
-
-    //modifier to ensure a function is callable only by its owner    
+ 
     modifier ownerOnly(uint256 companyId) {
         require(companies[companyId].owner == msg.sender);
         _;
@@ -47,10 +47,29 @@ contract InsuranceCompany {
         _;
     }
 
-    //from insurance contract 
-    function createInsurance() public payable ownerOnly(companyId) validCompanyId(companyId) {
-        
+    function createInsurance(Stakeholder policyOwner,
+        Stakeholder lifeAssured,
+        Stakeholder payingAccount,
+        uint256 insuredAmount,
+        insuranceType insType,
+        uint256 issueDate,
+        reasonType reason
+    ) public payable ownerOnly(companyId) validCompanyId(companyId) returns(uint256){
+            uint256 newId = insuranceInstance.createInsurance(
+                policyOwner,
+                lifeAssured,
+                payingAccount,
+                msg.sender,
+                insuredAmount,
+                insType,
+                issueDate,
+                reason
+            );
+            emit create(newId);
+            return newIn;
     }
+
+    //yearly/monthly payment function
 
     function addProduct(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         insuranceCompany company = companies[companyId];
@@ -64,15 +83,35 @@ contract InsuranceCompany {
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
         company.insurance[insuranceId] = insurance;
+        company.completed++;
+    }
+
+    function updateCredit(uint256 companyId) public validCompanyId(companyId) {
+        InsuranceCompany company = companies[companyId];
+        uint256 completed = company.completed;
+        if(completed >=50 && completed <=200) {
+            company.credit = 1;
+        } else if(completed >200 && completed <=350) {
+            company.credit = 2;
+        } else if(completed >350 && completed <=450) {
+            company.credit = 3;
+        } else if(completed >450 && completed <=800) {
+            company.credit = 4;
+        } else if(completed >800 && completed <=2000) {
+            company.credit = 5;
+        } else if(completed >2000) {
+            company.credit = 999;
+        } 
     }
 
     function autoTransfer(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
-        if(insuranceInstance.getReason(insuranceId) == Insurance.reason.suicide) { // insurance need getreason and getvaliddate
-            require(insuranceInstance.getDate(insuranceId)+ 2 years >= block.timestamp);
+        if(insuranceInstance.getReason(insuranceId) == Insurance.reason.suicide) { 
+            require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
         }
 
-        //insurance valid from date modifier
+        //insurance valid from date 
+        require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
 
         uint256 value = insuranceInstance.getValue(insuranceId);
         insuranceCompany company = companies[companyId];
@@ -82,11 +121,8 @@ contract InsuranceCompany {
         
         address payable recipient = address(uint160(insuranceInstance.getBeneficiary(insuranceId)));
         recipient.transfer(value);  
-        insuranceInstance.updatePaid(insuranceId);
-    }
-
-    function addCredit(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
-        //add credit rule
+        insuranceInstance.updateStatus(Insurance.premiumStatus.paid, insuranceId);
+        emit transfer(recipient, value);
     }
 
     function getCredit(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
