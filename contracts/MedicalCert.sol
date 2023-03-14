@@ -36,7 +36,7 @@ contract MedicalCertificate {
     function add(uint256 hospital, string memory name, string memory NRIC, uint256 sex, 
                 uint256 birthdate, string memory race, string memory nationality, 
                 certCategory incidentType, uint256 incidentYYYYMMDDHHMM, 
-                string memory place, string memory cause, string memory titleNname, string memory institution) public {
+                string memory place, string memory cause, string memory titleNname, string memory institution) public returns(bytes32) {
         bytes32 id = keccak256(abi.encodePacked(counter, name, NRIC));
         medicalCert memory mc = medicalCert(
             id, 
@@ -63,6 +63,8 @@ contract MedicalCertificate {
         emit mcCreated(counter);
 
         counter = counter + 1;
+
+        return id;
         
     }
 
