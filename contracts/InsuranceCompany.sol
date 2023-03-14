@@ -14,7 +14,7 @@ contract InsuranceCompany {
         uint256 completed; //number range to stars
         Insurance[] products;
         mapping(uint256 => Insurance) insuranceId;
-        mapping(uint256 => Request) requestLists;
+        Request[] requests;
     }
     struct Request {
         address buyer;
@@ -93,7 +93,7 @@ contract InsuranceCompany {
 
     function passToStakeHolder(uint256 id,uint256 insuranceId){
         Stakeholder st = stakeholderInstance.getStakeholder(id);
-        // pass to st;
+        // add to st list
     }
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
@@ -126,7 +126,7 @@ contract InsuranceCompany {
 
     function addRequestLists(address buyer, string memory _type) {
         Request req = new Request(buyer, _type, "Pending");
-        requestLists[]
+        requestLists.push(req);
     }
 
     function checkRequests() public {
