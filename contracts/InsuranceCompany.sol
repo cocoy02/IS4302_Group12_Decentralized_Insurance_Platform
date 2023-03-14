@@ -7,7 +7,7 @@ contract InsuranceCompany {
 
     Insurance insuranceInstance;
     Stakeholder stakeholderInstance;
-    MedicalCert MedicalCertInstance;
+    MedicalCert medicalCertInstance;
 
     struct insuranceCompany {
         uint256 credit;
@@ -164,13 +164,12 @@ contract InsuranceCompany {
     function autoTransfer(uint256 insuranceId,InsuranceCompany company,byte mcId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
-        //cert if its suicide
-        // if(insuranceInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
-        //     require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
-        // }
-
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
+        //cert if its suicide
+        if(medicalCertInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
+            require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
+        }
 
         uint256 value = insuranceInstance.getInsuredAmount(insuranceId);
         require(company.owner.balance >= value,"not enough token to pay");
