@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+import "./Stakeholder.sol";
 
 contract Insurance {
     
@@ -107,6 +108,11 @@ contract Insurance {
     function getExpiryDate(uint256 insuranceId) public returns (uint256) {
         return insurances[insuranceId].expiryDate;
     }
+
+    function getInsuranceCompany(uint256 insuranceId) public returns (uint256) {
+        return insurances[insuranceId].insuranceCompany;
+    }
+
 
     function checkIfDuplicate() public {
         // return false if there is no duplicate
