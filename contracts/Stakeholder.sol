@@ -1,12 +1,14 @@
 pragma solidity ^0.5.0;
 import "./InsuranceMarket.sol";
 import "./Insurance.sol";
+import "./InsuranceCompany.sol";
 
 
 contract Stakeholder {
 
     InsuranceMarket marketContract;
     Insurance insuranceContract;
+    InsuranceCompany insuranceCompanyContract;
     enum position { policyOwner, beneficiary, lifeAssured }
 
     constructor(InsuranceMarket marketAddress, Insurance insuranceAddress) public {
@@ -60,12 +62,14 @@ contract Stakeholder {
         //mark as paid
     }
 
-    function claim(uint256 insuranceID) public onlyPolicyOwner(policyOwnerID){
+    function claim(uint256 insuranceID,byte mcId) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
 
         //step2: tell insurance company to pay back
-        emit claimingFromComp(insuranceID);
+        company = insuranceContract.getInsuranceCompany(insuranceID);
+        insuranceCompanyContract.autoTransfer(insuranceID,company,mcId);
+        emit claimingFromComp(insuranceID,mcId);
     }
 
     //Getters

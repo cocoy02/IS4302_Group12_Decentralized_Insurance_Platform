@@ -1,11 +1,13 @@
 pragma solidity ^0.5.0;
 import "./Insurance.sol";
 import "./Stakeholder.sol";
+import "./MedicalCert.sol";
 
 contract InsuranceCompany {
 
     Insurance insuranceInstance;
     Stakeholder stakeholderInstance;
+    MedicalCert MedicalCertInstance;
 
     struct insuranceCompany {
         uint256 credit;
@@ -159,8 +161,9 @@ contract InsuranceCompany {
         requests[id].status = "rejected";
     }
     
-    function autoTransfer(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
+    function autoTransfer(uint256 insuranceId,InsuranceCompany company,byte mcId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
+        require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //cert if its suicide
         // if(insuranceInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
         //     require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
@@ -169,15 +172,14 @@ contract InsuranceCompany {
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
 
-        uint256 value = insuranceInstance.getValue(insuranceId);
-        insuranceCompany company = companies[companyId];
+        uint256 value = insuranceInstance.getInsuredAmount(insuranceId);
         require(company.owner.balance >= value,"not enough token to pay");
 
         company.owner.send(value);
         
         address payable recipient = address(uint160(insuranceInstance.getBeneficiary(insuranceId)));
         recipient.transfer(value);  
-        insuranceInstance.updateStatus(Insurance.premiumStatus.paid, insuranceId);
+        insuranceInstance.updateStatus(Insurance.claimStatus.claimed, insuranceId);
         emit transfer(recipient, value);
     }
 
