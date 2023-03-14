@@ -59,7 +59,8 @@ contract InsuranceCompany {
         uint256 insuredAmount,
         insuranceType insType,
         uint256 issueDate,
-        reasonType reason
+        reasonType reason,
+        uint256 price
     ) public payable ownerOnly(companyId) validCompanyId(companyId) returns(uint256){
             uint256 newId = insuranceInstance.createInsurance(
                 policyOwner,
@@ -69,27 +70,30 @@ contract InsuranceCompany {
                 insuredAmount,
                 insType,
                 issueDate,
-                reason
+                reason,
+                price
             );
             emit create(newId);
             return newIn;
     }
+
+    //price
 
     //yearly/monthly payment function
     // function payInsurance(){
 
     // }
 
-    function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,insuranceType insType,reasonType reason) public payable ownerOnly(companyId) validCompanyId(companyId) {
-        createInsurance(address(0),address(0),amount,insType,date(0),reason);
+    function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,insuranceType insType,reasonType reason,uint256 price) public payable ownerOnly(companyId) validCompanyId(companyId) {
+        createInsurance(address(0),address(0),amount,insType,date(0),reason,price);
         insuranceCompany company = companies[companyId];
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         company.products.push(insurance);
     }
 
-    function passToStakeHolder(uint256 id){
+    function passToStakeHolder(uint256 id,uint256 insuranceId){
         Stakeholder st = stakeholderInstance.getStakeholder(id);
-        pass insurance id to stakeholder
+        // pass to st;
     }
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
@@ -157,9 +161,10 @@ contract InsuranceCompany {
     
     function autoTransfer(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
-        if(insuranceInstance.getReason(insuranceId) == Insurance.reason.suicide) { 
-            require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
-        }
+        //cert if its suicide
+        // if(insuranceInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
+        //     require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
+        // }
 
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
