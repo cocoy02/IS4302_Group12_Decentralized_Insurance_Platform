@@ -23,12 +23,33 @@ contract InsuranceCompany {
         string insuType;
         string status; // {approved, rejected, pending}
     }
+
     uint256 numOfCompany = 0;
     mapping(uint256 => insuranceCompany) public companies;
 
     event create (uint256 insuranceId);
     event transfer (address beneficiary, uint256 amount);
+
+
+// =====================================================================================
+// modifiers
+// =====================================================================================
+   
+    modifier ownerOnly(uint256 companyId) {
+        require(companies[companyId].owner == msg.sender);
+        _;
+    }
     
+    modifier validCompanyId(uint256 companyId) {
+        require(companyId < numOfCompanies);
+        _;
+    }
+
+// =====================================================================================
+// functions
+// =====================================================================================
+
+
     //function to create a new insurance company requires at least 0.01ETH to create
     function add(string memory name) public payable returns(uint256) {
         require(msg.value > 0.01 ether, "at least 0.01 ETH is needed to create a company");
@@ -45,16 +66,7 @@ contract InsuranceCompany {
         return Id; 
     }
  
-    modifier ownerOnly(uint256 companyId) {
-        require(companies[companyId].owner == msg.sender);
-        _;
-    }
-    
-    modifier validCompanyId(uint256 companyId) {
-        require(companyId < numOfCompanies);
-        _;
-    }
-
+    //function to call Insurance contract to create insurance
     function createInsurance(Stakeholder policyOwner,
         Stakeholder lifeAssured,
         Stakeholder payingAccount,
@@ -79,13 +91,12 @@ contract InsuranceCompany {
             return newIn;
     }
 
-    //price
-
     //yearly/monthly payment function
     // function payInsurance(){
 
     // }
 
+    //function to add product to product array for market to display
     function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,insuranceType insType,reasonType reason,uint256 price) public payable ownerOnly(companyId) validCompanyId(companyId) {
         createInsurance(address(0),address(0),amount,insType,date(0),reason,price);
         insuranceCompany company = companies[companyId];
@@ -93,6 +104,7 @@ contract InsuranceCompany {
         company.products.push(insurance);
     }
 
+    //function to pass the contract draft to stakeholder to sign
     function passToStakeHolder(uint256 id,uint256 insuranceId){
         Stakeholder st = stakeholderInstance.getStakeholder(id);
         // add to st list
@@ -108,6 +120,7 @@ contract InsuranceCompany {
         updateCredit(companyId);
     }
 
+    //function to update the credit of company once a insurance is signed
     function updateCredit(uint256 companyId) public validCompanyId(companyId) {
         InsuranceCompany company = companies[companyId];
         uint256 completed = company.completed;
@@ -126,13 +139,14 @@ contract InsuranceCompany {
         } 
     }
 
+    //function to add request from market to request list
     function addRequestLists(address buyer, string memory _type) {
         Request req = new Request(buyer, _type, "Pending");
         requestLists.push(req);
     }
-
+    
+    //function to check request in request list
     function checkRequests() public {
-        // check the requests inside the request list
         require(msg.sender == Company);
         string memory insuType;
         uint256 _id;
