@@ -196,11 +196,24 @@ contract InsuranceCompany {
         emit transfer(recipient, value);
     }
 
+
+// =====================================================================================
+// getters
+// =====================================================================================
+
     function getCredit(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
         return companies[companyId].credit;
     }
     
     function getOwner(uint256 companyId) public view validCompanyId(companyId) returns (address) {
         return companies[companyId].owner;
+    }
+    
+    function getCompanies() public view returns (mapping(uint256 => insuranceCompany)) {
+        return companies;
+    }
+
+    function getProducts(uint256 companyId) public view validCompanyId(companyId) returns (Insurance[]) {
+        return companies[companyId].products;
     }
 }
