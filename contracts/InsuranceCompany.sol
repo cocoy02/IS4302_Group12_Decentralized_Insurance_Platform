@@ -18,15 +18,15 @@ contract InsuranceCompany {
         mapping(uint256 => Insurance) insuranceId;
         Request[] requests;
     }
+
     struct Request {
         address buyer;
-        string insuType;
+        uint256 productId;
         string status; // {approved, rejected, pending}
     }
 
     uint256 numOfCompany = 0;
     mapping(uint256 => insuranceCompany) public companies;
-
     event create (uint256 insuranceId);
     event transfer (address beneficiary, uint256 amount);
 
@@ -140,13 +140,14 @@ contract InsuranceCompany {
     }
 
     //function to add request from market to request list
-    function addRequestLists(address buyer, string memory _type) {
-        Request req = new Request(buyer, _type, "Pending");
-        requestLists.push(req);
+    function addRequestLists(address buyer, uint256 id) {
+        InsuranceCompany company = insuranceInstance.getInsuranceCompany(id);
+        Request req = new Request(buyer, id, "Pending");
+        company.requestLists.push(req);
     }
     
     //function to check request in request list
-    function checkRequests() public {
+    function checkRequests(uint256 companyId) public validCompanyId(companyId){
         require(msg.sender == Company);
         string memory insuType;
         uint256 _id;
@@ -211,6 +212,10 @@ contract InsuranceCompany {
     
     function getCompanies() public view returns (mapping(uint256 => insuranceCompany)) {
         return companies;
+    }
+
+    function getNumOfCompany() public view returns (uint256) {
+        return numOfCompany;
     }
 
     function getProducts(uint256 companyId) public view validCompanyId(companyId) returns (Insurance[]) {
