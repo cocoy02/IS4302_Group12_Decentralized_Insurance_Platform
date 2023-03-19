@@ -21,6 +21,7 @@ contract Insurance {
         uint256 expiryDate;//
         bool approved;
         reasonType reason;
+        uint256 price;
     }
     
     uint256 public numInsurance = 0;
@@ -35,7 +36,8 @@ contract Insurance {
         uint256 insuredAmount,
         insuranceType insType,
         uint256 issueDate,
-        reasonType reason
+        reasonType reason,
+        uint256 price
     ) public payable returns(uint256) {
         require(msg.value == 0.01 ether, "0.01 ETH is needed to initialise a new insurance"); // registering fee for insurance, not the payment for the actual insurance
         
@@ -52,7 +54,8 @@ contract Insurance {
             issueDate,
             0, // initialise expiry date to 0
             false,
-            reason
+            reason,
+            price
         );
         
         uint256 newInsuranceId = numInsurance++;
@@ -111,12 +114,6 @@ contract Insurance {
 
     function getInsuranceCompany(uint256 insuranceId) public returns (uint256) {
         return insurances[insuranceId].insuranceCompany;
-    }
-
-
-    function checkIfDuplicate() public {
-        // return false if there is no duplicate
-        // return true if there is duplicate
     }
 
     function autoTrigger() public {
