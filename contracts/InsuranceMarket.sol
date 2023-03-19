@@ -1,15 +1,18 @@
-pragma solidity 0.5.0;
+pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
+import "./InsuranceCompany.sol";
+import "./Insurance.sol";
 
 contract InsuranceMarket {
     // others contract instnaces
     // attributes
+    InsuranceCompany companyContract;
+    Insurance insuContract;
     struct Request {
         address buyer;
         string insuType;
         string status; // {approved, rejected, pending}
     }
-    address Company;
     uint256 numOfRequests;
     mapping (string => uint256) premium;
     mapping (string => uint256) sumAssured;
@@ -22,8 +25,9 @@ contract InsuranceMarket {
     // ---------------------------------------------------
     // must initiate a company and token contract instance
     // ---------------------------------------------------
-    constructor (address insuCompany) public {
-        Company = insuCompany;
+    constructor () public {
+        // companyContract = insuCompany;
+        // insu = insu;
         premium["life"] = 2000; // 2k per year
         premium["accident"] = 200; // 200 per year
         sumAssured["life"] = 500000;
@@ -36,68 +40,9 @@ contract InsuranceMarket {
 
     // functions
 
-    // wait for token contract
-    // ----------------------------------------------------------------------
-    function getToken() private {
-        // mint token with msg.value
-        // call function in
-        // wait until token contract done 
-    }
-    function withdraw(uint256 amt) public {
-        // get Ether from token
-        // but need to deduct the commission fee, which is 10% of the amount
-        // wait until token contract is done
-    }
-    function transfer(address to, uint256 amt) public {
-        // transfer tokens from the msg.sender to the address
-    }
-    // --------------------------------------------------------------------
-
-
     // returns the request _id for stakeholders to track its status
-    function wantToBuy(string memory InsuType) public returns(string memory) {
-        // stakeholders declare their willing to buy insurance
-        address _buyer = msg.sender;
-        Request memory req = Request(_buyer, InsuType, "pending");
-        uint256 id = numOfRequests;
-        requests[id] = req;
-        requestsID.push(id);
-        numOfRequests = numOfRequests + 1;
-        // --------------------------------
-        // why it doesnt print out
-        // print(uint2str(id));
-        // --------------------------------
-        return uint2str(id);
-    }
-
-    function checkRequests() public {
-        // check the requests inside the request list
-        require(msg.sender == Company);
-        string memory insuType;
-        uint256 _id;
-        while (requestsID.length > 0) {
-            _id = requestsID[requestsID.length-1];
-            insuType = requests[_id].insuType;
-            requestsID.pop();
-            // whats the criteria for approval and rejection here
-            if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("life"))) {
-                approve(_id);
-            } else if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("accident"))) {
-                approve(_id);
-            } else {
-                reject(_id);
-            }
-        }
-    }
-
-    function approve(uint256 id) private {
-        require(msg.sender == Company);
-        requests[id].status = "approved";
-    }
-
-    function reject(uint256 id) private {
-        require(msg.sender == Company);
-        requests[id].status = "rejected";
+    function wantToBuy(uint256 buyerID, uint256 comID, Insurance product) public returns(string memory) {
+        companyContract.addRequestLists(buyerID, comID, product);
     }
 
     // then the company need to verify their requests within 7 days
@@ -110,63 +55,98 @@ contract InsuranceMarket {
 
     // getters
 
-    function getInsuranceTypes() public view returns(string[] memory) {
-        return types;
-    }
+    function getInfo() public view returns(string[] memory) {
+        string[] info;
+        uint256 numOfCompanies = companyContract.getNumOfCompanies();
+        for (uint256 i = 0; i < numOfCompanies; i++){
+            uint356 comID = i;
+            InsuranceCompany com = companyContract.getCompany(comID);
+            Insurance[] products = companyContract.getProducts(comId);
 
-    function getBasicInfo (string memory InsuType) public view returns (string memory) {
-        string memory message;
-        if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
-            message = accidentDesc;
-        } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
-            message = lifeDesc;
-        } else {
-            message = "This insurance type is currently unavailable";
+            string[] com_info;
+            string id_str = uint2str(comID);
+            com_info.push(id_str);
+            com_info.push(" ");
+            com_info.push(com.name);
+            com_info.push("(");
+            com_info.push(com.credit);
+            com_info.push("): ");
+            // company info - "0 XXXCompany(100): "
+            com_str = concat(com_info);
+
+            // prod_arr: ["accident $200, ", "life $20000"]
+            string[] prod_arr;
+            for (uint256 j = 0; j < products.length; j++) {
+                string[] prof_info;
+                prod = products[j];
+                prod_info.push(prod.insType);
+                prod_info.push(" $");
+                string price = uint2str(prod.price);
+                prod_info.push(price);
+                if (j != products.length - 1) {
+                    prof_info.push(", ");
+                }
+                prod_info_str = concat(prod.info);
+                prod_arr.push(prod_info_str);
+            }
+
+            string prod_str = concat(prod_arr);
+            info.push(com_str);
+            info.push(prod_str);
+            info.push(" | ");
         }
-        return message;
+
+        string info_str = concat(info);
+        return info_str;
+
     }
 
-    function getTotalPremium (string memory InsuType) public view returns (uint256) {
-        if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
-            return premium["accident"];
-        } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
-            return premium["life"];
-        } else {
-            return 0;
-        }
-    }
+    // function getInsuranceTypes() public view returns(string[] memory) {
+    //     return types;
+    // }
 
-    function getSubPremium (string memory InsuType) public view returns (uint256) {
-        if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
-            return premium["accident"] / 10; 
-            // totalPrice * 1.2 / 12  => they pay 1.2*price in total and this calculates the monthly payment
-        } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
-            return premium["life"] / 10;
-        } else {
-            return 0;
-        }
-    }
+    // function getBasicInfo (string memory InsuType) public view returns (string memory) {
+    //     string memory message;
+    //     if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
+    //         message = accidentDesc;
+    //     } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
+    //         message = lifeDesc;
+    //     } else {
+    //         message = "This insurance type is currently unavailable";
+    //     }
+    //     return message;
+    // }
 
-    function getSumAssured(string memory InsuType) public view returns (uint256) {
-        if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
-            return sumAssured["accident"]; 
-        } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
-            return sumAssured["life"];
-        } else {
-            return 0;
-        }
-    }
+    // function getTotalPremium (string memory InsuType) public view returns (uint256) {
+    //     if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
+    //         return premium["accident"];
+    //     } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
+    //         return premium["life"];
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
-    function getRequestStatus(uint256 id) public view returns(string memory) {
-        address owner = requests[id].buyer;
-        require(msg.sender == owner || msg.sender == Company);
-        if (id < numOfRequests && id >= 0) {
-            return requests[id].status;
-        } else {
-            return "Request does not exist";
-        }
-    }
+    // function getSubPremium (string memory InsuType) public view returns (uint256) {
+    //     if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
+    //         return premium["accident"] / 10; 
+    //         // totalPrice * 1.2 / 12  => they pay 1.2*price in total and this calculates the monthly payment
+    //     } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
+    //         return premium["life"] / 10;
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
+    // function getSumAssured(string memory InsuType) public view returns (uint256) {
+    //     if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("accident"))) {
+    //         return sumAssured["accident"]; 
+    //     } else if (keccak256(abi.encodePacked(InsuType)) == keccak256(abi.encodePacked("life"))) {
+    //         return sumAssured["life"];
+    //     } else {
+    //         return 0;
+    //     }
+    // }
 
     // other helping functions
     function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
@@ -186,6 +166,14 @@ contract InsuranceMarket {
             _i /= 10;
         }
         return string(bstr);
+    }
+
+    function concat(string[] calldata words) external pure returns (string memory) {
+        bytes memory output;
+        for (uint256 i = 0; i < words.length; i++) {
+            output = abi.encodePacked(output, words[i]);
+        }
+        return string(output);
     }
 
 }
