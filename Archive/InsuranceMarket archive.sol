@@ -151,6 +151,58 @@ contract InsuranceMarket {
     // then send it to policy owners to verify
     // once the verification is done, the insurance is issued successfully
 
+
+    // getters
+    //customer view product list
+    // function getProductInfo() public view returns(string[] memory) {
+    //     string[] info;
+    //     uint256 numOfCompanies = companyContract.getNumOfCompanies();
+    //     for (uint256 i = 0; i < numOfCompanies; i++){
+    //         uint356 comID = i;
+    //         InsuranceCompany com = companyContract.getCompany(comID);
+    //         Insurance[] products = companyContract.getProducts(comId);
+    //         // 上面加一句话
+    //         // all the insurance can be paid yearly or monthly
+    //         // 再加一个title给
+    //         string[] com_info;
+    //         string id_str = uint2str(comID);
+    //         com_info.push(id_str);
+    //         com_info.push(" ");
+    //         com_info.push(com.name);
+    //         com_info.push("(");
+    //         com_info.push(com.credit);
+    //         com_info.push("): ");
+    //         // company info - "0 XXXCompany(100): "
+    //         com_str = concat(com_info);
+
+    //         // prod_arr: ["accident $200, ", "life $20000"]
+    //         string[] prod_arr;
+    //         for (uint256 j = 0; j < products.length; j++) {
+    //             string[] prof_info;
+    //             prod = products[j];
+    //             prod_info.push(prod.insType);
+    //             prod_info.push(" $");
+    //             string price = uint2str(prod.price);
+    //             prod_info.push(price);
+    //             if (j != products.length - 1) {
+    //                 prof_info.push(", ");
+    //             }
+    //             prod_info_str = concat(prod.info);
+    //             prod_arr.push(prod_info_str);
+    //         }
+
+    //         string prod_str = concat(prod_arr);
+    //         info.push(com_str);
+    //         info.push(prod_str);
+    //         info.push(" | ");
+    //     }
+
+    //     string info_str = concat(info);
+    //     return info_str;
+
+    // }
+
+
     
     function getProductInfo(Product memory _product) internal view returns(uint256, uint256,uint256, productType) {
         return (_product.productid, _product.premium, _product.sumAssured, _product.prodType);
@@ -202,6 +254,34 @@ contract InsuranceMarket {
     //     } else {
     //         return 0;
     //     }
+    // }
+
+    // // other helping functions
+    // function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+    //     if (_i == 0) {
+    //         return "0";
+    //     }
+    //     uint j = _i;
+    //     uint len;
+    //     while (j != 0) {
+    //         len++;
+    //         j /= 10;
+    //     }
+    //     bytes memory bstr = new bytes(len);
+    //     uint k = len - 1;
+    //     while (_i != 0) {
+    //         bstr[k--] = byte(uint8(48 + _i % 10));
+    //         _i /= 10;
+    //     }
+    //     return string(bstr);
+    // }
+
+    // function concat(string[] calldata words) external pure returns (string memory) {
+    //     bytes memory output;
+    //     for (uint256 i = 0; i < words.length; i++) {
+    //         output = abi.encodePacked(output, words[i]);
+    //     }
+    //     return string(output);
     // }
 
 }

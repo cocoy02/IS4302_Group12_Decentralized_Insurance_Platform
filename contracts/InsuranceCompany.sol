@@ -8,13 +8,13 @@ contract InsuranceCompany {
     Insurance insuranceInstance;
     Stakeholder stakeholderInstance;
     MedicalCertificate medicalCertInstance;
+    enum requestStatus {approved, rejected, pending}
 
     struct insuranceCompany {
         uint256 credit;
         string name;
         address owner;
         uint256 completed; //number range to stars
-        Insurance[] products;
         mapping(uint256 => Insurance) insuranceId;
         Request[] requestLists;
     }
@@ -23,12 +23,14 @@ contract InsuranceCompany {
         uint256 reqId;
         address buyer;
         uint256 productId;
-        string status; // {approved, rejected, pending}
+        requestStatus status;
     }
 
     uint256 numOfReq = 0;
     uint256 numOfCompany = 0;
     mapping(uint256 => insuranceCompany) public companies;
+
+
     event create (uint256 insuranceId);
     event transfer (address beneficiary, uint256 amount);
 

@@ -28,6 +28,7 @@ contract Stakeholder {
 
     uint256 public numStakeholder = 0;
     mapping(uint256 => stakeholder) public stakeholders; //stakeholder ID to stakeholder
+    mapping(address => uint256) ids; //stakeholder address to id
 
     //Modifiers
     modifier onlyPolicyOwner(policyOwnerID) {
@@ -42,9 +43,10 @@ contract Stakeholder {
         stakeholder memory newStakeholder = stakeholder(
             newID,
             msg.sender
-
         );
         stakeholders[newID] = newStakeholder;
+        ids[msg.sender] = newID;
+        return newID;
     }
 
     // sign insurance and pay
@@ -87,7 +89,7 @@ contract Stakeholder {
     //     //mark as paid
     // }
 
-    function getMCidAndPassToComp(uint256 insuranceID) {
+    function getMCidAndPassToComp(uint256 insuranceID) public {
         // uint MDid = 
         uint256 memory company = insuranceContract.getInsuranceCompany(insuranceID);
         insuranceCompanyContract.autoTransfer(insuranceID, company, MCid);
@@ -112,6 +114,9 @@ contract Stakeholder {
     function getInvolvingInsurances(uint256 stakeholderID) public view returns(mapping(uint256 => position)){
         return stakeholders[stakeholderID].involvingInsurances;
     }
-
+    
+    function getStakeholderId(address _stakeholder) public view returns(uint256) {
+        return ids[_stakeholder];
+    }
     
 }
