@@ -16,15 +16,17 @@ contract InsuranceCompany {
         uint256 completed; //number range to stars
         Insurance[] products;
         mapping(uint256 => Insurance) insuranceId;
-        Request[] requests;
+        Request[] requestLists;
     }
 
     struct Request {
+        uint256 reqId;
         address buyer;
         uint256 productId;
         string status; // {approved, rejected, pending}
     }
 
+    uint256 numOfReq = 0;
     uint256 numOfCompany = 0;
     mapping(uint256 => insuranceCompany) public companies;
     event create (uint256 insuranceId);
@@ -96,15 +98,6 @@ contract InsuranceCompany {
 
     // }
 
-    //function to add product to product array for market to display
-    function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,Insurance.insuranceType insType,Insurance.reasonType reason,uint256 price) public payable ownerOnly(companyId) validCompanyId(companyId) {
-        //date set default to current timing
-        createInsurance(address(0),address(0),address(0),msg.sender,amount,insType,block.timestamp,reason,price);
-        InsuranceCompany company = companies[companyId];
-        Insurance insurance = insuranceInstance.getInsurance(insuranceId);
-        company.products.push(insurance);
-    }
-
     //function to pass the contract draft to stakeholder to sign
     function passToStakeHolder(uint256 id,uint256 insuranceId) public{
         Stakeholder st = stakeholderInstance.getStakeholder(id);
@@ -141,53 +134,14 @@ contract InsuranceCompany {
         } 
     }
 
-    //function to add request from market to request list
-    function addRequestLists(address buyer, uint256 id) public {
-        InsuranceCompany company = insuranceInstance.getInsuranceCompany(id);
-        Request memory req = new Request(buyer, id, "Pending");
-        company.requestLists.push(req);
-    }
-    
-    //function to check request in request list
-    function checkRequests(uint256 companyId) public validCompanyId(companyId){
-        InsuranceCompany Company = companies[companyId];
-        require(msg.sender == Company);
-        string memory insuType;
-        uint256 _id;
-        while (Company.requestsLists.length > 0) {
-            _id = Company.requestsLists.length - 1;
-            insuType = Company.requestsLists[_id].insuType;
-            Company.requestsLists.pop();
-
-            // whats the criteria for approval and rejection here ???
-            if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("life"))) {
-                approve(_id,companyId);
-            } else if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("accident"))) {
-                approve(_id,companyId);
-            } else {
-                reject(_id,companyId);
-            }
-        }
-    }
-
-    function approve(uint256 id,uint256 companyId) private {
-        InsuranceCompany Company = companies[companyId];
-        require(msg.sender == Company);
-        Company.requestsLists[id].status = "approved";
-    }
-
-    function reject(uint256 id,uint256 companyId) private {
-        InsuranceCompany Company = companies[companyId];
-        require(msg.sender == Company);
-        Company.requestsLists[id].status = "rejected";
-    }
-    
     function autoTransfer(uint256 insuranceId,InsuranceCompany company,uint256 _hospitalId,bytes32 mcId) public payable{
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
+
         //check cert details
+
         //cert if its suicide
         if(medicalCertInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
             require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
@@ -204,7 +158,7 @@ contract InsuranceCompany {
         emit transfer(recipient, value);
     }
 
-
+        
 // =====================================================================================
 // getters
 // =====================================================================================
@@ -228,4 +182,92 @@ contract InsuranceCompany {
     function getProducts(uint256 companyId) public view validCompanyId(companyId) returns (Insurance[] memory) {
         return companies[companyId].products;
     }
+
+
+// =====================================================================================
+// Not finalized functions
+// =====================================================================================
+
+    //function to add request from market to request list
+    function addRequestLists(address buyer, uint256 id) public {
+        InsuranceCompany company = insuranceInstance.getInsuranceCompany(id);
+        Request memory req = new Request(numOfReq++,buyer, id, "Pending");
+        company.requestLists.push(req);
+    }
+    
+    //function to check request in request list
+    function checkRequests(uint256 companyId) public validCompanyId(companyId) returns(string memory){
+        InsuranceCompany Company = companies[companyId];
+        string memory reqs = "";
+        require(msg.sender == Company);
+
+        //print requests
+        for(uint256 i = 0;i< Company.requestLists.length;i++){
+            reqs = reqs + string(abi.encodePacked("Id: ", uint2str(Company.requestLists[i].reqId), ", Address: ", toString( Company.requestLists[i].buyer))) + Company.requestLists[i].status + "\n";
+        }
+        return reqs;
+    }
+    
+    function approve(uint256 id,uint256 companyId) private {
+        InsuranceCompany Company = companies[companyId];
+        require(msg.sender == Company);
+    }
+
+    function reject(uint256 id,uint256 companyId) private {
+        InsuranceCompany Company = companies[companyId];
+        require(msg.sender == Company);
+        Company.requestsLists[id].status = "rejected";
+    }
+
+    //function to add product to product array for market to display
+    function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,Insurance.insuranceType insType,Insurance.reasonType reason,uint256 price) public payable ownerOnly(companyId) validCompanyId(companyId) {
+        //date set default to current timing
+        createInsurance(address(0),address(0),address(0),msg.sender,amount,insType,block.timestamp,reason,price);
+        InsuranceCompany company = companies[companyId];
+        Insurance insurance = insuranceInstance.getInsurance(insuranceId);
+        company.products.push(insurance);
+    }
+   
+
+
+// =====================================================================================
+// Helper functions
+// =====================================================================================
+
+   
+    function uint2str(uint _i) internal pure returns (string memory str) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint length;
+        while (j != 0) {
+            length++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(length);
+        uint k = length;
+        while (_i != 0) {
+            k--;
+            uint8 temp = (48 + uint8(_i % 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        str = string(bstr);
+    }
+    
+    function toString(address _addr) internal pure returns (string memory) {
+        bytes32 value = bytes32(uint256(uint160(_addr)));
+        bytes memory alphabet = "0123456789abcdef";
+        bytes memory str = new bytes(42);
+        str[0] = '0';
+        str[1] = 'x';
+        for (uint i = 0; i < 20; i++) {
+            str[2+i*2] = alphabet[uint(uint8(value[i + 12] >> 4))];
+            str[3+i*2] = alphabet[uint(uint8(value[i + 12] & 0x0f))];
+        }
+        return string(str);
+    }
+
 }
