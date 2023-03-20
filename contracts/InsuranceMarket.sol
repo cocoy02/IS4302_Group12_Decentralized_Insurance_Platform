@@ -40,6 +40,8 @@ contract InsuranceMarket {
 
     // functions
 
+    // company call list and unlist
+
     // returns the request _id for stakeholders to track its status
     function wantToBuy(uint256 buyerID, uint256 comID, Insurance product) public returns(string memory) {
         companyContract.addRequestLists(buyerID, comID, product);
