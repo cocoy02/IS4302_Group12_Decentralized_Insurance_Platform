@@ -7,7 +7,7 @@ contract InsuranceCompany {
 
     Insurance insuranceInstance;
     Stakeholder stakeholderInstance;
-    MedicalCert medicalCertInstance;
+    MedicalCertificate medicalCertInstance;
 
     struct insuranceCompany {
         uint256 credit;
@@ -41,7 +41,7 @@ contract InsuranceCompany {
     }
     
     modifier validCompanyId(uint256 companyId) {
-        require(companyId < numOfCompanies);
+        require(companyId < numOfCompany);
         _;
     }
 
@@ -62,8 +62,8 @@ contract InsuranceCompany {
         );
         
         uint256 companyId = numOfCompany++;
-        companies[Id] = newCompany; 
-        return Id; 
+        companies[companyId] = newCompany; 
+        return companyId; 
     }
  
     //function to call Insurance contract to create insurance
@@ -71,11 +71,11 @@ contract InsuranceCompany {
         Stakeholder lifeAssured,
         Stakeholder payingAccount,
         uint256 insuredAmount,
-        insuranceType insType,
+        Insurance.insuranceType insType,
         uint256 issueDate,
-        reasonType reason,
+        Insurance.reasonType reason,
         uint256 price
-    ) public payable ownerOnly(companyId) validCompanyId(companyId) returns(uint256){
+    ) public payable returns(uint256){
             uint256 newId = insuranceInstance.createInsurance(
                 policyOwner,
                 lifeAssured,
@@ -88,7 +88,7 @@ contract InsuranceCompany {
                 price
             );
             emit create(newId);
-            return newIn;
+            return newId;
     }
 
     //yearly/monthly payment function
@@ -97,9 +97,10 @@ contract InsuranceCompany {
     // }
 
     //function to add product to product array for market to display
-    function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,insuranceType insType,reasonType reason,uint256 price) public payable ownerOnly(companyId) validCompanyId(companyId) {
-        createInsurance(address(0),address(0),amount,insType,date(0),reason,price);
-        insuranceCompany company = companies[companyId];
+    function addProduct(uint256 insuranceId,uint256 companyId,uint256 amount,Insurance.insuranceType insType,Insurance.reasonType reason,uint256 price) public payable ownerOnly(companyId) validCompanyId(companyId) {
+        //date set default to current timing
+        createInsurance(address(0),address(0),address(0),msg.sender,amount,insType,block.timestamp,reason,price);
+        InsuranceCompany company = companies[companyId];
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         company.products.push(insurance);
     }
@@ -108,12 +109,12 @@ contract InsuranceCompany {
     function passToStakeHolder(uint256 id,uint256 insuranceId) public{
         Stakeholder st = stakeholderInstance.getStakeholder(id);
         // add to st list
-        stakeholderInstance.addToSignList(insuraneId, id);
+        stakeholderInstance.addToSignList(insuranceId, id);
     }
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
     function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
-        insuranceCompany company = companies[companyId];
+        InsuranceCompany company = companies[companyId];
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
         company.insurance[insuranceId] = insurance;
@@ -141,9 +142,9 @@ contract InsuranceCompany {
     }
 
     //function to add request from market to request list
-    function addRequestLists(address buyer, uint256 id) {
+    function addRequestLists(address buyer, uint256 id) public {
         InsuranceCompany company = insuranceInstance.getInsuranceCompany(id);
-        Request req = new Request(buyer, id, "Pending");
+        Request memory req = new Request(buyer, id, "Pending");
         company.requestLists.push(req);
     }
     
@@ -154,9 +155,9 @@ contract InsuranceCompany {
         string memory insuType;
         uint256 _id;
         while (Company.requestsLists.length > 0) {
-            _id = requestsLists.length - 1;
-            insuType = requestsLists[_id].insuType;
-            requestsLists.pop();
+            _id = Company.requestsLists.length - 1;
+            insuType = Company.requestsLists[_id].insuType;
+            Company.requestsLists.pop();
 
             // whats the criteria for approval and rejection here ???
             if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("life"))) {
@@ -181,11 +182,12 @@ contract InsuranceCompany {
         Company.requestsLists[id].status = "rejected";
     }
     
-    function autoTransfer(uint256 insuranceId,InsuranceCompany company,byte mcId) public payable ownerOnly(companyId) validCompanyId(companyId) {
+    function autoTransfer(uint256 insuranceId,InsuranceCompany company,uint256 _hospitalId,bytes32 mcId) public payable{
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
+        //check cert details
         //cert if its suicide
         if(medicalCertInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
             require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
@@ -215,15 +217,15 @@ contract InsuranceCompany {
         return companies[companyId].owner;
     }
     
-    function getCompanies() public view returns (mapping(uint256 => insuranceCompany)) {
-        return companies;
+    function getCompanyById(uint256 companyId) public view validCompanyId(companyId) returns (InsuranceCompany) {
+        return companies[companyId];
     }
 
     function getNumOfCompany() public view returns (uint256) {
         return numOfCompany;
     }
 
-    function getProducts(uint256 companyId) public view validCompanyId(companyId) returns (Insurance[]) {
+    function getProducts(uint256 companyId) public view validCompanyId(companyId) returns (Insurance[] memory) {
         return companies[companyId].products;
     }
 }
