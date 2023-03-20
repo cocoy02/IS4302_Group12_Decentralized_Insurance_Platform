@@ -62,7 +62,9 @@ contract InsuranceMarket {
             uint356 comID = i;
             InsuranceCompany com = companyContract.getCompany(comID);
             Insurance[] products = companyContract.getProducts(comId);
-
+            // 上面加一句话
+            // all the insurance can be paid yearly or monthly
+            // 再加一个title给
             string[] com_info;
             string id_str = uint2str(comID);
             com_info.push(id_str);
