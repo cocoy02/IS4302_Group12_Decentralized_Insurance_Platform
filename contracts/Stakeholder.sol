@@ -20,6 +20,7 @@ contract Stakeholder {
         uint256 ID;
         address stakeholderAddress;
         mapping(uint256 => position) involvingInsurances; //insurance ID to position   
+        uint256[10] toBeSigned;
     }
     
     event askingCert (uint256 insuranceID);
@@ -41,25 +42,56 @@ contract Stakeholder {
         stakeholder memory newStakeholder = stakeholder(
             newID,
             msg.sender
+
         );
         stakeholders[newID] = newStakeholder;
     }
 
-    function buyInsurance(uint256 policyOwnerID,uint256 insuranceID, uint256 beneficiaryID, uint256 lifeAssuredID,uint256 offerPrice) public {
+    // sign insurance and pay
+    function signInsurance(uint256 policyOwnerID,uint256 insuranceID, uint256 beneficiaryID, uint256 lifeAssuredID,uint256 offerPrice) public {
         // require offerPrice >= owningMoney
         // require insurance ID valid
+
+        bool doesListContainElement = false;
+        uint256 memory index;
+        for (uint i=0; i < stakeholders[policyOwnerID].toBeSigned.length; i++) {
+            if (elementToLookFor == stakeholders[policyOwnerID].toBeSigned[i]) {
+                doesListContainElement = true;
+                index = i;
+                break;
+            }
+        }
+
+        require(doesListContainElement == True);
+        stakeholders[policyOwnerID].toBeSigned.remove(index);
+
+
         stakeholders[policyOwnerID].involvingInsurances[insuranceID] = position.policyOwner;
         stakeholders[beneficiaryID].involvingInsurances[insuranceID] = position.beneficiary;
         stakeholders[lifeAssuredID].involvingInsurances[insuranceID] = position.lifeAssured;
         address memory companyAddress = insuranceContract.getInsuranceCompany(insuranceID);
         marketContract.transfer(msg.sender,companyAddress,offerPrice);
+
+
     }
 
-    function payPremium(uint256 insuranceID, uint256 amount, uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
-        address memory companyAddress = insuranceContract.getInsuranceCompany(insuranceID);
-        marketContract.transfer(msg.sender,companyAddress,amount);
+    function addToSignList(uint256 insuraneID,uint256 policyOwnerID) public {
+        require(stakeholders[policyOwnerID].toBeSigned[9] == 0);
+        stakeholders[policyOwnerID].toBeSigned.push(insuranceID);
+    }
 
-        //mark as paid
+    // function payPremium(uint256 insuranceID, uint256 amount, uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
+    //     address memory companyAddress = insuranceContract.getInsuranceCompany(insuranceID);
+    //     marketContract.transfer(msg.sender,companyAddress,amount);
+
+    //     //mark as paid
+    // }
+
+    function getMCidAndPassToComp(uint256 insuranceID) {
+        // uint MDid = 
+        uint256 memory company = insuranceContract.getInsuranceCompany(insuranceID);
+        insuranceCompanyContract.autoTransfer(insuranceID, company, MCid);
+
     }
 
     function claim(uint256 insuranceID,byte mcId) public onlyPolicyOwner(policyOwnerID){
