@@ -148,32 +148,36 @@ contract InsuranceCompany {
     
     //function to check request in request list
     function checkRequests(uint256 companyId) public validCompanyId(companyId){
+        InsuranceCompany Company = companies[companyId];
         require(msg.sender == Company);
         string memory insuType;
         uint256 _id;
-        while (requestsID.length > 0) {
-            _id = requestsID[requestsID.length-1];
-            insuType = requests[_id].insuType;
-            requestsID.pop();
-            // whats the criteria for approval and rejection here
+        while (Company.requestsLists.length > 0) {
+            _id = requestsLists.length - 1;
+            insuType = requestsLists[_id].insuType;
+            requestsLists.pop();
+
+            // whats the criteria for approval and rejection here ???
             if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("life"))) {
-                approve(_id);
+                approve(_id,companyId);
             } else if (keccak256(abi.encodePacked(insuType)) == keccak256(abi.encodePacked("accident"))) {
-                approve(_id);
+                approve(_id,companyId);
             } else {
-                reject(_id);
+                reject(_id,companyId);
             }
         }
     }
 
-    function approve(uint256 id) private {
+    function approve(uint256 id,uint256 companyId) private {
+        InsuranceCompany Company = companies[companyId];
         require(msg.sender == Company);
-        requests[id].status = "approved";
+        Company.requestsLists[id].status = "approved";
     }
 
-    function reject(uint256 id) private {
+    function reject(uint256 id,uint256 companyId) private {
+        InsuranceCompany Company = companies[companyId];
         require(msg.sender == Company);
-        requests[id].status = "rejected";
+        Company.requestsLists[id].status = "rejected";
     }
     
     function autoTransfer(uint256 insuranceId,InsuranceCompany company,byte mcId) public payable ownerOnly(companyId) validCompanyId(companyId) {
