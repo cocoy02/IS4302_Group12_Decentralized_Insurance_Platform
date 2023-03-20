@@ -105,9 +105,10 @@ contract InsuranceCompany {
     }
 
     //function to pass the contract draft to stakeholder to sign
-    function passToStakeHolder(uint256 id,uint256 insuranceId){
+    function passToStakeHolder(uint256 id,uint256 insuranceId) public{
         Stakeholder st = stakeholderInstance.getStakeholder(id);
         // add to st list
+        stakeholderInstance.addToSignList(insuraneId, id);
     }
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
