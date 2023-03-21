@@ -19,6 +19,7 @@ contract Stakeholder {
     struct stakeholder {
         uint256 ID;
         address stakeholderAddress;
+        byte32 phonenum;
         mapping(uint256 => position) involvingInsurances; //insurance ID to position   
         uint256[10] toBeSigned;
     }
@@ -36,13 +37,41 @@ contract Stakeholder {
         _;
     } 
 
+    modifier validNumber(string memory s) {
+        uint256 len;
+        uint256 i = 0;
+        uint256 bytelength = bytes(s).length;
+        bytes1 char = b[0];
+
+        for (len = 0; i < bytelength; len++) {
+            bytes1 b = bytes(s)[i];
+            if (b < 0x80) {
+                i += 1;
+            } else if (b < 0xE0) {
+                i += 2;
+            } else if (b < 0xF0) {
+                i += 3;
+            } else if (b < 0xF8) {
+                i += 4;
+            } else if (b < 0xFC) {
+                i += 5;
+            } else {
+                i += 6;
+            }
+        }
+
+        require(len == 8, "Invalid length of phone number!");
+        _;
+    }
+
 
     //Functions
-    function addStakeholder() public returns(int256) {
+    function addStakeholder(string memory _phonenum) public validNumber(_phonenum) returns(int256) {
         uint256 newID = numStakeholder++;
         stakeholder memory newStakeholder = stakeholder(
             newID,
-            msg.sender
+            msg.sender,
+            keccak256(abi.encode(_phonenum))
         );
         stakeholders[newID] = newStakeholder;
         ids[msg.sender] = newID;
@@ -77,9 +106,10 @@ contract Stakeholder {
 
     }
 
-    function addToSignList(uint256 insuraneID,uint256 policyOwnerID) public {
+    function addToSignList(uint256 insuraneID,uint256 policyOwnerID) public returns(bool){
         require(stakeholders[policyOwnerID].toBeSigned[9] == 0);
         stakeholders[policyOwnerID].toBeSigned.push(insuranceID);
+        return true;
     }
 
     // function payPremium(uint256 insuranceID, uint256 amount, uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
@@ -117,6 +147,13 @@ contract Stakeholder {
     
     function getStakeholderId(address _stakeholder) public view returns(uint256) {
         return ids[_stakeholder];
+    }
+    
+    //need to restrict access for this. cannot anyone could get the phonenumber.
+    //company check request => get stakeholder phone
+    //how to restrict so that only checkrequest function could access this
+    function getStakeholderPhone(uint256 stakeholderID) public view returns(string memory) {
+        return abi.decode(stakeholders[stakeholderID].phonenum);
     }
     
 }

@@ -62,6 +62,7 @@ contract('InsuranceMarket', function (accounts){
     // company info - "0 XXXCompany(100): " -> "companyid company_name(company_credit)"
     //under every company has product info
     //prod_arr: ["accident $200, ", "life $20000"] -> "productType: sumAssured"
+    //remember to convert enum productType into string
 
     it('Get Token', async () => {
         let t1 = await insuranceMarketInstance.getToken('number' , {from: accounts[1]});
