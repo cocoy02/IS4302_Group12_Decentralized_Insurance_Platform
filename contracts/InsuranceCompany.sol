@@ -47,6 +47,7 @@ contract InsuranceCompany {
     event requestSolve(uint256 requestId);
     event requestReject(uint256 requestId);
     event passedToStakeholder();
+    event checkRequest(requestStatus status);
 
 
 // =====================================================================================
@@ -153,6 +154,7 @@ contract InsuranceCompany {
     }
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
+    //why we need this?//
     function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         InsuranceCompany company = companies[companyId];
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
@@ -269,8 +271,29 @@ contract InsuranceCompany {
 
     }
 
-    function checkRequestsFromStakeholder(uint256 companyId) public {
+    /**
+    * @dev Allow stakeholder to check request status
+    */
+    function checkRequestsFromStakeholder(uint256 companyId, uint256 requestId) public returns (requestStatus) {
+        require(requestId != 0, "Invalid request id!");
 
+        uint256 index;
+        Request[] memory reqs = companies[companyId].requestLists;
+        uint256 length = reqs.length;
+        bool find = false;
+        for (uint256 i = 0; i < length; i++) {
+            if (reqs[i].id == requestId) {
+                index = i;
+                find = true;
+            }
+        }
+        
+        require(find == true, "You haven't requested or the request has already been approved!");
+        if (find) {
+            emit checkRequest(reqs[index].status);
+        }
+        
+        return reqs[index].status;
     }
     
 // =====================================================================================
@@ -295,10 +318,6 @@ contract InsuranceCompany {
 
     function getNumOfCompany() public view returns (uint256) {
         return numOfCompany;
-    }
-
-    function getProducts(uint256 companyId) public view validCompanyId(companyId) returns (Insurance[] memory) {
-        return companies[companyId].products;
     }
 
 }

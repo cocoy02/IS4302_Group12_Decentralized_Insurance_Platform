@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 import "./InsuranceMarket.sol";
 import "./Insurance.sol";
 import "./InsuranceCompany.sol";
+import "./Hospital.sol";
 
 
 contract Stakeholder {
@@ -9,17 +10,19 @@ contract Stakeholder {
     InsuranceMarket marketContract;
     Insurance insuranceContract;
     InsuranceCompany insuranceCompanyContract;
+    Hospital hospitalContract;
     enum position { policyOwner, beneficiary, lifeAssured }
 
-    constructor(InsuranceMarket marketAddress, Insurance insuranceAddress) public {
+    constructor(InsuranceMarket marketAddress, Insurance insuranceAddress, Hospital hospitalAddress) public {
         marketContract = marketAddress;
         insuranceContract = insuranceAddress;
+        hospitalContract = hospitalAddress;
     }
 
     struct stakeholder {
         uint256 ID;
         address stakeholderAddress;
-        byte32 phonenum;
+        bytes32 phonenum;
         mapping(uint256 => position) involvingInsurances; //insurance ID to position   
         uint256[10] toBeSigned;
     }
@@ -134,6 +137,16 @@ contract Stakeholder {
         company = insuranceContract.getInsuranceCompany(insuranceID);
         insuranceCompanyContract.autoTransfer(insuranceID,company,mcId);
         emit claimingFromComp(insuranceID,mcId);
+    }
+
+    function checkInsuranceRequests(uint256 companyId, uint256 requestId) public returns (InsuranceCompany.requestStatus) {
+        return InsuranceCompany.checkRequestsFromStakeholder(companyId, requestId);
+    }
+
+    function checkMCRequests(uint256 memory _hospitalId, uint256 _requestId, uint256 _stakeholderId) public 
+    returns(bytes32)
+    {
+        return hospitalContract.checkMCIdFromStakeholder(_hospitalId, _requestId,_stakeholderId);
     }
 
     //Getters
