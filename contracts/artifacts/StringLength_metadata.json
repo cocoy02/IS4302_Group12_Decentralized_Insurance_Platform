@@ -1,0 +1,64 @@
+{
+	"compiler": {
+		"version": "0.5.0+commit.1d4f565a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "s",
+						"type": "string"
+					}
+				],
+				"name": "strlen",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"methods": {
+				"strlen(string)": {
+					"details": "Returns the length of a given string",
+					"params": {
+						"s": "The string to measure the length of"
+					},
+					"return": "The length of the input string"
+				}
+			}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/StringLength.sol": "StringLength"
+		},
+		"evmVersion": "byzantium",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/StringLength.sol": {
+			"keccak256": "0xd6feb3e09a637bf1c85c606e506a437875f605af11e0d79f07ca363592ac6faa",
+			"urls": [
+				"bzzr://dd47bb4c239f7044c05923aa269ca7a13d10a550d04b8cc085b56da00b61c204"
+			]
+		}
+	},
+	"version": 1
+}

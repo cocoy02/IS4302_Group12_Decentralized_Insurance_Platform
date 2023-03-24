@@ -1,0 +1,38 @@
+{
+	"compiler": {
+		"version": "0.5.0+commit.1d4f565a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"details": "Math operations with safety checks that throw on error",
+			"methods": {},
+			"title": "SafeMath"
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/ERC20.sol": "SafeMath"
+		},
+		"evmVersion": "byzantium",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/ERC20.sol": {
+			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
+			"urls": [
+				"bzzr://fbe6fa03ec04aec65ba27b25b1fa53bd990824323ea60d728e72efb7d466729a"
+			]
+		}
+	},
+	"version": 1
+}

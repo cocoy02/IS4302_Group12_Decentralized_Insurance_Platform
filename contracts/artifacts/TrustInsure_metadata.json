@@ -1,0 +1,131 @@
+{
+	"compiler": {
+		"version": "0.5.0+commit.1d4f565a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "recipient",
+						"type": "address"
+					},
+					{
+						"name": "weiAmt",
+						"type": "uint256"
+					}
+				],
+				"name": "getInsure",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"name": "amt",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFromInsure",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"name": "amt",
+						"type": "uint256"
+					}
+				],
+				"name": "transferInsure",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "ad",
+						"type": "address"
+					}
+				],
+				"name": "checkInsure",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/TrustInsure.sol": "TrustInsure"
+		},
+		"evmVersion": "byzantium",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/ERC20.sol": {
+			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
+			"urls": [
+				"bzzr://fbe6fa03ec04aec65ba27b25b1fa53bd990824323ea60d728e72efb7d466729a"
+			]
+		},
+		"contracts/TrustInsure.sol": {
+			"keccak256": "0xfe4a32272fe7433f908bcc412e725d3ce3d9c9673f673e4973a21e9263749f21",
+			"urls": [
+				"bzzr://3319f07678f5d0a5e75b8ba788c1d510cb772f6208cefcca88fdc5bd5b617ace"
+			]
+		}
+	},
+	"version": 1
+}

@@ -35,7 +35,7 @@ contract Stakeholder {
     mapping(address => uint256) ids; //stakeholder address to id
 
     //Modifiers
-    modifier onlyPolicyOwner(policyOwnerID) {
+    modifier onlyPolicyOwner(uint256 policyOwnerID) {
         require(msg.sender == stakeholders[policyOwnerID].stakeholderAddress);
         _;
     } 

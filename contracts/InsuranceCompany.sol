@@ -127,7 +127,7 @@ contract InsuranceCompany {
                 policyOwner,
                 lifeAssured,
                 payingAccount,
-                msg.sender,
+                companyId,
                 insuredAmount,
                 insType,
                 issueDate,

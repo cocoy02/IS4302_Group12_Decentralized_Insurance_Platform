@@ -1,5 +1,6 @@
 pragma solidity ^0.5.0;
 import "./Stakeholder.sol";
+import "./InsuranceCompany.sol";
 
 contract Insurance {
     
@@ -13,7 +14,7 @@ contract Insurance {
         Stakeholder beneficiary;//
         Stakeholder lifeAssured;
         Stakeholder payingAccount;
-        insuranceCompany company;
+        uint256 companyId;
         uint256 insuredAmount;
         insuranceType insType;
         premiumStatus status;//
@@ -32,7 +33,7 @@ contract Insurance {
         Stakeholder policyOwner,
         Stakeholder lifeAssured,
         Stakeholder payingAccount,
-        insuranceCompany company,
+        uint256 companyId,
         uint256 insuredAmount,
         insuranceType insType,
         uint256 issueDate,
@@ -47,7 +48,7 @@ contract Insurance {
             // initialise dummy beneficiary (need to wait for stakeholder to be implemented)
             lifeAssured,
             payingAccount,
-            company,
+            companyId,
             insuredAmount,
             insType,
             premiumStatus.unpaid, // initialise premium status to unpaid
@@ -86,7 +87,7 @@ contract Insurance {
     }
 
     function setExpiryDate(uint256 date, uint256 insuranceId) public companyOnly(insuranceId) {
-	    require(expiryDate != 0, "Expiry date has already been initialised");
+	    require(insurances[insuranceId].expiryDate != 0, "Expiry date has already been initialised");
         insurances[insuranceId].expiryDate = date;
     }
 
