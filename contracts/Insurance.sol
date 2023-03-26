@@ -93,7 +93,7 @@ contract Insurance {
         insurances[insuranceId].beneficiary = s1;
     }
 
-    function updateStatus(premiumStatus state, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
+    function updateStatus(premiumStatus state, uint256 insuranceId) public { //policyOwnerOnly(insuranceId) {
         insurances[insuranceId].status = state;
     }
 

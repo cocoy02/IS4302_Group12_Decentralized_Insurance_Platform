@@ -127,7 +127,8 @@ contract Stakeholder {
         // uint MDid = 
         insuranceCompanyContract.autoTransfer(insuranceId, companyId,  hospitalId, mcId);
     }
-
+    
+    //only beneficiary could change add one more modifier
     function claim(uint256 insuranceID,uint256 companyId, byte mcId,uint256 hospitalId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
