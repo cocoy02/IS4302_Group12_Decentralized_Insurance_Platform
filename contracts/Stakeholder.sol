@@ -129,7 +129,7 @@ contract Stakeholder {
 
     }
 
-    function claim(uint256 insuranceID,byte mcId) public onlyPolicyOwner(policyOwnerID){
+    function claim(uint256 insuranceID,byte mcId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
 
@@ -143,7 +143,7 @@ contract Stakeholder {
         return InsuranceCompany.checkRequestsFromStakeholder(companyId, requestId);
     }
 
-    function checkMCRequests(uint256 memory _hospitalId, uint256 _requestId, uint256 _stakeholderId) public 
+    function checkMCRequests(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId) public 
     returns(bytes32)
     {
         return hospitalContract.checkMCIdFromStakeholder(_hospitalId, _requestId,_stakeholderId);

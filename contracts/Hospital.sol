@@ -14,7 +14,7 @@ contract Hospital {
 
     uint256 totalHospital = 0;
 
-    constructor (MedicalCertificate mcAddress, Stakeholder stakeholderAddress) {
+    constructor (MedicalCertificate mcAddress, Stakeholder stakeholderAddress) public  {
         medicalCert = mcAddress;
         stakeholderContract = stakeholderAddress;
     }
