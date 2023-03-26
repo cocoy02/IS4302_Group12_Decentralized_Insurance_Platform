@@ -16,7 +16,7 @@ contract InsuranceCompany {
         string name;
         address owner;
         uint256 completed; //number range to stars
-        mapping(uint256 => Insurance) insuranceId;
+        mapping(uint256 => Insurance.insurance) insuranceId;
         Request[] requestLists;//!!!!!company only could have at most ten requests, they need to fast approve!!!!!!//
     }
 
@@ -81,7 +81,8 @@ contract InsuranceCompany {
             credit:0,
             name:name,
             owner:msg.sender,
-            completed:0
+            completed:0,
+            requestLists: new Request[](0)
         });
         
         uint256 companyId = numOfCompany++;
@@ -94,9 +95,10 @@ contract InsuranceCompany {
     * Automatically pass to stakeholder
     * @return new insurance id
     */
-    function createInsurance(uint256 policyOwner,
-        uint256 lifeAssured,
-        uint256 payingAccount,
+    function createInsurance(Stakeholder policyOwner,
+        Stakeholder beneficiary,
+        Stakeholder lifeAssured,
+        Stakeholder payingAccount,
         uint256 insuredAmount,
         Insurance.insuranceType insType,
         uint256 issueDate,
@@ -126,6 +128,7 @@ contract InsuranceCompany {
             }        
             uint256 newId = insuranceInstance.createInsurance(
                 policyOwner,
+                beneficiary,
                 lifeAssured,
                 payingAccount,
                 companyId,
@@ -155,19 +158,18 @@ contract InsuranceCompany {
     }
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
-    //why we need this?//
-    // function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
-    //     InsuranceCompany company = companies[companyId];
-    //     Insurance insurance = insuranceInstance.getInsurance(insuranceId);
-    //     require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
-    //     company.insuranceId[insuranceId] = insurance;
-    //     company.completed++;
-    //     updateCredit(companyId);
-    // }
+    function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
+        insuranceCompany storage company = companies[companyId];
+        Insurance.insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
+        require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
+        company.insuranceId[insuranceId] = insurance;
+        company.completed++;
+        updateCredit(companyId);
+    }
 
     //function to update the credit of company once a insurance is signed
     function updateCredit(uint256 companyId) public validCompanyId(companyId) {
-        InsuranceCompany company = companies[companyId];
+        insuranceCompany memory company = companies[companyId];
         uint256 completed = company.completed;
         if(completed >=50 && completed <=200) {
             company.credit = 1;
@@ -185,15 +187,16 @@ contract InsuranceCompany {
     }
 
     function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes32 mcId) public payable{
-        Insurance insurance = insuranceInstance.getInsurance(insuranceId);
+        // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
-
-        //check cert details
-
+        Stakeholder st = insuranceInstance.getBeneficiary(insuranceId);
+        //get cert details
+        (uint256 HospitalID,string memory name,string memory NRIC,uint256 sex,uint256 birthdate,string memory race,string memory nationality,MedicalCertificate.certCategory incident,string memory dateTimeIncident,string memory placeIncident,string memory causeIncident,string memory titleOfCertifier,string memory Institution) = medicalCertInstance.getMC(mcId);
+        require(name == st.getName() && NRIC == st.getNRIC(), "Not the same stakeholder!");
         //cert if its suicide
-        if(medicalCertInstance.getReason(insuranceId) == Insurance.reason.suicide) {  
+        if(incident == MedicalCertificate.certCategory.suicide) {  
             require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
         }
 

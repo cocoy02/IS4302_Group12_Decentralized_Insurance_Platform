@@ -22,6 +22,8 @@ contract Stakeholder {
 
     struct stakeholder {
         uint256 ID;
+        string name;
+        string NRIC;
         address stakeholderAddress;
         bytes32 phonenum;
         mapping(uint256 => Insurance) involvingInsurances; //insurance ID to position   
@@ -70,10 +72,12 @@ contract Stakeholder {
 
 
     //Functions
-    function addStakeholder(string memory _phonenum) public validNumber(_phonenum) returns(int256) {
+    function addStakeholder(string memory _phonenum,string memory name,string memory NRIC) public validNumber(_phonenum) returns(int256) {
         uint256 newID = numStakeholder++;
         stakeholder memory newStakeholder = stakeholder(
             newID,
+            name,
+            NRIC,
             msg.sender,
             keccak256(abi.encode(_phonenum))
         );

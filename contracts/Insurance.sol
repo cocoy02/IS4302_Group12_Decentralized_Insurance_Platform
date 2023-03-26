@@ -128,6 +128,14 @@ contract Insurance {
         return insurances[insuranceId].companyId;
     }
 
+    function getPremiumStatus(uint256 insuranceId) public returns (premiumStatus) {
+        return insurances[insuranceId].status;
+    }
+
+    function getBeneficiary(uint256 insuranceId) public returns (Stakeholder) {
+        return insurances[insuranceId].beneficiary;
+    }
+
     function autoTrigger() public {
         // if not enough, after one month, check again.
         // otherwise, terminate the insurance until stakeholder could pay
