@@ -157,7 +157,10 @@ contract InsuranceCompany {
         if (stakeholderInstance.addToSignList(insuranceId, policyownerid)) emit passedToStakeholder();
     }
 
-    // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
+    /** 
+    * @dev insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary and add count for credit
+    * @param {uint256} insuranceId, {uint256} companyId
+    */
     function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         insuranceCompany storage company = companies[companyId];
         Insurance.insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
@@ -167,7 +170,10 @@ contract InsuranceCompany {
         updateCredit(companyId);
     }
 
-    //function to update the credit of company once a insurance is signed
+    /** 
+    * @dev function to update the credit of company once a insurance is signed
+    * @param {uint256} companyId
+    */
     function updateCredit(uint256 companyId) public validCompanyId(companyId) {
         insuranceCompany memory company = companies[companyId];
         uint256 completed = company.completed;
@@ -186,6 +192,10 @@ contract InsuranceCompany {
         } 
     }
 
+     /** 
+    * @dev check stakeholder details and mc details, if correct auto transfer money
+    * @param  {uint256} insuranceId, {uint256} companyId,{uint256} _hospitalId,{bytes32} mcId
+    */
     function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes32 mcId) public payable{
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);

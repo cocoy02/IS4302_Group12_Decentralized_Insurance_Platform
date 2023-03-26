@@ -108,9 +108,10 @@ contract Stakeholder {
         stakeholders[_policyOwnerID].involvingInsurances[_insuranceID] = position.policyOwner;
         stakeholders[_beneficiaryID].involvingInsurances[_insuranceID] = position.beneficiary;
         stakeholders[_lifeAssuredID].involvingInsurances[_insuranceID] = position.lifeAssured;
-        address companyAddress = insuranceContract.getInsuranceCompany(_insuranceID);
+        address companyAddress = insuranceContract.getInsuranceCompany(_insuranceID); // this returns id not address
         marketContract.transfer(msg.sender,companyAddress,_offerPrice);
 
+        insuranceCompanyContract.signInsurance(_insuranceId, insuranceContract.getInsuranceCompany(_insuranceID));
 
     }
 
