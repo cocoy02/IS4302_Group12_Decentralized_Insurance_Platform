@@ -1,18 +1,47 @@
 {
 	"compiler": {
-		"version": "0.5.0+commit.1d4f565a"
+		"version": "0.5.17+commit.d19bba13"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "ad",
+						"type": "address"
+					}
+				],
+				"name": "checkInsure",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"constant": false,
 				"inputs": [
 					{
+						"internalType": "address",
 						"name": "recipient",
 						"type": "address"
 					},
 					{
+						"internalType": "uint256",
 						"name": "weiAmt",
 						"type": "uint256"
 					}
@@ -20,6 +49,7 @@
 				"name": "getInsure",
 				"outputs": [
 					{
+						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
 					}
@@ -32,14 +62,17 @@
 				"constant": false,
 				"inputs": [
 					{
+						"internalType": "address",
 						"name": "from",
 						"type": "address"
 					},
 					{
+						"internalType": "address",
 						"name": "to",
 						"type": "address"
 					},
 					{
+						"internalType": "uint256",
 						"name": "amt",
 						"type": "uint256"
 					}
@@ -54,10 +87,12 @@
 				"constant": false,
 				"inputs": [
 					{
+						"internalType": "address",
 						"name": "to",
 						"type": "address"
 					},
 					{
+						"internalType": "uint256",
 						"name": "amt",
 						"type": "uint256"
 					}
@@ -67,31 +102,6 @@
 				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"constant": true,
-				"inputs": [
-					{
-						"name": "ad",
-						"type": "address"
-					}
-				],
-				"name": "checkInsure",
-				"outputs": [
-					{
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"payable": false,
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"payable": false,
-				"stateMutability": "nonpayable",
-				"type": "constructor"
 			}
 		],
 		"devdoc": {
@@ -105,7 +115,7 @@
 		"compilationTarget": {
 			"contracts/TrustInsure.sol": "TrustInsure"
 		},
-		"evmVersion": "byzantium",
+		"evmVersion": "istanbul",
 		"libraries": {},
 		"optimizer": {
 			"enabled": false,
@@ -117,13 +127,15 @@
 		"contracts/ERC20.sol": {
 			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
 			"urls": [
-				"bzzr://fbe6fa03ec04aec65ba27b25b1fa53bd990824323ea60d728e72efb7d466729a"
+				"bzz-raw://d4ac6aaffef2adf430f32385abb57faa11be3fa8a9c8ae2d2972da296b2d1f4e",
+				"dweb:/ipfs/Qme2HCxM7dQ3f9MiYYGGXFXx3EEStRhEHuYMDToZRghPMg"
 			]
 		},
 		"contracts/TrustInsure.sol": {
 			"keccak256": "0xfe4a32272fe7433f908bcc412e725d3ce3d9c9673f673e4973a21e9263749f21",
 			"urls": [
-				"bzzr://3319f07678f5d0a5e75b8ba788c1d510cb772f6208cefcca88fdc5bd5b617ace"
+				"bzz-raw://5fbb807cce2d5ef61dc654a7f6468528471ef8443828057d689757163e2f8e3e",
+				"dweb:/ipfs/QmfFoc45wzjhzvhvtAVnP3Q6TTiRq6GYtJXqEBXR5iyNdT"
 			]
 		}
 	},

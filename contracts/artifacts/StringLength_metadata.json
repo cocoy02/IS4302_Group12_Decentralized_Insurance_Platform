@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.5.0+commit.1d4f565a"
+		"version": "0.5.17+commit.d19bba13"
 	},
 	"language": "Solidity",
 	"output": {
@@ -9,6 +9,7 @@
 				"constant": true,
 				"inputs": [
 					{
+						"internalType": "string",
 						"name": "s",
 						"type": "string"
 					}
@@ -16,6 +17,7 @@
 				"name": "strlen",
 				"outputs": [
 					{
+						"internalType": "bool",
 						"name": "",
 						"type": "bool"
 					}
@@ -44,7 +46,7 @@
 		"compilationTarget": {
 			"contracts/StringLength.sol": "StringLength"
 		},
-		"evmVersion": "byzantium",
+		"evmVersion": "istanbul",
 		"libraries": {},
 		"optimizer": {
 			"enabled": false,
@@ -56,7 +58,8 @@
 		"contracts/StringLength.sol": {
 			"keccak256": "0xd6feb3e09a637bf1c85c606e506a437875f605af11e0d79f07ca363592ac6faa",
 			"urls": [
-				"bzzr://dd47bb4c239f7044c05923aa269ca7a13d10a550d04b8cc085b56da00b61c204"
+				"bzz-raw://7497b69d65f19e4320e5fa0a13d1862efe1d451860f51b56b73c38b1bc3d6007",
+				"dweb:/ipfs/QmTA56ErURbsdb8zYj1KEcrChizPdEqhQz6hUZ6Jvz4Uox"
 			]
 		}
 	},

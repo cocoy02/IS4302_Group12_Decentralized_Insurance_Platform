@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.5.0+commit.1d4f565a"
+		"version": "0.5.17+commit.d19bba13"
 	},
 	"language": "Solidity",
 	"output": {
@@ -18,7 +18,7 @@
 		"compilationTarget": {
 			"contracts/ERC20.sol": "SafeMath"
 		},
-		"evmVersion": "byzantium",
+		"evmVersion": "istanbul",
 		"libraries": {},
 		"optimizer": {
 			"enabled": false,
@@ -30,7 +30,8 @@
 		"contracts/ERC20.sol": {
 			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
 			"urls": [
-				"bzzr://fbe6fa03ec04aec65ba27b25b1fa53bd990824323ea60d728e72efb7d466729a"
+				"bzz-raw://d4ac6aaffef2adf430f32385abb57faa11be3fa8a9c8ae2d2972da296b2d1f4e",
+				"dweb:/ipfs/Qme2HCxM7dQ3f9MiYYGGXFXx3EEStRhEHuYMDToZRghPMg"
 			]
 		}
 	},

@@ -1,32 +1,105 @@
 {
 	"compiler": {
-		"version": "0.5.0+commit.1d4f565a"
+		"version": "0.5.17+commit.d19bba13"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
-				"constant": true,
-				"inputs": [],
-				"name": "mintingFinished",
-				"outputs": [
+				"anonymous": false,
+				"inputs": [
 					{
-						"name": "",
-						"type": "bool"
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
 					}
 				],
-				"payable": false,
-				"stateMutability": "view",
-				"type": "function"
+				"name": "Approval",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "Mint",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "MintFinished",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "Transfer",
+				"type": "event"
 			},
 			{
 				"constant": true,
-				"inputs": [],
-				"name": "name",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_spender",
+						"type": "address"
+					}
+				],
+				"name": "allowance",
 				"outputs": [
 					{
+						"internalType": "uint256",
 						"name": "",
-						"type": "string"
+						"type": "uint256"
 					}
 				],
 				"payable": false,
@@ -37,10 +110,12 @@
 				"constant": false,
 				"inputs": [
 					{
+						"internalType": "address",
 						"name": "_spender",
 						"type": "address"
 					},
 					{
+						"internalType": "uint256",
 						"name": "_value",
 						"type": "uint256"
 					}
@@ -48,6 +123,7 @@
 				"name": "approve",
 				"outputs": [
 					{
+						"internalType": "bool",
 						"name": "",
 						"type": "bool"
 					}
@@ -58,43 +134,23 @@
 			},
 			{
 				"constant": true,
-				"inputs": [],
-				"name": "totalSupply",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
 				"outputs": [
 					{
+						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
 					}
 				],
 				"payable": false,
 				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"constant": false,
-				"inputs": [
-					{
-						"name": "_from",
-						"type": "address"
-					},
-					{
-						"name": "_to",
-						"type": "address"
-					},
-					{
-						"name": "_value",
-						"type": "uint256"
-					}
-				],
-				"name": "transferFrom",
-				"outputs": [
-					{
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"payable": false,
-				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -103,50 +159,9 @@
 				"name": "decimals",
 				"outputs": [
 					{
+						"internalType": "uint8",
 						"name": "",
 						"type": "uint8"
-					}
-				],
-				"payable": false,
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"constant": false,
-				"inputs": [
-					{
-						"name": "_to",
-						"type": "address"
-					},
-					{
-						"name": "_amount",
-						"type": "uint256"
-					}
-				],
-				"name": "mint",
-				"outputs": [
-					{
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"payable": false,
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"constant": true,
-				"inputs": [
-					{
-						"name": "_owner",
-						"type": "address"
-					}
-				],
-				"name": "balanceOf",
-				"outputs": [
-					{
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"payable": false,
@@ -159,6 +174,7 @@
 				"name": "finishMinting",
 				"outputs": [
 					{
+						"internalType": "bool",
 						"name": "",
 						"type": "bool"
 					}
@@ -173,8 +189,65 @@
 				"name": "getOwner",
 				"outputs": [
 					{
+						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					}
+				],
+				"name": "mint",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "mintingFinished",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "name",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
 					}
 				],
 				"payable": false,
@@ -187,6 +260,7 @@
 				"name": "owner",
 				"outputs": [
 					{
+						"internalType": "address",
 						"name": "",
 						"type": "address"
 					}
@@ -201,8 +275,24 @@
 				"name": "symbol",
 				"outputs": [
 					{
+						"internalType": "string",
 						"name": "",
 						"type": "string"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "totalSupply",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"payable": false,
@@ -213,10 +303,12 @@
 				"constant": false,
 				"inputs": [
 					{
+						"internalType": "address",
 						"name": "_to",
 						"type": "address"
 					},
 					{
+						"internalType": "uint256",
 						"name": "_value",
 						"type": "uint256"
 					}
@@ -224,6 +316,7 @@
 				"name": "transfer",
 				"outputs": [
 					{
+						"internalType": "bool",
 						"name": "",
 						"type": "bool"
 					}
@@ -233,94 +326,35 @@
 				"type": "function"
 			},
 			{
-				"constant": true,
+				"constant": false,
 				"inputs": [
 					{
-						"name": "_owner",
+						"internalType": "address",
+						"name": "_from",
 						"type": "address"
 					},
 					{
-						"name": "_spender",
+						"internalType": "address",
+						"name": "_to",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
 					}
 				],
-				"name": "allowance",
+				"name": "transferFrom",
 				"outputs": [
 					{
+						"internalType": "bool",
 						"name": "",
-						"type": "uint256"
+						"type": "bool"
 					}
 				],
 				"payable": false,
-				"stateMutability": "view",
+				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"name": "from",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"name": "value",
-						"type": "uint256"
-					}
-				],
-				"name": "Transfer",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"name": "owner",
-						"type": "address"
-					},
-					{
-						"indexed": true,
-						"name": "spender",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"name": "value",
-						"type": "uint256"
-					}
-				],
-				"name": "Approval",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"name": "to",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "Mint",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [],
-				"name": "MintFinished",
-				"type": "event"
 			}
 		],
 		"devdoc": {
@@ -387,7 +421,7 @@
 		"compilationTarget": {
 			"contracts/ERC20.sol": "ERC20"
 		},
-		"evmVersion": "byzantium",
+		"evmVersion": "istanbul",
 		"libraries": {},
 		"optimizer": {
 			"enabled": false,
@@ -399,7 +433,8 @@
 		"contracts/ERC20.sol": {
 			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
 			"urls": [
-				"bzzr://fbe6fa03ec04aec65ba27b25b1fa53bd990824323ea60d728e72efb7d466729a"
+				"bzz-raw://d4ac6aaffef2adf430f32385abb57faa11be3fa8a9c8ae2d2972da296b2d1f4e",
+				"dweb:/ipfs/Qme2HCxM7dQ3f9MiYYGGXFXx3EEStRhEHuYMDToZRghPMg"
 			]
 		}
 	},

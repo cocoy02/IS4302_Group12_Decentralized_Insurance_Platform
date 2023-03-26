@@ -3,6 +3,8 @@ import "./Stakeholder.sol";
 import "./InsuranceCompany.sol";
 
 contract Insurance {
+    Stakeholder stakeholderContract;
+    InsuranceCompany insuranceCompanyContract;
     
     enum insuranceType { life, accident }
     enum premiumStatus { processing, paid, unpaid }
@@ -28,9 +30,15 @@ contract Insurance {
     uint256 public numInsurance = 0;
     mapping(uint256 => insurance) public insurances;
 
+    constructor (Stakeholder stakeholderAddress, InsuranceCompany insuranceCompanyAddress) public {
+        stakeholderContract = stakeholderAddress;
+        insuranceCompanyContract = insuranceCompanyAddress;
+    }
+
     //function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
     function createInsurance(
         Stakeholder policyOwner,
+        Stakeholder beneficiary,
         Stakeholder lifeAssured,
         Stakeholder payingAccount,
         uint256 companyId,
@@ -44,8 +52,9 @@ contract Insurance {
         
         //new insurance object
         insurance memory newInsurance = insurance(
+            numInsurance++,
             policyOwner,
-            // initialise dummy beneficiary (need to wait for stakeholder to be implemented)
+            beneficiary,
             lifeAssured,
             payingAccount,
             companyId,
@@ -53,20 +62,21 @@ contract Insurance {
             insType,
             premiumStatus.unpaid, // initialise premium status to unpaid
             issueDate,
-            0, // initialise expiry date to 0
+            issueDate+0, // initialise expiry date to 0
             false,
             reason,
             price
         );
         
-        uint256 newInsuranceId = numInsurance++;
+        uint256 newInsuranceId = numInsurance;
         insurances[newInsuranceId] = newInsurance; //commit to state variable
         return newInsuranceId;   //return new insurance Id
     }
 
     //modifier to ensure a function is callable only by its policy owner    
     modifier policyOwnerOnly(uint256 insuranceId) {
-        require(insurances[insuranceId].policyOwner == msg.sender);
+        //stakeholderContract.getStakeholderAddress(uint256 stakeholderID)
+        require(insurances[insuranceId].policyOwner.stakeholderAddress == msg.sender);
         _;
     }
 

@@ -23,7 +23,7 @@ contract Stakeholder {
         uint256 ID;
         address stakeholderAddress;
         bytes32 phonenum;
-        mapping(uint256 => position) involvingInsurances; //insurance ID to position   
+        mapping(uint256 => Insurance) involvingInsurances; //insurance ID to position   
         uint256[10] toBeSigned;
     }
     
@@ -44,7 +44,7 @@ contract Stakeholder {
         uint256 len;
         uint256 i = 0;
         uint256 bytelength = bytes(s).length;
-        bytes1 char = b[0];
+        bytes1 char = bytes(s)[0];
 
         for (len = 0; i < bytelength; len++) {
             bytes1 b = bytes(s)[i];
@@ -82,36 +82,36 @@ contract Stakeholder {
     }
 
     // sign insurance and pay
-    function signInsurance(uint256 policyOwnerID,uint256 insuranceID, uint256 beneficiaryID, uint256 lifeAssuredID,uint256 offerPrice) public {
+    function signInsurance(uint256 _policyOwnerID,uint256 _insuranceID, uint256 _beneficiaryID, uint256 _lifeAssuredID,uint256 _offerPrice) public {
         // require offerPrice >= owningMoney
         // require insurance ID valid
 
         bool doesListContainElement = false;
-        uint256 memory index;
-        for (uint i=0; i < stakeholders[policyOwnerID].toBeSigned.length; i++) {
-            if (elementToLookFor == stakeholders[policyOwnerID].toBeSigned[i]) {
+        uint256 index;
+        for (uint i=0; i < stakeholders[_policyOwnerID].toBeSigned.length; i++) {
+            if (_insuranceID == stakeholders[_policyOwnerID].toBeSigned[i]) {
                 doesListContainElement = true;
                 index = i;
                 break;
             }
         }
+        
+        require(doesListContainElement == true, "Invalid insurance id!");
+        stakeholders[_policyOwnerID].toBeSigned.remove(index);
 
-        require(doesListContainElement == True);
-        stakeholders[policyOwnerID].toBeSigned.remove(index);
 
-
-        stakeholders[policyOwnerID].involvingInsurances[insuranceID] = position.policyOwner;
-        stakeholders[beneficiaryID].involvingInsurances[insuranceID] = position.beneficiary;
-        stakeholders[lifeAssuredID].involvingInsurances[insuranceID] = position.lifeAssured;
-        address memory companyAddress = insuranceContract.getInsuranceCompany(insuranceID);
-        marketContract.transfer(msg.sender,companyAddress,offerPrice);
+        stakeholders[_policyOwnerID].involvingInsurances[_insuranceID] = position.policyOwner;
+        stakeholders[_beneficiaryID].involvingInsurances[_insuranceID] = position.beneficiary;
+        stakeholders[_lifeAssuredID].involvingInsurances[_insuranceID] = position.lifeAssured;
+        address companyAddress = insuranceContract.getInsuranceCompany(_insuranceID);
+        marketContract.transfer(msg.sender,companyAddress,_offerPrice);
 
 
     }
 
-    function addToSignList(uint256 insuraneID,uint256 policyOwnerID) public returns(bool){
-        require(stakeholders[policyOwnerID].toBeSigned[9] == 0);
-        stakeholders[policyOwnerID].toBeSigned.push(insuranceID);
+    function addToSignList(uint256 _insuranceID,uint256 _policyOwnerID) public returns(bool){
+        require(stakeholders[_policyOwnerID].toBeSigned[9] == 0);
+        stakeholders[_policyOwnerID].toBeSigned.push(_insuranceID);
         return true;
     }
 
@@ -122,20 +122,17 @@ contract Stakeholder {
     //     //mark as paid
     // }
 
-    function getMCidAndPassToComp(uint256 insuranceID) public {
+    function getMCidAndPassToComp(uint256 insuranceId,uint256 companyId,uint256 hospitalId,bytes32 mcId) public {
         // uint MDid = 
-        uint256 memory company = insuranceContract.getInsuranceCompany(insuranceID);
-        insuranceCompanyContract.autoTransfer(insuranceID, company, MCid);
-
+        insuranceCompanyContract.autoTransfer(insuranceId, companyId,  hospitalId, mcId);
     }
 
-    function claim(uint256 insuranceID,byte mcId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
+    function claim(uint256 insuranceID,uint256 companyId, byte mcId,uint256 hospitalId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
 
         //step2: tell insurance company to pay back
-        company = insuranceContract.getInsuranceCompany(insuranceID);
-        insuranceCompanyContract.autoTransfer(insuranceID,company,mcId);
+        insuranceCompanyContract.autoTransfer(insuranceID, companyId,  hospitalId, mcId);
         emit claimingFromComp(insuranceID,mcId);
     }
 
@@ -154,8 +151,8 @@ contract Stakeholder {
         return stakeholders[stakeholderID];
     }
 
-    function getInvolvingInsurances(uint256 stakeholderID) public view returns(mapping(uint256 => position)){
-        return stakeholders[stakeholderID].involvingInsurances;
+    function getInvolvingInsurances(uint256 stakeholderID, uint256 insuranceID) public view returns(Insurance){
+        return stakeholders[stakeholderID].involvingInsurances[insuranceID];
     }
     
     function getStakeholderId(address _stakeholder) public view returns(uint256) {
@@ -167,6 +164,10 @@ contract Stakeholder {
     //how to restrict so that only checkrequest function could access this
     function getStakeholderPhone(uint256 stakeholderID) public view returns(string memory) {
         return abi.decode(stakeholders[stakeholderID].phonenum);
+    }
+
+    function getStakeholderAddress(uint256 stakeholderID) public view returns(address) {
+        return stakeholders[stakeholderID].stakeholderAddress;
     }
     
 }

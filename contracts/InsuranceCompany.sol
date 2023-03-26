@@ -183,7 +183,7 @@ contract InsuranceCompany {
         } 
     }
 
-    function autoTransfer(uint256 insuranceId,InsuranceCompany company,uint256 _hospitalId,bytes32 mcId) public payable{
+    function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes32 mcId) public payable{
         Insurance insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //insurance valid from date 
@@ -197,6 +197,7 @@ contract InsuranceCompany {
         }
 
         uint256 value = insuranceInstance.getInsuredAmount(insuranceId);
+        InsuranceCompany company = companies[companyId];
         require(company.owner.balance >= value,"not enough token to pay");
 
         company.owner.send(value);
