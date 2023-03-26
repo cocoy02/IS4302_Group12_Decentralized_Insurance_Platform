@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 import "./Stakeholder.sol";
 import "./InsuranceCompany.sol";
 
@@ -76,15 +77,15 @@ contract Insurance {
     //modifier to ensure a function is callable only by its policy owner    
     modifier policyOwnerOnly(uint256 insuranceId) {
         //stakeholderContract.getStakeholderAddress(uint256 stakeholderID)
-        require(insurances[insuranceId].policyOwner.stakeholderAddress == msg.sender);
+        require(stakeholderContract.getStakeholderAddress(insurances[insuranceId].policyOwner) == msg.sender);
         _;
     }
 
     //modifier to ensure a function is callable only by its insurance company   
-    modifier companyOnly(uint256 insuranceId) {
-        require(insurances[insuranceId].company == msg.sender);
-        _;
-    }
+    // modifier companyOnly(uint256 insuranceId) {
+    //     require(insurances[insuranceId].company == msg.sender);
+    //     _;
+    // }
 
     // SETTERS 
 
@@ -96,14 +97,14 @@ contract Insurance {
         insurances[insuranceId].status = state;
     }
 
-    function setExpiryDate(uint256 date, uint256 insuranceId) public companyOnly(insuranceId) {
+    function setExpiryDate(uint256 date, uint256 insuranceId) public {//companyOnly(insuranceId) {
 	    require(insurances[insuranceId].expiryDate != 0, "Expiry date has already been initialised");
         insurances[insuranceId].expiryDate = date;
     }
 
     // GETTERS
 
-    function getInsurance(uint256 insuranceId) public returns (Insurance) {
+    function getInsurance(uint256 insuranceId) public returns (insurance memory) {
         return insurances[insuranceId];
     }
 
@@ -124,7 +125,7 @@ contract Insurance {
     }
 
     function getInsuranceCompany(uint256 insuranceId) public returns (uint256) {
-        return insurances[insuranceId].insuranceCompany;
+        return insurances[insuranceId].companyId;
     }
 
     function autoTrigger() public {

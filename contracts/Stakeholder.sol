@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 import "./InsuranceMarket.sol";
 import "./Insurance.sol";
 import "./InsuranceCompany.sol";
@@ -166,8 +167,8 @@ contract Stakeholder {
         return abi.decode(stakeholders[stakeholderID].phonenum);
     }
 
-    function getStakeholderAddress(uint256 stakeholderID) public view returns(address) {
-        return stakeholders[stakeholderID].stakeholderAddress;
+    function getStakeholderAddress(Stakeholder stakeholderID) public view returns(address) {
+        return stakeholderID.stakeholderAddress;
     }
     
 }

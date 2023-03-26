@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 import "./Insurance.sol";
 import "./Stakeholder.sol";
 import "./MedicalCert.sol";
@@ -76,12 +77,12 @@ contract InsuranceCompany {
     function add(string memory name) public payable returns(uint256) {
         require(msg.value > 0.01 ether, "at least 0.01 ETH is needed to create a company");
         
-        insuranceCompany memory newCompany = insuranceCompany(
-            0,
-            name,
-            msg.sender,
-            0
-        );
+        insuranceCompany memory newCompany = insuranceCompany({
+            credit:0,
+            name:name,
+            owner:msg.sender,
+            completed:0
+        });
         
         uint256 companyId = numOfCompany++;
         companies[companyId] = newCompany; 
@@ -110,7 +111,7 @@ contract InsuranceCompany {
                 uint256 length = reqs.length;
                 bool find = false;
                 for (uint256 i = 0; i < length; i++) {
-                    if (reqs[i].id == requestId) {
+                    if (reqs[i].reqId == requestId) {
                         index = i;
                         find = true;
                     }
@@ -118,8 +119,8 @@ contract InsuranceCompany {
                 
                 require(find == true, "Invalid request id!");
                 if (find) {
-                    reqs[index] = reqs[length - 1];
-                    reqs.pop();
+                    companies[companyId].requestLists[index] = companies[companyId].requestLists[length - 1];
+                    companies[companyId].requestLists.pop();
                     emit requestSolve(requestId);
                 }
             }        
@@ -155,14 +156,14 @@ contract InsuranceCompany {
 
     // insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary
     //why we need this?//
-    function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
-        InsuranceCompany company = companies[companyId];
-        Insurance insurance = insuranceInstance.getInsurance(insuranceId);
-        require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
-        company.insurance[insuranceId] = insurance;
-        company.completed++;
-        updateCredit(companyId);
-    }
+    // function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
+    //     InsuranceCompany company = companies[companyId];
+    //     Insurance insurance = insuranceInstance.getInsurance(insuranceId);
+    //     require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
+    //     company.insuranceId[insuranceId] = insurance;
+    //     company.completed++;
+    //     updateCredit(companyId);
+    // }
 
     //function to update the credit of company once a insurance is signed
     function updateCredit(uint256 companyId) public validCompanyId(companyId) {
