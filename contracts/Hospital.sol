@@ -241,7 +241,7 @@ contract Hospital {
 
     function getPassword(uint256 _hospitalId, string memory _password) 
         public view 
-        onlyOwner(_hospitalId) verifyPassword(_hospitalId, _password) 
+        onlyOwner(_hospitalId) 
         returns(string memory) 
     {
         return abi.decode(registeredHospital[ _hospitalId].password, string);
