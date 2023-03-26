@@ -36,7 +36,10 @@ contract Insurance {
         insuranceCompanyContract = insuranceCompanyAddress;
     }
 
-    //function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
+     /** 
+    * @dev function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
+    * @return uint256 new insurance id
+    */
     function createInsurance(
         Stakeholder policyOwner,
         Stakeholder beneficiary,

@@ -33,7 +33,10 @@ contract MedicalCertificate {
 
     event mcCreated(uint256 numMC);
 
-
+     /** 
+    * @dev create new mc with relevant information
+    * @return  byte32 new mc id
+    */
     function add(uint256 hospital, string memory name, string memory NRIC, uint256 sex, 
                 uint256 birthdate, string memory race, string memory nationality, 
                 certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
@@ -74,10 +77,13 @@ contract MedicalCertificate {
         //MC[ID].access.push(company);
     //}
 
+     /** 
+    * @dev get mc information by id
+    * @param  byte32 id
+    * @return  tuple of information
+    */
     function getMC(bytes32 id) public view returns(uint256, string memory, string memory, uint256, uint256, string memory, string memory, certCategory, string memory, string memory, string memory, string memory, string memory) {
         return(MC[id].HospitalID, MC[id].name, MC[id].NRIC, MC[id].sex, MC[id].birthdate, MC[id].race, MC[id].nationality, MC[id].incident, MC[id].dateTimeIncident, MC[id].placeIncident, MC[id].causeIncident, MC[id].titleOfCertifier, MC[id].Institution);
 
     }
-    
-
 }

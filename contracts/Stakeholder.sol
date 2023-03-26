@@ -72,7 +72,11 @@ contract Stakeholder {
 
 
     //Functions
-    function addStakeholder(string memory _phonenum,string memory name,string memory NRIC) public validNumber(_phonenum) returns(int256) {
+    /** 
+    * @dev create new stakeholder
+    * @return uint256 id of new stakeholder
+    */
+    function addStakeholder(string memory _phonenum,string memory name,string memory NRIC) public validNumber(_phonenum) returns(uint256) {
         uint256 newID = numStakeholder++;
         stakeholder memory newStakeholder = stakeholder(
             newID,
@@ -86,7 +90,9 @@ contract Stakeholder {
         return newID;
     }
 
-    // sign insurance and pay
+    /** 
+    * @dev sign insurance from tobesigned list and pay for insurance
+    */
     function signInsurance(uint256 _policyOwnerID,uint256 _insuranceID, uint256 _beneficiaryID, uint256 _lifeAssuredID,uint256 _offerPrice) public {
         // require offerPrice >= owningMoney
         // require insurance ID valid
@@ -115,6 +121,10 @@ contract Stakeholder {
 
     }
 
+    /** 
+    * @dev add the insurance pass from company to sign list of stakeholder
+    * @return bool indicating sign successfully
+    */
     function addToSignList(uint256 _insuranceID,uint256 _policyOwnerID) public returns(bool){
         require(stakeholders[_policyOwnerID].toBeSigned[9] == 0);
         stakeholders[_policyOwnerID].toBeSigned.push(_insuranceID);
@@ -128,12 +138,18 @@ contract Stakeholder {
     //     //mark as paid
     // }
 
+    /** 
+    * @dev get MC id and pass to company
+    Call auto transfer in company contract to claim the money
+    */
     function getMCidAndPassToComp(uint256 insuranceId,uint256 companyId,uint256 hospitalId,bytes32 mcId) public {
         // uint MDid = 
         insuranceCompanyContract.autoTransfer(insuranceId, companyId,  hospitalId, mcId);
     }
     
-    //only beneficiary could change add one more modifier
+    /** 
+    * @dev Stakeholder ask hospital for mc and call company to claim money
+    */
     function claim(uint256 insuranceID,uint256 companyId, byte mcId,uint256 hospitalId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);

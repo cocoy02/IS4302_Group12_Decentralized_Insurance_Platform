@@ -81,6 +81,12 @@ contract Hospital {
     }
     
     //functions
+
+
+     /** 
+    * @dev register the hospital on chain
+    * @return uint256 registered hospital id
+    */
     function register(string memory _ic, string memory _password) public validIC(_ic) returns(uint256) {
         hospital memory newHospital = hospital({
             predisent:msg.sender,
@@ -98,6 +104,10 @@ contract Hospital {
     }
 
     //MC
+     /** 
+    * @dev create MC with required information
+    * @return  byte32 mc Id
+    */
     function createMC(uint256 _hospitalId, string memory _password, uint256 _requestId, uint256 _stakeholderId,
                 string memory name, string memory NRIC, uint256 sex, 
                 uint256 birthdate, string memory race, string memory nationality, 
@@ -147,7 +157,10 @@ contract Hospital {
         return mcId;
     }
 
-    //stakeholder request to create MC
+     /** 
+    * @dev stakeholder request to create MC
+    * @return uint256 number of requests
+    */
     function requestMC(uint256 hospitalId, uint256 stakeholderId, string memory nameAssured, string memory icAssured) 
     public validHospital(hospitalId) returns(uint256) {
         require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder!");
@@ -166,7 +179,9 @@ contract Hospital {
         return numOfReqs;
     }
 
-    //check reqs from hospital
+    /** 
+    * @dev check requests from hospital
+    */
     function checkRequestFromHospital (uint256 _hospitalId, string memory _password) 
     public validHospital(_hospitalId) verifyPassword(_password) 
     {
@@ -195,6 +210,10 @@ contract Hospital {
         emit liveRequest(requestids,stakeholderids, names,ics);
     }
 
+    /** 
+    * @dev check mc Ids from stakeholder
+    * @return  byte32 mcId
+    */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
       public validHospital(_hospitalId) validRequest(_hospitalId, _stakeholderId) 
       returns(bytes32)
@@ -215,7 +234,9 @@ contract Hospital {
             return reqs[index].mcid;
         }         
     }
-    
+    /** 
+    * @dev change president of hospital
+    */
     function changePresident(uint256 _hospitalId, string memory _password, string memory _ic) 
     public verifyPassword(_password) validIC(_ic)
     {
@@ -224,11 +245,15 @@ contract Hospital {
         emit presidentChanged();
     }
 
+    /** 
+    * @dev change password of hospital
+    */
     function changePassword(uint256 _hospitalId, string memory oldpassword, string memory newpassword)
     public onlyOwner(_hospitalId) verifyPassword(oldpassword)
     {
         registeredHospital[ _hospitalId].password = keccak256(abi.encode(newpassword));
     }
+
 
     //getters
     function getHospitalId(address _president) public view returns(uint256) {
