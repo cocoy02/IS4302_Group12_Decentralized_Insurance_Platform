@@ -132,10 +132,10 @@
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0xfe4a32272fe7433f908bcc412e725d3ce3d9c9673f673e4973a21e9263749f21",
+			"keccak256": "0x4aa799f8584bf3d99250d1d14f81b7b124adb53887a5963d26d0299f042314d9",
 			"urls": [
-				"bzz-raw://5fbb807cce2d5ef61dc654a7f6468528471ef8443828057d689757163e2f8e3e",
-				"dweb:/ipfs/QmfFoc45wzjhzvhvtAVnP3Q6TTiRq6GYtJXqEBXR5iyNdT"
+				"bzz-raw://f9d6a9510ff6265422b10311352f92a9454aebefab731078009c184bc4f3a94b",
+				"dweb:/ipfs/QmW4dvFBj9JbA4ztqh8vncji6XeCnvqimXTULkeZqnyVX9"
 			]
 		}
 	},

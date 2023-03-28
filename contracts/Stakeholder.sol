@@ -23,11 +23,11 @@ contract Stakeholder {
     struct stakeholder {
         uint256 ID;
         string name;
-        string NRIC;
+        bytes32 NRIC;
         address stakeholderAddress;
         bytes32 phonenum;
-        mapping(uint256 => Insurance) involvingInsurances; //insurance ID to position   
-        uint256[10] toBeSigned;
+        mapping(uint256 =>  position)involvingInsurances; //insurance ID to position   
+        uint256[] toBeSigned;
     }
     
     event askingCert (uint256 insuranceID);
@@ -78,13 +78,14 @@ contract Stakeholder {
     */
     function addStakeholder(string memory _phonenum,string memory name,string memory NRIC) public validNumber(_phonenum) returns(uint256) {
         uint256 newID = numStakeholder++;
-        stakeholder memory newStakeholder = stakeholder(
-            newID,
-            name,
-            NRIC,
-            msg.sender,
-            keccak256(abi.encode(_phonenum))
-        );
+        stakeholder memory newStakeholder = stakeholder({
+            ID: newID,
+            name:name,
+            stakeholderAddress: msg.sender,
+            NRIC:keccak256(abi.encode(NRIC)),
+            phonenum:keccak256(abi.encode(_phonenum)),
+            toBeSigned: new uint256[](10)
+        });
         stakeholders[newID] = newStakeholder;
         ids[msg.sender] = newID;
         return newID;
@@ -99,7 +100,8 @@ contract Stakeholder {
 
         bool doesListContainElement = false;
         uint256 index;
-        for (uint i=0; i < stakeholders[_policyOwnerID].toBeSigned.length; i++) {
+        uint256 signedlength = stakeholders[_policyOwnerID].toBeSigned.length;
+        for (uint i=0; i < signedlength; i++) {
             if (_insuranceID == stakeholders[_policyOwnerID].toBeSigned[i]) {
                 doesListContainElement = true;
                 index = i;
@@ -108,16 +110,18 @@ contract Stakeholder {
         }
         
         require(doesListContainElement == true, "Invalid insurance id!");
-        stakeholders[_policyOwnerID].toBeSigned.remove(index);
-
+        
+        stakeholders[_policyOwnerID].toBeSigned[index] = stakeholders[_policyOwnerID].toBeSigned[signedlength - 1];
+        stakeholders[_policyOwnerID].toBeSigned.pop();
 
         stakeholders[_policyOwnerID].involvingInsurances[_insuranceID] = position.policyOwner;
         stakeholders[_beneficiaryID].involvingInsurances[_insuranceID] = position.beneficiary;
         stakeholders[_lifeAssuredID].involvingInsurances[_insuranceID] = position.lifeAssured;
-        address companyAddress = insuranceContract.getInsuranceCompany(_insuranceID); // this returns id not address
-        marketContract.transfer(msg.sender,companyAddress,_offerPrice);
+        uint256 companyAddress = insuranceContract.getInsuranceCompany(_insuranceID); // this returns id not address
+        //whats this doing ah?!
+        //marketContract.transfer(msg.sender,companyAddress,_offerPrice);
 
-        insuranceCompanyContract.signInsurance(_insuranceId, insuranceContract.getInsuranceCompany(_insuranceID));
+        insuranceCompanyContract.signInsurance(_insuranceID, insuranceContract.getInsuranceCompany(_insuranceID));
 
     }
 
@@ -160,7 +164,7 @@ contract Stakeholder {
     }
 
     function checkInsuranceRequests(uint256 companyId, uint256 requestId) public returns (InsuranceCompany.requestStatus) {
-        return InsuranceCompany.checkRequestsFromStakeholder(companyId, requestId);
+        return insuranceCompanyContract.checkRequestsFromStakeholder(companyId, requestId);
     }
 
     function checkMCRequests(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId) public 
@@ -189,8 +193,16 @@ contract Stakeholder {
         return abi.decode(stakeholders[stakeholderID].phonenum);
     }
 
-    function getStakeholderAddress(Stakeholder stakeholderID) public view returns(address) {
-        return stakeholderID.stakeholderAddress;
+    function getStakeholderAddress(uint256 stakeholderID) public view returns(address) {
+        return stakeholders[stakeholderID].stakeholderAddress;
+    }
+
+    function getStakeholderName(uint256 stakeholderID) public view returns(string memory) {
+        return stakeholders[stakeholderID].name;
+    }
+
+    function getStakeholderNRIC(uint256 stakeholderID) public view returns(bytes32) {
+        return stakeholders[stakeholderID].NRIC;
     }
     
 }

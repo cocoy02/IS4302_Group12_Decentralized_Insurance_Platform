@@ -9,14 +9,15 @@ contract Insurance {
     
     enum insuranceType { life, accident }
     enum premiumStatus { processing, paid, unpaid }
+    enum claimStatus { claimed, unclaimed }
     enum reasonType { suicide, others }
 
     struct insurance {
         uint256 ID;
-        Stakeholder policyOwner;
-        Stakeholder beneficiary;//
-        Stakeholder lifeAssured;
-        Stakeholder payingAccount;
+        uint256 policyOwner;
+        uint256  beneficiary;//
+        uint256 lifeAssured;
+        uint256  payingAccount;
         uint256 companyId;
         uint256 insuredAmount;
         insuranceType insType;
@@ -26,6 +27,7 @@ contract Insurance {
         bool approved;
         reasonType reason;
         uint256 price;
+        claimStatus claimstatus;
     }
     
     uint256 public numInsurance = 0;
@@ -41,10 +43,10 @@ contract Insurance {
     * @return uint256 new insurance id
     */
     function createInsurance(
-        Stakeholder policyOwner,
-        Stakeholder beneficiary,
-        Stakeholder lifeAssured,
-        Stakeholder payingAccount,
+        uint256  policyOwner,
+        uint256  beneficiary,
+        uint256 lifeAssured,
+        uint256 payingAccount,
         uint256 companyId,
         uint256 insuredAmount,
         insuranceType insType,
@@ -69,7 +71,8 @@ contract Insurance {
             issueDate+0, // initialise expiry date to 0
             false,
             reason,
-            price
+            price,
+            claimStatus.unclaimed
         );
         
         uint256 newInsuranceId = numInsurance;
@@ -92,19 +95,23 @@ contract Insurance {
 
     // SETTERS 
 
-    function setBeneficiary(Stakeholder s1, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
+    function setBeneficiary(uint256 s1, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
         insurances[insuranceId].beneficiary = s1;
     }
 
-    function updateStatus(premiumStatus state, uint256 insuranceId) public { //policyOwnerOnly(insuranceId) {
+    function updatePremiumStatus(premiumStatus state, uint256 insuranceId) public { //policyOwnerOnly(insuranceId) {
         insurances[insuranceId].status = state;
+    }
+
+    function updateClaimStatus(claimStatus claimstate, uint256 insuranceId) public { 
+        insurances[insuranceId].claimstatus = claimstate;
     }
 
     function setExpiryDate(uint256 date, uint256 insuranceId) public {//companyOnly(insuranceId) {
 	    require(insurances[insuranceId].expiryDate != 0, "Expiry date has already been initialised");
         insurances[insuranceId].expiryDate = date;
-    }
 
+    }
     // GETTERS
 
     function getInsurance(uint256 insuranceId) public returns (insurance memory) {
@@ -113,6 +120,10 @@ contract Insurance {
 
     function getInsuranceState(uint256 insuranceId) public returns (bool) {
         return insurances[insuranceId].approved;
+    }
+
+    function getInsuredAmount(uint256 insuranceId) public returns (uint256) {
+        return insurances[insuranceId].insuredAmount;
     }
 
     function getReason(uint256 insuranceId) public returns (reasonType) {
@@ -135,7 +146,7 @@ contract Insurance {
         return insurances[insuranceId].status;
     }
 
-    function getBeneficiary(uint256 insuranceId) public returns (Stakeholder) {
+    function getBeneficiary(uint256 insuranceId) public returns (uint256) {
         return insurances[insuranceId].beneficiary;
     }
 

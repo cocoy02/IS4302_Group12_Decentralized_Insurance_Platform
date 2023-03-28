@@ -3,12 +3,14 @@ pragma experimental ABIEncoderV2;
 import "./Insurance.sol";
 import "./Stakeholder.sol";
 import "./MedicalCert.sol";
+import "./TrustInsure.sol";
 
 contract InsuranceCompany {
 
     Insurance insuranceInstance;
     Stakeholder stakeholderInstance;
     MedicalCertificate medicalCertInstance;
+    TrustInsure trustinsureInstance;
     enum requestStatus {approved, rejected, pending}
 
     struct insuranceCompany {
@@ -27,10 +29,12 @@ contract InsuranceCompany {
         requestStatus status;
     }
 
-    constructor(Insurance insuranceAddress, Stakeholder stakeholderAddress, MedicalCertificate medicalCertInstanceAddress) public {
+    constructor(Insurance insuranceAddress, Stakeholder stakeholderAddress, 
+    MedicalCertificate medicalCertInstanceAddress, TrustInsure trustinsureInstanceAddress) public {
         insuranceInstance = insuranceAddress;
         stakeholderInstance = stakeholderAddress;
-        medicalCertInstance = medicalCertInstanceAddress;       
+        medicalCertInstance = medicalCertInstanceAddress;    
+        trustinsureInstance = trustinsureInstanceAddress;   
     }
 
     uint256 numOfReq = 0;
@@ -95,10 +99,10 @@ contract InsuranceCompany {
     * Automatically pass to stakeholder
     * @return new insurance id
     */
-    function createInsurance(Stakeholder policyOwner,
-        Stakeholder beneficiary,
-        Stakeholder lifeAssured,
-        Stakeholder payingAccount,
+    function createInsurance(uint256 policyOwner,
+        uint256  beneficiary,
+        uint256 lifeAssured,
+        uint256  payingAccount,
         uint256 insuredAmount,
         Insurance.insuranceType insType,
         uint256 issueDate,
@@ -201,24 +205,29 @@ contract InsuranceCompany {
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
-        Stakeholder st = insuranceInstance.getBeneficiary(insuranceId);
+        uint256 st = insuranceInstance.getBeneficiary(insuranceId);
         //get cert details
         (uint256 HospitalID,string memory name,string memory NRIC,uint256 sex,uint256 birthdate,string memory race,string memory nationality,MedicalCertificate.certCategory incident,string memory dateTimeIncident,string memory placeIncident,string memory causeIncident,string memory titleOfCertifier,string memory Institution) = medicalCertInstance.getMC(mcId);
-        require(name == st.getName() && NRIC == st.getNRIC(), "Not the same stakeholder!");
+        require(keccak256(abi.encode(name)) == keccak256(abi.encode(stakeholderInstance.getStakeholderName(st))) && 
+        keccak256(abi.encode(NRIC)) == stakeholderInstance.getStakeholderNRIC(st), 
+        "Not the same stakeholder!");
         //cert if its suicide
         if(incident == MedicalCertificate.certCategory.suicide) {  
-            require(insuranceInstance.getIssueDate(insuranceId)+ 2 years >= block.timestamp);
+            require(insuranceInstance.getIssueDate(insuranceId)+ 2*365 days >= block.timestamp);
         }
 
         uint256 value = insuranceInstance.getInsuredAmount(insuranceId);
-        InsuranceCompany company = companies[companyId];
-        require(company.owner.balance >= value,"not enough token to pay");
+        insuranceCompany memory company = companies[companyId];
 
-        company.owner.send(value);
+        address companyOwner  = address(company.owner);
+        require(trustinsureInstance.checkInsure(companyOwner) >= value,"not enough token to pay");
         
-        address payable recipient = address(uint160(insuranceInstance.getBeneficiary(insuranceId)));
-        recipient.transfer(value);  
-        insuranceInstance.updateStatus(Insurance.claimStatus.claimed, insuranceId);
+        //// How to transfer here?
+        //company.owner.send(value);
+        
+        address recipient = address(uint160(insuranceInstance.getBeneficiary(insuranceId)));
+        trustinsureInstance.transferFromInsure(companyOwner, recipient, value);
+        insuranceInstance.updateClaimStatus(Insurance.claimStatus.claimed, insuranceId);
         emit transfer(recipient, value);
     }
 
@@ -228,7 +237,7 @@ contract InsuranceCompany {
     * @return numOfReq request id
     */
     function addRequestLists(uint256 _buyerId, uint256 _companyId, string calldata _typeProduct) external returns(bool, uint256) {
-        Request memory req = new Request(numOfReq++, _buyerId, _typeProduct, requestStatus.pending);
+        Request memory req = Request(numOfReq++, _buyerId, _typeProduct, requestStatus.pending);
         companies[_companyId].requestLists.push(req);
 
         return (true, numOfReq);
@@ -239,18 +248,18 @@ contract InsuranceCompany {
     */
     function checkRequestsFromCompany(uint256 companyId) public validCompanyId(companyId) ownerOnly(companyId) {
         Request[] memory reqs = companies[companyId].requestLists;
-        uint256[] memory requestids;
-        uint256[] memory buyerids;
-        string[] memory buyercontacts;
-        string[] memory producttypes;
-        requestStatus[] memory statuses;
+        uint256[] memory requestids = new uint256[](reqs.length);
+        uint256[] memory buyerids = new uint256[](reqs.length);
+        string[] memory buyercontacts= new string[](reqs.length);
+        string[] memory producttypes = new string[](reqs.length);
+        requestStatus[] memory statuses = new requestStatus[](reqs.length);
 
         for(uint256 i = 0;i< reqs.length;i++) {
-            requestids.push(reqs[i].reqId);
-            buyerids.push(reqs[i].buyerId);
-            buyercontacts.push(stakeholderInstance.getStakeholderPhone(reqs[i].buyerId));
-            producttypes.push(reqs[i].productType);
-            statuses.push(reqs[i].status);
+            requestids[i] = reqs[i].reqId;
+            buyerids[i] = reqs[i].buyerId;
+            buyercontacts[i] = stakeholderInstance.getStakeholderPhone(reqs[i].buyerId);
+            producttypes[i] = reqs[i].productType;
+            statuses[i] = reqs[i].status;
         }
 
         emit allRequests(requestids,
@@ -272,7 +281,7 @@ contract InsuranceCompany {
         uint256 length = reqs.length;
         bool find = false;
         for (uint256 i = 0; i < length; i++) {
-            if (reqs[i].id == requestId) {
+            if (reqs[i].reqId == requestId) {
                 index = i;
                 find = true;
             }
@@ -297,7 +306,7 @@ contract InsuranceCompany {
         uint256 length = reqs.length;
         bool find = false;
         for (uint256 i = 0; i < length; i++) {
-            if (reqs[i].id == requestId) {
+            if (reqs[i].reqId == requestId) {
                 index = i;
                 find = true;
             }
@@ -319,7 +328,7 @@ contract InsuranceCompany {
         return companies[companyId].credit;
     }
 
-    function getName(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
+    function getName(uint256 companyId) public view validCompanyId(companyId) returns (string memory) {
         return companies[companyId].name;
     }
     
@@ -327,9 +336,9 @@ contract InsuranceCompany {
         return companies[companyId].owner;
     }
     
-    function getCompanyById(uint256 companyId) public view validCompanyId(companyId) returns (InsuranceCompany) {
-        return companies[companyId];
-    }
+    // function getCompanyById(uint256 companyId) public view validCompanyId(companyId) returns (insuranceCompany memory) {
+    //     return companies[companyId];
+    // }
 
     function getNumOfCompany() public view returns (uint256) {
         return numOfCompany;

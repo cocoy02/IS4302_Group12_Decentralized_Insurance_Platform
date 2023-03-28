@@ -31,7 +31,7 @@ contract TrustInsure {
         erc20Contract.transferFrom(from, to, amt);
     }
 
-    function transferInsure( address to, uint256 amt) public {
+    function transferInsure(address to, uint256 amt) public {
         erc20Contract.transferFrom(msg.sender, to, amt);
     }
 }

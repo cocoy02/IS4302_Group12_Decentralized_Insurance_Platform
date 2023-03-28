@@ -42,7 +42,10 @@ contract InsuranceMarket {
     
     /*check product type whether has misspelling or not valid*/
     modifier validProduct(string memory _productType) {
-        require(_productType == "accident" | _productType == "life", "You should input valid product type, eg. accident or life!");
+        //require(_productType == "accident" || _productType == "life", "You should input valid product type, eg. accident or life!");
+        require(keccak256(abi.encode(_productType)) == keccak256(abi.encode("accident")) ||
+        keccak256(abi.encode(_productType)) == keccak256(abi.encode("life")), "You should input valid product type, eg. accident or life!");
+      
         _;
     }
 
@@ -73,7 +76,7 @@ contract InsuranceMarket {
     returns(uint256)
     {
         Product memory newProduct;
-        if (_productType == "accident") {
+        if (keccak256(abi.encode(_productType)) == keccak256(abi.encode("accident"))) {
             newProduct = Product(
                 numofProds++,
                 _premium,
@@ -108,7 +111,7 @@ contract InsuranceMarket {
         uint256 length = productList[companyId].length;
         bool find = false;
         for (uint256 i = 0; i < length; i++) {
-            if (productList[companyId][i].id == productId) {
+            if (productList[companyId][i].productid == productId) {
                 index = i;
                 find = true;
             }
@@ -136,16 +139,19 @@ contract InsuranceMarket {
         productType[] memory producttypes;
         uint256[] memory productassured;
 
+        uint256 total_products = 0;
+
         for (uint256 i  = 0; i < companyIds.length; i++) {
            
             Product[] memory products = productList[companyIds[i]];
             for (uint256 j = 0; j < products.length; j++) {
-                companyids.push(companyIds[i]);
-                companynames.push(companyContract.getName(companyIds[i]));
-                companycredits.push(companyContract.getCredit(companyIds[i]));
+                companyids[total_products] = companyIds[i];
+                companynames[total_products] = companyContract.getName(companyIds[i]);
+                companycredits[total_products] = companyContract.getCredit(companyIds[i]);
 
-                producttypes.push(products[j].prodType);
-                productassured.push(products[j].sumAssured);
+                producttypes[total_products] = products[j].prodType;
+                productassured[total_products] = products[j].sumAssured;
+                total_products++;
             }
         }
         
