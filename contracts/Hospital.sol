@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 import "./MedicalCert.sol";
 import "./StringLength.sol";
 import "./Stakeholder.sol";
@@ -21,10 +22,10 @@ contract Hospital {
   
     struct hospital {
         address president; //owner of the hospital
-        bytes32 president_ic; //the identity of owner
-        bytes32 password; //passward needed to create MC
+        bytes president_ic; //the identity of owner
+        bytes password; //passward needed to create MC
         uint256 hospitalId; //id
-        mapping(bytes32 => address) mcs; // mc id => who create the mc
+        mapping(bytes => address) mcs; // mc id => who create the mc
         mapping(uint256 => Request[]) requests; //stakeholderId -> requests
     }
 
@@ -33,7 +34,7 @@ contract Hospital {
         uint256 stakeholderId;
         string nameAssured;
         string icAssured;
-        bytes32 mcid;
+        bytes mcid;
     }
     
     uint256 numOfReqs = 0;
@@ -42,7 +43,7 @@ contract Hospital {
     event registered();
     event createOneMC();
     event presidentChanged();
-    event requestSolve(uint256 requestId, bytes32 mcId);
+    event requestSolve(uint256 requestId, bytes mcId);
     event requestMade(uint256 reqeustId);
     event liveRequest(uint256[] requestids,
         uint256[] stakeholderids,
@@ -51,7 +52,7 @@ contract Hospital {
 
     //modifiers
     modifier validHospital(uint256 _hospitalId) {
-        require(registeredHospital[_hospitalId] != hospital(0), "Invalid hospital id!");
+        require(registeredHospital[_hospitalId].hospitalId > 0, "Invalid hospital id!");
         _;
     }
     modifier validIC(string memory _ic) {
@@ -65,19 +66,21 @@ contract Hospital {
     }
 
     modifier verifyPassword(uint256 _hospitalId, string memory _password) {
-        require (keccak256(abi.encode(_password)) == registeredHospital[ _hospitalId].password, "Wrong password!");
+        require (keccak256(abi.encode(_password,"password")) == keccak256(registeredHospital[ _hospitalId].password), "Wrong password!");
         _;
     }
 
-    modifier validMCId(uint256 _hospitalId, bytes32 _mcId) {
+    modifier validMCId(uint256 _hospitalId, bytes memory  _mcId) {
         require(registeredHospital[_hospitalId].mcs[_mcId] != address(0), "Wrong hospitalId or MCId!");
         _;
     }
 
-    modifier validRequest(uint256  _hospitalId, uint256 _stakeholderId) {
-       require(registeredHospital[_hospitalId].requests[_stakeholderId] != 0, "You didn't make request!");
-        _;
-    }
+    
+    //since below function already check validity no need here
+    // modifier validRequest(uint256  _hospitalId, uint256 _stakeholderId, uint256 _requestId) {
+    //    require(registeredHospital[_hospitalId].requests[_stakeholderId] > 0, "You didn't make request!");
+    //     _;
+    // }
     
     //functions
 
@@ -88,16 +91,17 @@ contract Hospital {
     */
     function register(string memory _ic, string memory _password) public validIC(_ic) returns(uint256) {
         hospital memory newHospital = hospital({
-            predisent:msg.sender,
-            predisent_ic:keccak256(abi.encode(_ic)),
-            password: keccak256(abi.encode(_password)),
-            hospitalId: totalHospital
+            president: msg.sender,
+            president_ic:abi.encode(_ic,"ic"),
+            password: abi.encode(_password,"password"),
+            hospitalId: totalHospital++
         });
+        
         
         uint newHospitalId = totalHospital;
         registeredHospital[newHospitalId] = newHospital;
         ids[msg.sender] = newHospitalId;
-        totalHospital++;
+        
         emit registered();
         return newHospitalId;
     }
@@ -112,10 +116,10 @@ contract Hospital {
                 uint256 birthdate, string memory race, string memory nationality, 
                 MedicalCertificate.certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
                 string memory place, string memory cause, string memory titleName, string memory institution) 
-                public validHospital(_hospitalId) verifyPassword(_password) 
-                returns(bytes32)
+                public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
+                returns(bytes memory)
     {
-        bytes32 mcId = medicalCert.add(
+        bytes memory  mcId = medicalCert.add(
                 _hospitalId,
                 name,
                 NRIC,
@@ -124,16 +128,16 @@ contract Hospital {
                 race,
                 nationality,
                 incidentType,
-                //incidentYYYYMMDDHHMM,
+                incidentYYYYMMDDHHMM,
                 place,
                 cause,
                 titleName,
                 institution);
-            registeredHospital[_hospitalId].mcs[mcId] = msg.sender;
+        registeredHospital[_hospitalId].mcs[mcId] = msg.sender;
         emit createOneMC();
 
         if (_requestId != 0) {
-            require(registeredHospital[_hospitalId].requests[_stakeholderId] != 0, "Invalid request id!");
+            require(registeredHospital[_hospitalId].requests[_stakeholderId].length > 0, "Not request yet!");
             
             Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
             uint256 length = reqs.length;
@@ -169,7 +173,7 @@ contract Hospital {
             stakeholderId,
             nameAssured,
             icAssured,
-            bytes(0)
+            bytes("0x")
         );
         
         registeredHospital[hospitalId].requests[stakeholderId].push(req);
@@ -182,7 +186,7 @@ contract Hospital {
     * @dev check requests from hospital
     */
     function checkRequestFromHospital (uint256 _hospitalId, string memory _password) 
-    public validHospital(_hospitalId) verifyPassword(_password) 
+    public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
     {
         uint256[] memory requestids;
         uint256[] memory stakeholderids;
@@ -191,17 +195,20 @@ contract Hospital {
 
         uint256[] memory requestedstakeholders = stakeholders[_hospitalId];
 
+        uint256 total_reqs = 0;
+
         for (uint256 i = 0; i < requestedstakeholders.length; i++) {
             uint256 stakeholderId = requestedstakeholders[i];
             Request[] memory reqs = registeredHospital[_hospitalId].requests[stakeholderId];
             for(uint256 j = 0; j < reqs.length; j++) {
                 Request memory req = reqs[j];
                 
-                if (req.mcid != bytes(0)) {
-                    requestids.push(req.reqId);
-                    stakeholderids.push(req.stakeholderId);
-                    names.push(req.nameAssured);
-                    ics.push(req.icAssured);
+                if (keccak256(abi.encodePacked(req.mcid)) != keccak256(abi.encodePacked(bytes("0x")))) {
+                    requestids[total_reqs] = req.reqId;
+                    stakeholderids[total_reqs] = req.stakeholderId;
+                    names[total_reqs] = req.nameAssured;
+                    ics[total_reqs] = req.icAssured;
+                    total_reqs++;
                 }
             }            
         }
@@ -214,8 +221,8 @@ contract Hospital {
     * @return  byte32 mcId
     */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
-      public validHospital(_hospitalId) validRequest(_hospitalId, _stakeholderId) 
-      returns(bytes32)
+      public validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
+      returns(bytes memory )
     {
         Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
         uint256 length = reqs.length;
@@ -237,10 +244,10 @@ contract Hospital {
     * @dev change president of hospital
     */
     function changePresident(uint256 _hospitalId, string memory _password, string memory _ic) 
-    public verifyPassword(_password) validIC(_ic)
+    public verifyPassword(_hospitalId,_password) validIC(_ic)
     {
         registeredHospital[ _hospitalId].president = msg.sender;
-        registeredHospital[ _hospitalId].president_ic = keccak256(abi.encode(_ic));
+        registeredHospital[ _hospitalId].president_ic = abi.encode(_ic,"ic");
         emit presidentChanged();
     }
 
@@ -248,9 +255,9 @@ contract Hospital {
     * @dev change password of hospital
     */
     function changePassword(uint256 _hospitalId, string memory oldpassword, string memory newpassword)
-    public onlyOwner(_hospitalId) verifyPassword(oldpassword)
+    public onlyOwner(_hospitalId) verifyPassword(_hospitalId,oldpassword)
     {
-        registeredHospital[ _hospitalId].password = keccak256(abi.encode(newpassword));
+        registeredHospital[ _hospitalId].password = abi.encode(newpassword,"password");
     }
 
 
@@ -268,10 +275,11 @@ contract Hospital {
         onlyOwner(_hospitalId) 
         returns(string memory) 
     {
-        return abi.decode(registeredHospital[ _hospitalId].password, string);
+        (string memory password, string memory s) = abi.decode(registeredHospital[ _hospitalId].password, (string,string));
+        return password;
     }
 
-    function getMC(uint256 _hospitalId, bytes32 _mcId) 
+    function getMC(uint256 _hospitalId, bytes memory  _mcId) 
         public view 
         validMCId(_hospitalId,_mcId)
         returns (uint256, string memory, string memory, uint256, uint256, string memory, string memory, MedicalCertificate.certCategory, string memory, string memory, string memory, string memory, string memory)

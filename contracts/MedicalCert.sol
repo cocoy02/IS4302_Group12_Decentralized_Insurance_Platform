@@ -10,7 +10,7 @@ contract MedicalCertificate {
     }
 
     struct medicalCert{
-        bytes32 ID;
+        bytes ID;
         uint256 HospitalID;
         string name;
         string NRIC;
@@ -28,7 +28,7 @@ contract MedicalCertificate {
         //[]insuranceCompany access;
     }
 
-    mapping(bytes32 => medicalCert) public MC;
+    mapping(bytes => medicalCert) public MC;
 
     event mcCreated(uint256 numMC);
 
@@ -39,8 +39,8 @@ contract MedicalCertificate {
     function add(uint256 hospital, string memory name, string memory NRIC, uint256 sex, 
                 uint256 birthdate, string memory race, string memory nationality, 
                 certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
-                string memory place, string memory cause, string memory titleNname, string memory institution) public returns(bytes32) {
-        bytes32 id = keccak256(abi.encodePacked(counter, name, NRIC));
+                string memory place, string memory cause, string memory titleNname, string memory institution) public returns(bytes memory) {
+        bytes memory id = abi.encodePacked(counter, name, NRIC);
         medicalCert memory mc = medicalCert(
             id, 
             hospital,
@@ -81,7 +81,7 @@ contract MedicalCertificate {
     * @param  byte32 id
     * @return  tuple of information
     */
-    function getMC(bytes32 id) public view returns(uint256, string memory, string memory, uint256, uint256, string memory, string memory, certCategory, string memory, string memory, string memory, string memory, string memory) {
+    function getMC(bytes memory id) public view returns(uint256, string memory, string memory, uint256, uint256, string memory, string memory, certCategory, string memory, string memory, string memory, string memory, string memory) {
         return(MC[id].HospitalID, MC[id].name, MC[id].NRIC, MC[id].sex, MC[id].birthdate, MC[id].race, MC[id].nationality, MC[id].incident, MC[id].dateTimeIncident, MC[id].placeIncident, MC[id].causeIncident, MC[id].titleOfCertifier, MC[id].Institution);
 
     }

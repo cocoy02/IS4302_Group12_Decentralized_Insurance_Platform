@@ -23,15 +23,15 @@ contract Stakeholder {
     struct stakeholder {
         uint256 ID;
         string name;
-        bytes32 NRIC;
+        bytes NRIC;
         address stakeholderAddress;
-        bytes32 phonenum;
-        mapping(uint256 =>  position)involvingInsurances; //insurance ID to position   
+        bytes phonenum;
+        mapping(uint256 => position) involvingInsurances; //insurance ID to position   
         uint256[] toBeSigned;
     }
     
     event askingCert (uint256 insuranceID);
-    event claimingFromComp (uint256 insuranceID);
+    event claimingFromComp (uint256 insuranceID, bytes mcId);
 
     uint256 public numStakeholder = 0;
     mapping(uint256 => stakeholder) public stakeholders; //stakeholder ID to stakeholder
@@ -82,8 +82,8 @@ contract Stakeholder {
             ID: newID,
             name:name,
             stakeholderAddress: msg.sender,
-            NRIC:keccak256(abi.encode(NRIC)),
-            phonenum:keccak256(abi.encode(_phonenum)),
+            NRIC:abi.encodePacked(NRIC),
+            phonenum:abi.encodePacked(_phonenum),
             toBeSigned: new uint256[](10)
         });
         stakeholders[newID] = newStakeholder;
@@ -146,7 +146,7 @@ contract Stakeholder {
     * @dev get MC id and pass to company
     Call auto transfer in company contract to claim the money
     */
-    function getMCidAndPassToComp(uint256 insuranceId,uint256 companyId,uint256 hospitalId,bytes32 mcId) public {
+    function getMCidAndPassToComp(uint256 insuranceId,uint256 companyId,uint256 hospitalId,bytes memory mcId) public {
         // uint MDid = 
         insuranceCompanyContract.autoTransfer(insuranceId, companyId,  hospitalId, mcId);
     }
@@ -154,7 +154,7 @@ contract Stakeholder {
     /** 
     * @dev Stakeholder ask hospital for mc and call company to claim money
     */
-    function claim(uint256 insuranceID,uint256 companyId, byte mcId,uint256 hospitalId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
+    function claim(uint256 insuranceID,uint256 companyId, bytes memory mcId,uint256 hospitalId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
 
@@ -168,19 +168,19 @@ contract Stakeholder {
     }
 
     function checkMCRequests(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId) public 
-    returns(bytes32)
+    returns(bytes memory)
     {
         return hospitalContract.checkMCIdFromStakeholder(_hospitalId, _requestId,_stakeholderId);
     }
 
     //Getters
-    function getStakeholder(uint256 stakeholderID) public view returns(Stakeholder){
-        return stakeholders[stakeholderID];
-    }
+    // function getStakeholder(uint256 stakeholderID) public view returns(Stakeholder){
+    //     return stakeholders[stakeholderID];
+    // }
 
-    function getInvolvingInsurances(uint256 stakeholderID, uint256 insuranceID) public view returns(Insurance){
-        return stakeholders[stakeholderID].involvingInsurances[insuranceID];
-    }
+    // function getInvolvingInsurances(uint256 stakeholderID, uint256 insuranceID) public view returns(Insurance){
+    //     return stakeholders[stakeholderID].involvingInsurances[insuranceID];
+    // }
     
     function getStakeholderId(address _stakeholder) public view returns(uint256) {
         return ids[_stakeholder];
@@ -189,8 +189,9 @@ contract Stakeholder {
     //need to restrict access for this. cannot anyone could get the phonenumber.
     //company check request => get stakeholder phone
     //how to restrict so that only checkrequest function could access this
-    function getStakeholderPhone(uint256 stakeholderID) public view returns(string memory) {
-        return abi.decode(stakeholders[stakeholderID].phonenum);
+    function getStakeholderPhone(uint256 stakeholderID) public view returns(string memory num) {
+        (num) = abi.decode(stakeholders[stakeholderID].phonenum, (string));
+        return num;
     }
 
     function getStakeholderAddress(uint256 stakeholderID) public view returns(address) {
@@ -201,7 +202,7 @@ contract Stakeholder {
         return stakeholders[stakeholderID].name;
     }
 
-    function getStakeholderNRIC(uint256 stakeholderID) public view returns(bytes32) {
+    function getStakeholderNRIC(uint256 stakeholderID) public view returns(bytes memory) {
         return stakeholders[stakeholderID].NRIC;
     }
     

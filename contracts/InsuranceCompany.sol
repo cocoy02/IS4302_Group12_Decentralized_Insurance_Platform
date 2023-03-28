@@ -156,7 +156,7 @@ contract InsuranceCompany {
     * @dev Allow insurance company to pass drafted insurance to stakeholder
     */
     function passToStakeHolder(uint256 policyownerid,uint256 insuranceId) internal {
-        Stakeholder st = stakeholderInstance.getStakeholder(policyownerid);
+        //Stakeholder st = stakeholderInstance.getStakeholder(policyownerid);
         // add to st list
         if (stakeholderInstance.addToSignList(insuranceId, policyownerid)) emit passedToStakeholder();
     }
@@ -200,7 +200,7 @@ contract InsuranceCompany {
     * @dev check stakeholder details and mc details, if correct auto transfer money
     * @param  {uint256} insuranceId, {uint256} companyId,{uint256} _hospitalId,{bytes32} mcId
     */
-    function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes32 mcId) public payable{
+    function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes memory mcId) public payable{
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
         //insurance valid from date 
@@ -208,9 +208,11 @@ contract InsuranceCompany {
         uint256 st = insuranceInstance.getBeneficiary(insuranceId);
         //get cert details
         (uint256 HospitalID,string memory name,string memory NRIC,uint256 sex,uint256 birthdate,string memory race,string memory nationality,MedicalCertificate.certCategory incident,string memory dateTimeIncident,string memory placeIncident,string memory causeIncident,string memory titleOfCertifier,string memory Institution) = medicalCertInstance.getMC(mcId);
-        require(keccak256(abi.encode(name)) == keccak256(abi.encode(stakeholderInstance.getStakeholderName(st))) && 
-        keccak256(abi.encode(NRIC)) == stakeholderInstance.getStakeholderNRIC(st), 
-        "Not the same stakeholder!");
+        bytes32  mcName = keccak256(abi.encodePacked(name));
+        bytes32  stName = keccak256(abi.encode(stakeholderInstance.getStakeholderName(st)));
+        bytes32  mcNRIC = keccak256(abi.encode(NRIC));
+        bytes32  stNRIC = keccak256(stakeholderInstance.getStakeholderNRIC(st));
+        require(mcName == stName && mcNRIC ==  stNRIC, "Not the same stakeholder!");
         //cert if its suicide
         if(incident == MedicalCertificate.certCategory.suicide) {  
             require(insuranceInstance.getIssueDate(insuranceId)+ 2*365 days >= block.timestamp);
