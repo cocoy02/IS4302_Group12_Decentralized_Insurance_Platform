@@ -9,35 +9,36 @@ contract StringLength {
      * @param s The string to measure the length of
      * @return The length of the input string
      */
-    function strlen(string calldata s) external pure returns (bool) {
+    function strlen(string calldata s) external pure returns (uint256) {
         uint256 len;
-        uint256 i = 0;
-        uint256 bytelength = bytes(s).length;
         bytes1 char = bytes(s)[0];
         if(
             !(char >= 0x41 && char <= 0x5A) && //A-Z
             !(char >= 0x61 && char <= 0x7A) //a-z
         )
-            return false;
+        return 0;
+   
+        uint i=0;
+        bytes memory string_rep = bytes(s);
+        uint256 length = 0;
+         while (i<string_rep.length)
+        {
+            if (string_rep[i]>>7==0)
+                i+=1;
+            else if (string_rep[i]>>5==bytes1(uint8(0x6)))
+                i+=2;
+            else if (string_rep[i]>>4==bytes1(uint8(0xE)))
+                i+=3;
+            else if (string_rep[i]>>3==bytes1(uint8(0x1E)))
+                i+=4;
+            else
+                //For safety
+                i+=1;
 
-        for (len = 0; i < bytelength; len++) {
-            bytes1 b = bytes(s)[i];
-            if (b < 0x80) {
-                i += 1;
-            } else if (b < 0xE0) {
-                i += 2;
-            } else if (b < 0xF0) {
-                i += 3;
-            } else if (b < 0xF8) {
-                i += 4;
-            } else if (b < 0xFC) {
-                i += 5;
-            } else {
-                i += 6;
-            }
+            length++;
         }
 
         
-        return len == 9;
+        return length;
     }
 }

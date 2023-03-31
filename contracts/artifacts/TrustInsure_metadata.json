@@ -1,18 +1,16 @@
 {
 	"compiler": {
-		"version": "0.5.17+commit.d19bba13"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
 				"inputs": [],
-				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "constructor"
 			},
 			{
-				"constant": true,
 				"inputs": [
 					{
 						"internalType": "address",
@@ -28,12 +26,10 @@
 						"type": "uint256"
 					}
 				],
-				"payable": false,
 				"stateMutability": "view",
 				"type": "function"
 			},
 			{
-				"constant": false,
 				"inputs": [
 					{
 						"internalType": "address",
@@ -54,12 +50,10 @@
 						"type": "uint256"
 					}
 				],
-				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
-				"constant": false,
 				"inputs": [
 					{
 						"internalType": "address",
@@ -79,12 +73,10 @@
 				],
 				"name": "transferFromInsure",
 				"outputs": [],
-				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
-				"constant": false,
 				"inputs": [
 					{
 						"internalType": "address",
@@ -99,24 +91,30 @@
 				],
 				"name": "transferInsure",
 				"outputs": [],
-				"payable": false,
 				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
 		"devdoc": {
-			"methods": {}
+			"kind": "dev",
+			"methods": {},
+			"version": 1
 		},
 		"userdoc": {
-			"methods": {}
+			"kind": "user",
+			"methods": {},
+			"version": 1
 		}
 	},
 	"settings": {
 		"compilationTarget": {
 			"contracts/TrustInsure.sol": "TrustInsure"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
 		"optimizer": {
 			"enabled": false,
 			"runs": 200
@@ -125,17 +123,17 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
+			"keccak256": "0x6188f4f5383a377dff900a4fc031778791b64d62150f953d228f3739115368a9",
 			"urls": [
-				"bzz-raw://d4ac6aaffef2adf430f32385abb57faa11be3fa8a9c8ae2d2972da296b2d1f4e",
-				"dweb:/ipfs/Qme2HCxM7dQ3f9MiYYGGXFXx3EEStRhEHuYMDToZRghPMg"
+				"bzz-raw://c7e907edd9f55a53aba6178f73fb33491f64223810d1ba4c8b4689123fd9b1cb",
+				"dweb:/ipfs/QmfEFKoFLa2ztaLMJgmw3ydV4gypnypJCA7Z6j9MrNwFzG"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0x4aa799f8584bf3d99250d1d14f81b7b124adb53887a5963d26d0299f042314d9",
+			"keccak256": "0x915f7f10636365bdeb8b39df826b563d41ab27382a3d32370783565b07ffb659",
 			"urls": [
-				"bzz-raw://f9d6a9510ff6265422b10311352f92a9454aebefab731078009c184bc4f3a94b",
-				"dweb:/ipfs/QmW4dvFBj9JbA4ztqh8vncji6XeCnvqimXTULkeZqnyVX9"
+				"bzz-raw://a3dc603313fd0e6b12f990e1313378af992c21b3aa9f605c09dab63c8220900b",
+				"dweb:/ipfs/QmYLzyWSoEmki227n3scq1xMnejYR9uXmtmdJ2RdPf3DyT"
 			]
 		}
 	},

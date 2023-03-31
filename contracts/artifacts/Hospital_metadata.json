@@ -1,0 +1,382 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "contract MedicalCertificate",
+						"name": "mcAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "createOneMC",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "presidentChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [],
+				"name": "registered",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "reqeustId",
+						"type": "uint256"
+					}
+				],
+				"name": "requestMade",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					}
+				],
+				"name": "requestSolve",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "oldpassword",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "newpassword",
+						"type": "string"
+					}
+				],
+				"name": "changePassword",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_password",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_ic",
+						"type": "string"
+					}
+				],
+				"name": "changePresident",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lifeAssuredInfoId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "incidentType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "incidentYYYYMMDDHHMM",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "titleName",
+						"type": "string"
+					}
+				],
+				"name": "createMC",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "NRIC",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "sex",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "birthdate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "race_nationality",
+						"type": "string"
+					}
+				],
+				"name": "createPersonalInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_president",
+						"type": "address"
+					}
+				],
+				"name": "getHospitalId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_password",
+						"type": "string"
+					}
+				],
+				"name": "getPassword",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPresident",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_ic",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_password",
+						"type": "string"
+					}
+				],
+				"name": "register",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_password",
+						"type": "string"
+					},
+					{
+						"internalType": "bytes",
+						"name": "mcId",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_requestId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_stakeholderId",
+						"type": "uint256"
+					}
+				],
+				"name": "solveRequest",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"changePassword(uint256,string,string)": {
+					"details": "change password of hospital",
+					"params": {
+						"newpassword": "the new password",
+						"oldpassword": "old password needed to change"
+					}
+				},
+				"changePresident(uint256,string,string)": {
+					"details": "change president of hospital",
+					"params": {
+						"_hospitalId": "hospital id",
+						"_ic": "president NRIC",
+						"_password": "password to register"
+					}
+				},
+				"register(string,string)": {
+					"details": "register the hospital on chain",
+					"params": {
+						"_ic": "president NRIC",
+						"_password": "password to register"
+					},
+					"returns": {
+						"_0": "uint256 registered hospital id"
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Hospital.sol": "Hospital"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Hospital.sol": {
+			"keccak256": "0x2be2a5cfdc09600c36250c4604115fcdfea779e0218295f643c45904f2b55449",
+			"urls": [
+				"bzz-raw://bcb7e11fd8e7b92b16993df271c092c81f08a202c35f171621fbf15efaee52c1",
+				"dweb:/ipfs/QmcWC6nLjycdmdj2HQMDL9bhuvm7vLjrHZtqnofzLEFLkG"
+			]
+		},
+		"contracts/MedicalCert.sol": {
+			"keccak256": "0x0221b9f54a82c1a5c2162272a6eae0e4cac171114021f95dd0b0475b1b723c7b",
+			"urls": [
+				"bzz-raw://c49720de9361268f17bd367a1fd3fc9705d2250b35f404b8d16e5dcf4dc11536",
+				"dweb:/ipfs/QmUr4cQ6WJ4hzD9GoxKgeD38Tjqkh7xn63ts2dSZykNx4E"
+			]
+		}
+	},
+	"version": 1
+}

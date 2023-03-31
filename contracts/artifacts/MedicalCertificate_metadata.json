@@ -1,0 +1,313 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "numMC",
+						"type": "uint256"
+					}
+				],
+				"name": "mcCreated",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "MC",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "ID",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint256",
+						"name": "HospitalID",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "personId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "NRIC",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "sex",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "birthdate",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "race_nationality",
+								"type": "string"
+							}
+						],
+						"internalType": "struct MedicalCertificate.personalInfo",
+						"name": "personal_info",
+						"type": "tuple"
+					},
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "incident",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "dateTimeIncident",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "titleOfCertifier",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospital",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "personId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "incidentType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "incidentYYYYMMDDHHMM",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "certifierName",
+						"type": "string"
+					}
+				],
+				"name": "add",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "NRIC",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "sex",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "birthdateYYYYMMDD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "race_nationality",
+						"type": "string"
+					}
+				],
+				"name": "createPersonalInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "id",
+						"type": "bytes"
+					}
+				],
+				"name": "getMCCategory",
+				"outputs": [
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "id",
+						"type": "bytes"
+					}
+				],
+				"name": "getMCNRIC",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "id",
+						"type": "bytes"
+					}
+				],
+				"name": "getMCName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "infos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "personId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "NRIC",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "sex",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "birthdate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "race_nationality",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/MedicalCert.sol": "MedicalCertificate"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/MedicalCert.sol": {
+			"keccak256": "0xd9a9cacad7b83dc5c2ca73ae746a19c861f25fd52855fefe2d86fa66972d1edc",
+			"urls": [
+				"bzz-raw://a50c0d07c89529ada45b147edc31cc9f69a4371a3d48e23a23bfa87f21da9b10",
+				"dweb:/ipfs/QmeuqPC66WWanSfKujaBMGiSrTitw4bZB1P2vdENwT4zBu"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,12 +1,11 @@
 {
 	"compiler": {
-		"version": "0.5.17+commit.d19bba13"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
-				"constant": true,
 				"inputs": [
 					{
 						"internalType": "string",
@@ -17,37 +16,45 @@
 				"name": "strlen",
 				"outputs": [
 					{
-						"internalType": "bool",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bool"
+						"type": "uint256"
 					}
 				],
-				"payable": false,
 				"stateMutability": "pure",
 				"type": "function"
 			}
 		],
 		"devdoc": {
+			"kind": "dev",
 			"methods": {
 				"strlen(string)": {
 					"details": "Returns the length of a given string",
 					"params": {
 						"s": "The string to measure the length of"
 					},
-					"return": "The length of the input string"
+					"returns": {
+						"_0": "The length of the input string"
+					}
 				}
-			}
+			},
+			"version": 1
 		},
 		"userdoc": {
-			"methods": {}
+			"kind": "user",
+			"methods": {},
+			"version": 1
 		}
 	},
 	"settings": {
 		"compilationTarget": {
 			"contracts/StringLength.sol": "StringLength"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
 		"optimizer": {
 			"enabled": false,
 			"runs": 200
@@ -56,10 +63,11 @@
 	},
 	"sources": {
 		"contracts/StringLength.sol": {
-			"keccak256": "0xd6feb3e09a637bf1c85c606e506a437875f605af11e0d79f07ca363592ac6faa",
+			"keccak256": "0x261f2101d98fb9255203b1cc2a0d38638fbf3694495bdce95371234d462cbd34",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://7497b69d65f19e4320e5fa0a13d1862efe1d451860f51b56b73c38b1bc3d6007",
-				"dweb:/ipfs/QmTA56ErURbsdb8zYj1KEcrChizPdEqhQz6hUZ6Jvz4Uox"
+				"bzz-raw://e97421e73be55512ab92d6d86dcd39597ca00f435835ab1db343df4a7d5c7833",
+				"dweb:/ipfs/QmSUXJUxeVEVE7B3VijErAESxzD4h33VcUsk6RECkt9sex"
 			]
 		}
 	},
