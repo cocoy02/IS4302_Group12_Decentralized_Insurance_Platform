@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./InsuranceMarket.sol";
 import "./Insurance.sol";
@@ -72,28 +72,27 @@ contract Stakeholder {
 
 
     //Functions
-    /** 
-    * @dev create new stakeholder
-    * @return uint256 id of new stakeholder
-    */
+    // /** 
+    // * @dev create new stakeholder
+    // * @return uint256 id of new stakeholder
+    // */
     function addStakeholder(string memory _phonenum,string memory name,string memory NRIC) public validNumber(_phonenum) returns(uint256) {
-        uint256 newID = numStakeholder++;
-        stakeholder memory newStakeholder = stakeholder({
-            ID: newID,
-            name:name,
-            stakeholderAddress: msg.sender,
-            NRIC:abi.encodePacked(NRIC),
-            phonenum:abi.encodePacked(_phonenum),
-            toBeSigned: new uint256[](10)
-        });
-        stakeholders[newID] = newStakeholder;
-        ids[msg.sender] = newID;
-        return newID;
+       
+        stakeholder storage newStakeholder = stakeholders[numStakeholder++];
+        newStakeholder.ID = numStakeholder;
+        newStakeholder.name = name;
+        newStakeholder.stakeholderAddress = msg.sender;
+        newStakeholder.NRIC = abi.encodePacked(NRIC);
+        newStakeholder.phonenum = abi.encodePacked(_phonenum);
+        newStakeholder.toBeSigned = new uint256[](10);
+
+        ids[msg.sender] = numStakeholder;
+        return numStakeholder;
     }
 
-    /** 
-    * @dev sign insurance from tobesigned list and pay for insurance
-    */
+    // /** 
+    // * @dev sign insurance from tobesigned list and pay for insurance
+    // */
     function signInsurance(uint256 _policyOwnerID,uint256 _insuranceID, uint256 _beneficiaryID, uint256 _lifeAssuredID,uint256 _offerPrice) public {
         // require offerPrice >= owningMoney
         // require insurance ID valid
@@ -125,10 +124,10 @@ contract Stakeholder {
 
     }
 
-    /** 
-    * @dev add the insurance pass from company to sign list of stakeholder
-    * @return bool indicating sign successfully
-    */
+    // /** 
+    // * @dev add the insurance pass from company to sign list of stakeholder
+    // * @return bool indicating sign successfully
+    // */
     function addToSignList(uint256 _insuranceID,uint256 _policyOwnerID) public returns(bool){
         require(stakeholders[_policyOwnerID].toBeSigned[9] == 0);
         stakeholders[_policyOwnerID].toBeSigned.push(_insuranceID);
@@ -142,18 +141,18 @@ contract Stakeholder {
     //     //mark as paid
     // }
 
-    /** 
-    * @dev get MC id and pass to company
-    Call auto transfer in company contract to claim the money
-    */
+    // /** 
+    // * @dev get MC id and pass to company
+    // Call auto transfer in company contract to claim the money
+    // */
     function getMCidAndPassToComp(uint256 insuranceId,uint256 companyId,uint256 hospitalId,bytes memory mcId) public {
         // uint MDid = 
         insuranceCompanyContract.autoTransfer(insuranceId, companyId,  hospitalId, mcId);
     }
     
-    /** 
-    * @dev Stakeholder ask hospital for mc and call company to claim money
-    */
+    // /** 
+    // * @dev Stakeholder ask hospital for mc and call company to claim money
+    // */
     function claim(uint256 insuranceID,uint256 companyId, bytes memory mcId,uint256 hospitalId,uint256 policyOwnerID) public onlyPolicyOwner(policyOwnerID){
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);

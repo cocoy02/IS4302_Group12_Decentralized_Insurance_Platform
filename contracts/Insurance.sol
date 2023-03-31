@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./Stakeholder.sol";
 import "./InsuranceCompany.sol";
@@ -38,10 +38,10 @@ contract Insurance {
         insuranceCompanyContract = insuranceCompanyAddress;
     }
 
-     /** 
-    * @dev function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
-    * @return uint256 new insurance id
-    */
+    //  /** 
+    // * @dev function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
+    // * @return uint256 new insurance id
+    // */
     function createInsurance(
         uint256  policyOwner,
         uint256  beneficiary,

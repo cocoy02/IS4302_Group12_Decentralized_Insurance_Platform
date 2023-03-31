@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Source:
 // https://github.com/ensdomains/ens-contracts/blob/master/contracts/ethregistrar/StringUtils.sol
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.12;
 contract StringLength {
     /**
      * @dev Returns the length of a given string

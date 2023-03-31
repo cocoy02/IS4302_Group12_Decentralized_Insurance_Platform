@@ -1,25 +1,32 @@
 {
 	"compiler": {
-		"version": "0.5.17+commit.d19bba13"
+		"version": "0.8.13+commit.abaa5c0e"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [],
 		"devdoc": {
 			"details": "Math operations with safety checks that throw on error",
+			"kind": "dev",
 			"methods": {},
-			"title": "SafeMath"
+			"title": "SafeMath",
+			"version": 1
 		},
 		"userdoc": {
-			"methods": {}
+			"kind": "user",
+			"methods": {},
+			"version": 1
 		}
 	},
 	"settings": {
 		"compilationTarget": {
 			"contracts/ERC20.sol": "SafeMath"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "london",
 		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
 		"optimizer": {
 			"enabled": false,
 			"runs": 200
@@ -28,10 +35,10 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0x1ba4d3ad4863bfb43fb433d1d178b360730696cd28862dc6caa023d91da033b7",
+			"keccak256": "0x6188f4f5383a377dff900a4fc031778791b64d62150f953d228f3739115368a9",
 			"urls": [
-				"bzz-raw://d4ac6aaffef2adf430f32385abb57faa11be3fa8a9c8ae2d2972da296b2d1f4e",
-				"dweb:/ipfs/Qme2HCxM7dQ3f9MiYYGGXFXx3EEStRhEHuYMDToZRghPMg"
+				"bzz-raw://c7e907edd9f55a53aba6178f73fb33491f64223810d1ba4c8b4689123fd9b1cb",
+				"dweb:/ipfs/QmfEFKoFLa2ztaLMJgmw3ydV4gypnypJCA7Z6j9MrNwFzG"
 			]
 		}
 	},

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./InsuranceCompany.sol";
 //import "./Insurance.sol";
@@ -65,12 +65,12 @@ contract InsuranceMarket {
     // ---------
 
 
-    /**
-    * @dev Allow insurance company list product on the market
-    * @param _premium The amount that should be paid yearly
-    * @param _sumAssured Total amount to buy the insurance
-    * @return productId
-    */
+    // /**
+    // * @dev Allow insurance company list product on the market
+    // * @param _premium The amount that should be paid yearly
+    // * @param _sumAssured Total amount to buy the insurance
+    // * @return uint256 productId
+    // */
     function publishProduct(uint256 companyId, string memory _productType, uint256 _premium, uint256 _sumAssured) 
     public companyOwnerOnly(companyId) validProduct(_productType)
     returns(uint256)
@@ -98,10 +98,10 @@ contract InsuranceMarket {
         return numofProds;
     }
 
-    /**
-    * @dev Allow insurance company unlist product on the market
-    * @return whether successfully withdraw the product
-    */
+    // /**
+    // * @dev Allow insurance company unlist product on the market
+    // * @return bool whether successfully withdraw the product
+    // */
     function withdrawProduct(uint256 companyId, uint256 productId)
     public companyOwnerOnly(companyId)
     returns(bool)
@@ -128,9 +128,9 @@ contract InsuranceMarket {
         return find;
     }
 
-    /**
-    * @dev Allow stakeholders to check every company's products
-    */
+    // /**
+    // * @dev Allow stakeholders to check every company's products
+    // */
     function viewProducts() public {
         uint256[] memory companyids;
         string[] memory companynames;
@@ -160,7 +160,7 @@ contract InsuranceMarket {
 
     /**
     * @dev stakeholder could initiate buying
-    * @return the request id for stakeholders to track its status if return 0 indicated unsuccessful
+    * @return uint256 the request id for stakeholders to track its status if return 0 indicated unsuccessful
     */
     function wantToBuy(uint256 companyId, uint256 productId) public returns(uint256) {
         uint256 buyerId = stakeholderContract.getStakeholderId(msg.sender);

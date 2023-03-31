@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./MedicalCert.sol";
 import "./StringLength.sol";
@@ -87,35 +87,51 @@ contract Hospital {
 
      /** 
     * @dev register the hospital on chain
+    * @param _ic president NRIC
+    * @param _password password to register
     * @return uint256 registered hospital id
     */
     function register(string memory _ic, string memory _password) public validIC(_ic) returns(uint256) {
-        hospital memory newHospital = hospital({
-            president: msg.sender,
-            president_ic:abi.encode(_ic,"ic"),
-            password: abi.encode(_password,"password"),
-            hospitalId: totalHospital++
-        });
+        hospital storage newHospital = registeredHospital[totalHospital++];
+
+        newHospital.president =  msg.sender;
+        newHospital.president_ic = abi.encode(_ic,"ic");
+        newHospital.password =  abi.encode(_password,"password");
+        newHospital.hospitalId =  totalHospital;
         
         
-        uint newHospitalId = totalHospital;
-        registeredHospital[newHospitalId] = newHospital;
-        ids[msg.sender] = newHospitalId;
+        ids[msg.sender] = totalHospital;
         
         emit registered();
-        return newHospitalId;
+        return totalHospital;
     }
 
     //MC
-     /** 
-    * @dev create MC with required information
-    * @return  byte32 mc Id
-    */
+    //  /** 
+    // * @dev create MC with required information
+    // * @param _hospitalId hospital id
+    // * @param _password need password to create
+    // * @param _requestId whether the MC is for some request
+    // * @param _stakeholderId if it's a request, what's the stakeholder id
+    // * @param name the name of the person 
+    // * @param NRIC the NRIC of the person 
+    // * @param sex the sex of the person 
+    // * @param birthdate the birthday of the person 
+    // * @param race the race of the person 
+    // * @param nationality the natinality of the person 
+    // * @param incidentType the incident type
+    // * @param incidentYYYYMMDDHHMM the incident type
+    // * @param  place the place of incident
+    // * @param  cause the cause of incident
+    // * @param  titleName the title of who created the MC
+    // * @param  institution the institution name
+    // * @return byte32 mc Id
+    // */
     function createMC(uint256 _hospitalId, string memory _password, uint256 _requestId, uint256 _stakeholderId,
-                string memory name, string memory NRIC, uint256 sex, 
-                uint256 birthdate, string memory race, string memory nationality, 
+                string memory name, string memory NRIC, string memory sex, 
+                uint256 birthdate, string memory race_nationality, 
                 MedicalCertificate.certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
-                string memory place, string memory cause, string memory titleName, string memory institution) 
+                string memory place, string memory cause, string memory titleName) 
                 public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
                 returns(bytes memory)
     {
@@ -125,14 +141,12 @@ contract Hospital {
                 NRIC,
                 sex,
                 birthdate,
-                race,
-                nationality,
+                race_nationality,
                 incidentType,
                 incidentYYYYMMDDHHMM,
                 place,
                 cause,
-                titleName,
-                institution);
+                titleName);
         registeredHospital[_hospitalId].mcs[mcId] = msg.sender;
         emit createOneMC();
 
@@ -162,6 +176,10 @@ contract Hospital {
 
      /** 
     * @dev stakeholder request to create MC
+    * @param hospitalId the hospital id 
+    * @param stakeholderId the stakeholder Id
+    * @param nameAssured the assured person's name
+    * @param icAssured the assured person's NRIC
     * @return uint256 number of requests
     */
     function requestMC(uint256 hospitalId, uint256 stakeholderId, string memory nameAssured, string memory icAssured) 
@@ -184,6 +202,8 @@ contract Hospital {
 
     /** 
     * @dev check requests from hospital
+    * @param _hospitalId the hospital id 
+    * @param _password password to register
     */
     function checkRequestFromHospital (uint256 _hospitalId, string memory _password) 
     public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
@@ -218,6 +238,9 @@ contract Hospital {
 
     /** 
     * @dev check mc Ids from stakeholder
+    * @param _hospitalId hospital id
+    * @param _requestId whether the MC is for some request
+    * @param _stakeholderId if it's a request, what's the stakeholder id
     * @return  byte32 mcId
     */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
@@ -242,6 +265,9 @@ contract Hospital {
     }
     /** 
     * @dev change president of hospital
+    * @param _ic president NRIC
+    * @param _password password to register
+    * @param _hospitalId hospital id
     */
     function changePresident(uint256 _hospitalId, string memory _password, string memory _ic) 
     public verifyPassword(_hospitalId,_password) validIC(_ic)
@@ -253,6 +279,8 @@ contract Hospital {
 
     /** 
     * @dev change password of hospital
+    * @param oldpassword old password needed to change
+    * @param newpassword the new password
     */
     function changePassword(uint256 _hospitalId, string memory oldpassword, string memory newpassword)
     public onlyOwner(_hospitalId) verifyPassword(_hospitalId,oldpassword)
@@ -279,12 +307,12 @@ contract Hospital {
         return password;
     }
 
-    function getMC(uint256 _hospitalId, bytes memory  _mcId) 
-        public view 
-        validMCId(_hospitalId,_mcId)
-        returns (uint256, string memory, string memory, uint256, uint256, string memory, string memory, MedicalCertificate.certCategory, string memory, string memory, string memory, string memory, string memory)
-    {
-        return medicalCert.getMC(_mcId);
-    }
+    // function getMC(uint256 _hospitalId, bytes memory  _mcId) 
+    //     public view 
+    //     validMCId(_hospitalId,_mcId)
+    //     returns (uint256, string memory, string memory, uint256, uint256, string memory, string memory, MedicalCertificate.certCategory, string memory, string memory, string memory, string memory, string memory)
+    // {
+    //     return medicalCert.getMC(_mcId);
+    // }
 
 }
