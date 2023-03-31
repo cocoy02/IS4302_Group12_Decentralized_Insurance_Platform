@@ -82,15 +82,21 @@ contract InsuranceCompany {
     function add(string memory name) public payable returns(uint256) {
         require(msg.value > 0.01 ether, "at least 0.01 ETH is needed to create a company");
         insuranceCompany storage newCompany = companies[numOfCompany++];
-        // insuranceCompany storage newCompany = insuranceCompany({
-        //     credit:0,
-        //     name:name,
-        //     owner:msg.sender,
-        //     completed:0
-        // });
+
+        newCompany.credit = 0;
+        newCompany.name = name;
+        newCompany.owner = msg.sender;
+        newCompany.completed = 0;
         
-        //companies[companyId] = newCompany; 
         return numOfCompany; 
+    }
+
+    function createStakeholderInfo(uint256 policyOwner,
+        uint256 beneficiary,
+        uint256 lifeAssured,
+        uint256 payingAccount) 
+    public returns(uint256) { 
+        return insuranceInstance.createStakeholderInfo(policyOwner, beneficiary, lifeAssured, payingAccount);
     }
  
     // /**
@@ -98,52 +104,49 @@ contract InsuranceCompany {
     // * Automatically pass to stakeholder
     // * @return uint256 new insurance id
     // */
-    function createInsurance(uint256 policyOwner,
-        uint256  beneficiary,
-        uint256 lifeAssured,
-        uint256  payingAccount,
+    function createInsurance(
+        uint stakeholderInfoId,
+        uint256 companyId,
         uint256 insuredAmount,
         Insurance.insuranceType insType,
-        uint256 issueDate,
-        Insurance.reasonType reason,
-        uint256 price,
-        uint256 companyId,
-        uint256 requestId
+        uint256 issueDateYYYYMMDD,
+        uint256 expiryDateYYYYMMDD
     ) public payable validCompanyId(companyId) returns(uint256){
-            if (requestId != 0) {
-                uint256 index;
-                Request[] memory reqs = companies[companyId].requestLists;
-                uint256 length = reqs.length;
-                bool find = false;
-                for (uint256 i = 0; i < length; i++) {
-                    if (reqs[i].reqId == requestId) {
-                        index = i;
-                        find = true;
-                    }
-                }
-                
-                require(find == true, "Invalid request id!");
-                if (find) {
-                    companies[companyId].requestLists[index] = companies[companyId].requestLists[length - 1];
-                    companies[companyId].requestLists.pop();
-                    emit requestSolve(requestId);
-                }
-            }        
-            uint256 newId = insuranceInstance.createInsurance(
-                policyOwner,
-                beneficiary,
-                lifeAssured,
-                payingAccount,
+
+        uint256 newId = insuranceInstance.createInsurance(
+                stakeholderInfoId,
                 companyId,
                 insuredAmount,
                 insType,
-                issueDate,
-                reason,
-                price
-            );
-            emit create(newId);
-            passToStakeHolder(policyOwner, newId);
-            return newId;
+                issueDateYYYYMMDD,
+                expiryDateYYYYMMDD
+        );
+        emit create(newId);
+        passToStakeHolder(insuranceInstance.getPolicyOwner(stakeholderInfoId), newId);
+        return newId;
+    }
+
+
+    function solveRequest(uint256 companyId, uint256 requestId) public {
+        if (requestId != 0) {
+            uint256 index;
+            Request[] memory reqs = companies[companyId].requestLists;
+            uint256 length = reqs.length;
+            bool find = false;
+            for (uint256 i = 0; i < length; i++) {
+                if (reqs[i].reqId == requestId) {
+                    index = i;
+                    find = true;
+                }
+            }
+            
+            require(find == true, "Invalid request id!");
+            if (find) {
+                companies[companyId].requestLists[index] = companies[companyId].requestLists[length - 1];
+                companies[companyId].requestLists.pop();
+                emit requestSolve(requestId);
+            }
+        }        
     }
 
     //yearly/monthly payment function
@@ -167,7 +170,7 @@ contract InsuranceCompany {
     function signInsurance(uint256 insuranceId,uint256 companyId) public payable ownerOnly(companyId) validCompanyId(companyId) {
         insuranceCompany storage company = companies[companyId];
         Insurance.insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
-        require(insuranceInstance.getInsuranceState(insuranceId),"not approved by beneficiary!");
+        require(insuranceInstance.getStatus(insuranceId) != Insurance.status.unapproved,"not approved by beneficiary!");
         company.insuranceId[insuranceId] = insurance;
         company.completed++;
         updateCredit(companyId);
@@ -201,7 +204,7 @@ contract InsuranceCompany {
     // */
     function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes memory mcId) public payable{
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
-        require(insuranceInstance.getPremiumStatus(insuranceId) == Insurance.premiumStatus.paid);
+        require(insuranceInstance.getStatus(insuranceId) == Insurance.status.paid);
         //insurance valid from date 
         require(insuranceInstance.getIssueDate(insuranceId)+ 90 days >= block.timestamp);
         uint256 st = insuranceInstance.getBeneficiary(insuranceId);
@@ -228,7 +231,7 @@ contract InsuranceCompany {
         
         address recipient = address(uint160(insuranceInstance.getBeneficiary(insuranceId)));
         trustinsureInstance.transferFromInsure(companyOwner, recipient, value);
-        insuranceInstance.updateClaimStatus(Insurance.claimStatus.claimed, insuranceId);
+        insuranceInstance.updateStatus(Insurance.status.claimed, insuranceId);
         emit transfer(recipient, value);
     }
 

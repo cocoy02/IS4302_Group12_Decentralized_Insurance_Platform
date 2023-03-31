@@ -1,0 +1,601 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "contract Stakeholder",
+						"name": "stakeholderAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "contract InsuranceCompany",
+						"name": "insuranceCompanyAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "autoTrigger",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "stakeholderInfoId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "companyId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "insuredAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum Insurance.insuranceType",
+						"name": "insType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "issueDateYYYYMMDD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expiryDateYYYYMMDD",
+						"type": "uint256"
+					}
+				],
+				"name": "createInsurance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "policyOwner",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "beneficiary",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lifeAssured",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "payingAccount",
+						"type": "uint256"
+					}
+				],
+				"name": "createStakeholderInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getBeneficiary",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getExpiryDate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getInsurance",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "ID",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "companyId",
+								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "uint256",
+										"name": "policyOwner",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "beneficiary",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "lifeAssured",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "payingAccount",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct Insurance.stakeholderInfo",
+								"name": "stakeholders",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "insuredAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "enum Insurance.insuranceType",
+								"name": "insType",
+								"type": "uint8"
+							},
+							{
+								"internalType": "enum Insurance.status",
+								"name": "status",
+								"type": "uint8"
+							},
+							{
+								"internalType": "uint256",
+								"name": "issueDate",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "expiryDate",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Insurance.insurance",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getInsuranceCompany",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getInsuredAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getIssueDate",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "stakeholderinfoId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPolicyOwner",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getStatus",
+				"outputs": [
+					{
+						"internalType": "enum Insurance.status",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "insurances",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "ID",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "companyId",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "policyOwner",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "beneficiary",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "lifeAssured",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "payingAccount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Insurance.stakeholderInfo",
+						"name": "stakeholders",
+						"type": "tuple"
+					},
+					{
+						"internalType": "uint256",
+						"name": "insuredAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum Insurance.insuranceType",
+						"name": "insType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "enum Insurance.status",
+						"name": "status",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "issueDate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expiryDate",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numInsurance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "numStakeholder",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "newBeneficiary",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "setBeneficiary",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "date",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "setExpiryDate",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "stakeholderinfos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "policyOwner",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "beneficiary",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lifeAssured",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "payingAccount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "enum Insurance.status",
+						"name": "state",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "updateStatus",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Insurance.sol": "Insurance"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/ERC20.sol": {
+			"keccak256": "0x6188f4f5383a377dff900a4fc031778791b64d62150f953d228f3739115368a9",
+			"urls": [
+				"bzz-raw://c7e907edd9f55a53aba6178f73fb33491f64223810d1ba4c8b4689123fd9b1cb",
+				"dweb:/ipfs/QmfEFKoFLa2ztaLMJgmw3ydV4gypnypJCA7Z6j9MrNwFzG"
+			]
+		},
+		"contracts/Hospital.sol": {
+			"keccak256": "0x3c7253e10dac88eb6883ebbd33564795e4f6e97c9910584c41ab3e260550d7a4",
+			"urls": [
+				"bzz-raw://ff912046183569e21ece96bf3243482525674f2666024b301d47a437146f3d75",
+				"dweb:/ipfs/QmTgQ7tZdLpk9Qrsc7gqVFQNkEhFsqriYDQ1UeLknyNYej"
+			]
+		},
+		"contracts/Insurance.sol": {
+			"keccak256": "0x57e91fe4fffbb3d92ff2c2b3c5f51a1517acd1e916d27a8d1fe95aadcba79f9d",
+			"urls": [
+				"bzz-raw://4f3e0a0069089ab4b4a945d9a25f38826e9ce3f74c3d05dc76f2bab3ed013144",
+				"dweb:/ipfs/QmTyEehcJwcQveKjkrFZzEeQveCf9ERhdiAo9pbBYrVEck"
+			]
+		},
+		"contracts/InsuranceCompany.sol": {
+			"keccak256": "0x8c42e18a6a207f93f25a45cb38d6bb83a16cc2f3f1f08ac49c0c36d0fc00dd1f",
+			"urls": [
+				"bzz-raw://9b91f58cf989b1d41a3628071118ae67e901996ed3cebb1a259852fbfd564c80",
+				"dweb:/ipfs/QmbgG8B9poKzbDjVUDMYkFzc23Y3fq2JvzCVvbF2bmbJux"
+			]
+		},
+		"contracts/InsuranceMarket.sol": {
+			"keccak256": "0x3e6306b4d01dafccc1b81fb0b5441df8fb7d1e7823077d01d49bd655e9776df6",
+			"urls": [
+				"bzz-raw://59deb9ede9c377593359b7a89aa99207a55fd9b94b87f7d944e530cf7e304bb4",
+				"dweb:/ipfs/QmUYx4mJgiN4J64qKWP7hTefJPFY8cnEPRSY1hr182UvMY"
+			]
+		},
+		"contracts/MedicalCert.sol": {
+			"keccak256": "0xd9a9cacad7b83dc5c2ca73ae746a19c861f25fd52855fefe2d86fa66972d1edc",
+			"urls": [
+				"bzz-raw://a50c0d07c89529ada45b147edc31cc9f69a4371a3d48e23a23bfa87f21da9b10",
+				"dweb:/ipfs/QmeuqPC66WWanSfKujaBMGiSrTitw4bZB1P2vdENwT4zBu"
+			]
+		},
+		"contracts/Stakeholder.sol": {
+			"keccak256": "0xe88a05559f5b73dc5d03bbec8c54d13e429738eaf687d54a51c1b5287bcbc276",
+			"urls": [
+				"bzz-raw://b7b17930e5ff371fbacc4b5119e55508ad16cc5206d4d3a1917562e7482ea68b",
+				"dweb:/ipfs/Qmdn45xCHVJG3Saf8HD85s42XcUREpvdcwLWUVCw4KvQ1Y"
+			]
+		},
+		"contracts/TrustInsure.sol": {
+			"keccak256": "0x915f7f10636365bdeb8b39df826b563d41ab27382a3d32370783565b07ffb659",
+			"urls": [
+				"bzz-raw://a3dc603313fd0e6b12f990e1313378af992c21b3aa9f605c09dab63c8220900b",
+				"dweb:/ipfs/QmYLzyWSoEmki227n3scq1xMnejYR9uXmtmdJ2RdPf3DyT"
+			]
+		}
+	},
+	"version": 1
+}

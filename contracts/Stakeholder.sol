@@ -44,29 +44,7 @@ contract Stakeholder {
     } 
 
     modifier validNumber(string memory s) {
-        uint256 len;
-        uint256 i = 0;
-        uint256 bytelength = bytes(s).length;
-        bytes1 char = bytes(s)[0];
-
-        for (len = 0; i < bytelength; len++) {
-            bytes1 b = bytes(s)[i];
-            if (b < 0x80) {
-                i += 1;
-            } else if (b < 0xE0) {
-                i += 2;
-            } else if (b < 0xF0) {
-                i += 3;
-            } else if (b < 0xF8) {
-                i += 4;
-            } else if (b < 0xFC) {
-                i += 5;
-            } else {
-                i += 6;
-            }
-        }
-
-        require(len == 8, "Invalid length of phone number!");
+        require(bytes(s).length == 8, "Invalid length of phone number!");
         _;
     }
 
