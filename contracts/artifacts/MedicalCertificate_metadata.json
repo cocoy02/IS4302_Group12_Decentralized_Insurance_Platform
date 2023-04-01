@@ -102,6 +102,11 @@
 						"type": "uint256"
 					},
 					{
+						"internalType": "string",
+						"name": "password",
+						"type": "string"
+					},
+					{
 						"internalType": "uint256",
 						"name": "personId",
 						"type": "uint256"
@@ -135,6 +140,16 @@
 			},
 			{
 				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "password",
+						"type": "string"
+					},
 					{
 						"internalType": "string",
 						"name": "name",
@@ -302,10 +317,10 @@
 	},
 	"sources": {
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0xd9a9cacad7b83dc5c2ca73ae746a19c861f25fd52855fefe2d86fa66972d1edc",
+			"keccak256": "0x0f6fbfcad5f3054ba4c63defd51b378b6e4c5a8a5caa05405b18b14ee156119c",
 			"urls": [
-				"bzz-raw://a50c0d07c89529ada45b147edc31cc9f69a4371a3d48e23a23bfa87f21da9b10",
-				"dweb:/ipfs/QmeuqPC66WWanSfKujaBMGiSrTitw4bZB1P2vdENwT4zBu"
+				"bzz-raw://e329aa6e2edfbc74c5d3f966778d6085e0ecf4d06f6b379cfaeb8ab4910ff94a",
+				"dweb:/ipfs/QmZJJ83q1vxXsxwXC7CaZ4mviPwdTCx5mPopDoENsS282v"
 			]
 		}
 	},

@@ -1,11 +1,9 @@
 pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
-import "./Stakeholder.sol";
-import "./InsuranceCompany.sol";
 
 contract Insurance {
-    Stakeholder stakeholderContract;
-    InsuranceCompany insuranceCompanyContract;
+
+
     
     enum insuranceType { life, accident }
     enum status { unapproved, processing,  unpaid, paid, claimed, unclaimed}
@@ -24,6 +22,7 @@ contract Insurance {
         uint256 companyId;
         stakeholderInfo stakeholders;
         uint256 insuredAmount;
+        uint256 currentAmount;
         insuranceType insType;
         status status;//
         uint256 issueDate;
@@ -36,61 +35,33 @@ contract Insurance {
     uint256 public numStakeholder = 0;
     mapping(uint256 => stakeholderInfo) public stakeholderinfos;
 
-    constructor (Stakeholder stakeholderAddress, InsuranceCompany insuranceCompanyAddress) public {
-        stakeholderContract = stakeholderAddress;
-        insuranceCompanyContract = insuranceCompanyAddress;
-    }
 
     function createStakeholderInfo (uint256 policyOwner,
         uint256  beneficiary,
         uint256 lifeAssured,
         uint256 payingAccount) 
-    public returns(uint256) {
-        numStakeholder++;
-        stakeholderInfo storage newInfo = stakeholderinfos[numStakeholder];
-        
-        newInfo.policyOwner = policyOwner;
-        newInfo.beneficiary = beneficiary;
-        newInfo.lifeAssured = lifeAssured;
-        newInfo.payingAccount = payingAccount;
-        
-        return numStakeholder;
-    }
+    public virtual returns(uint256) {}
 
     //  /** 
     // * @dev function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
     // * @return uint256 new insurance id
     // */
     function createInsurance(
-        uint stakeholderInfoId,
+        uint256 stakeholderInfoId,
         uint256 companyId,
         uint256 insuredAmount,
         insuranceType insType,
         uint256 issueDateYYYYMMDD,
         uint256 expiryDateYYYYMMDD
-    ) public payable returns(uint256) {
-        require(msg.value == 0.01 ether, "0.01 ETH is needed to initialise a new insurance"); // registering fee for insurance, not the payment for the actual insurance
-        
-        numInsurance++;
-        //new insurance object
-        insurance storage newInsurance = insurances[numInsurance];
-        newInsurance.stakeholders = stakeholderinfos[stakeholderInfoId];
-        newInsurance.companyId = companyId;
-        newInsurance.insuredAmount = insuredAmount;
-        newInsurance.insType = insType;
-        newInsurance.status = status.unapproved; // initialise  status to unapproved
-        newInsurance.issueDate = issueDateYYYYMMDD;
-        newInsurance.expiryDate = expiryDateYYYYMMDD; // initialise expiry date to 0
-        
-        return numInsurance;   //return new insurance Id
-    }
+    ) 
+    public virtual returns(uint256) {}
 
     //modifier to ensure a function is callable only by its policy owner    
-    modifier policyOwnerOnly(uint256 insuranceId) {
-        //stakeholderContract.getStakeholderAddress(uint256 stakeholderID)
-        require(stakeholderContract.getStakeholderAddress(insurances[insuranceId].stakeholders.policyOwner) ==  msg.sender);
-        _;
-    }
+    // modifier policyOwnerOnly(uint256 insuranceId) {
+    //     //stakeholderContract.getStakeholderAddress(uint256 stakeholderID)
+    //     require(stakeholderContract.getStakeholderAddress(insurances[insuranceId].stakeholders.policyOwner) ==  msg.sender);
+    //     _;
+    // }
 
     //modifier to ensure a function is callable only by its insurance company   
     // modifier companyOnly(uint256 insuranceId) {
@@ -100,7 +71,7 @@ contract Insurance {
 
     // SETTERS 
 
-    function setBeneficiary(uint256 newBeneficiary, uint256 insuranceId) public policyOwnerOnly(insuranceId) {
+    function setBeneficiary(uint256 newBeneficiary, uint256 insuranceId) public {//policyOwnerOnly(insuranceId) {
         insurances[insuranceId].stakeholders.beneficiary = newBeneficiary;
     }
 
@@ -113,6 +84,17 @@ contract Insurance {
         insurances[insuranceId].expiryDate = date;
 
     }
+    
+    //return whether insured amount all paid
+    // function updateAmount(uint256 insuranceId, uint256 amount) public returns(bool) {
+    //     insurances[insuranceId].currentAmount += amount;
+    //     if (insurances[insuranceId].currentAmount == insurances[insuranceId].insuredAmount) {
+    //         insurances[insuranceId].status = status.paid;
+    //         return true;
+    //     }
+
+    //     return false;
+    // }
     // GETTERS
 
     function getInsurance(uint256 insuranceId) public view returns (insurance memory) {
@@ -145,6 +127,10 @@ contract Insurance {
 
     function getPolicyOwner(uint256 stakeholderinfoId) public view returns (uint256) {
         return stakeholderinfos[stakeholderinfoId].policyOwner;
+    }
+
+    function getRestAmount(uint256 insuranceId) public view returns(uint256) {
+        return insurances[insuranceId].insuredAmount - insurances[insuranceId].currentAmount;
     }
 
     function autoTrigger() public {

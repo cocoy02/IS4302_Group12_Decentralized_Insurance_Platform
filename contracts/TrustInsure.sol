@@ -13,7 +13,7 @@ contract TrustInsure {
     }
  
     function getInsure(address recipient, uint256 weiAmt)
-        public
+        public payable
         returns (uint256)
     {
         uint256 amt = weiAmt / (1000000000000000000/100);

@@ -1,22 +1,14 @@
 pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./MedicalCert.sol";
-import "./Stakeholder.sol";
 
-contract Hospital {
-    MedicalCertificate medicalCert;
-    Stakeholder stakeholderContract;
+contract Hospital is MedicalCertificate  {
 
     mapping(uint256 => hospital) registeredHospital; //hospital id => hospital
     mapping(address => uint256) ids; //president => hospital id
     mapping(uint256 => uint256[]) stakeholders; //hospital id => requested stakeholder;
 
     uint256 totalHospital = 0;
-
-    constructor (MedicalCertificate mcAddress, Stakeholder stakeholderAddress) public  {
-        medicalCert = mcAddress;
-        stakeholderContract = stakeholderAddress;
-    }
   
     struct hospital {
         address president; //owner of the hospital
@@ -107,50 +99,43 @@ contract Hospital {
         return totalHospital;
     }
 
-    //MC
-    //  /** 
-    // * @dev create MC with required information
-    // * @param _hospitalId hospital id
-    // * @param _password need password to create
-    // * @param _requestId whether the MC is for some request
-    // * @param _stakeholderId if it's a request, what's the stakeholder id
-    // * @param name the name of the person 
-    // * @param NRIC the NRIC of the person 
-    // * @param sex the sex of the person 
-    // * @param birthdate the birthday of the person 
-    // * @param race the race of the person 
-    // * @param nationality the natinality of the person 
-    // * @param incidentType the incident type
-    // * @param incidentYYYYMMDDHHMM the incident type
-    // * @param  place the place of incident
-    // * @param  cause the cause of incident
-    // * @param  titleName the title of who created the MC
-    // * @param  institution the institution name
-    // * @return byte32 mc Id
-    // */
-    function createPersonalInfo (uint256 _hospitalId, string memory _password,
+    function createPersonalInfo (uint256 hospitalId, string memory password, 
     string memory name, string memory NRIC, string memory sex, 
-    uint256 birthdate, string memory race_nationality) 
-    public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
-    returns (uint256) {
-        return medicalCert.createPersonalInfo(name, NRIC, sex, birthdate, race_nationality);
+                uint256 birthdateYYYYMMDD, string memory race_nationality) 
+    public validHospital(hospitalId) verifyPassword(hospitalId,password)  
+    override returns (uint256) {
+        numOfPeople++;
+        personalInfo storage person = infos[numOfPeople];
+        person.name = name;
+        person.NRIC = NRIC;
+        person.sex = sex;
+        person.birthdate = birthdateYYYYMMDD;
+        person.race_nationality = race_nationality;
+
+        return numOfPeople;
     }
 
-    function createMC (uint256 hospitalId, string memory password,
-    uint256 lifeAssuredInfoId,
-    MedicalCertificate.certCategory incidentType, 
-    string memory incidentYYYYMMDDHHMM, string memory titleName) 
-    public validHospital(hospitalId) verifyPassword(hospitalId,password) 
-    returns (bytes memory) {
-        bytes memory  mcId = medicalCert.add(
-                hospitalId,
-                lifeAssuredInfoId,
-                incidentType,
-                incidentYYYYMMDDHHMM,
-                titleName);
-        registeredHospital[hospitalId].mcs[mcId] = msg.sender;
-        emit createOneMC();
-        return mcId;
+    function add(uint256 hospital, string memory password, uint256 personId,
+    certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
+    string memory certifierName
+    ) 
+    public validHospital(hospital) verifyPassword(hospital,password)  
+    override returns(bytes memory) {
+        counter = counter + 1;
+        bytes memory id = abi.encodePacked(counter, personId);
+
+
+        medicalCert memory mc = MC[keccak256(id)];
+        mc.ID = id;
+        mc.HospitalID = hospital;
+        mc.personal_info = infos[personId];
+        mc.incident = incidentType;
+        mc.dateTimeIncident = incidentYYYYMMDDHHMM;
+        mc.titleOfCertifier = certifierName;
+
+        emit mcCreated(counter);
+
+        return id;    
     }
     
     function solveRequest(uint256 hospitalId, string memory password, bytes memory mcId,
@@ -193,7 +178,7 @@ contract Hospital {
     // */
     function requestMC(uint256 hospitalId, uint256 stakeholderId, string memory nameAssured, string memory icAssured) 
     public validHospital(hospitalId) returns(uint256) {
-        require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder!");
+        //require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder!");
   
         numOfReqs++;
         Request storage req =  registeredHospital[hospitalId].requests[stakeholderId].push();
@@ -251,8 +236,8 @@ contract Hospital {
     // * @return  byte32 mcId
     // */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
-      public validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
-      returns(bytes memory )
+      public view validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
+      returns(bytes memory)
     {
         Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
         uint256 length = reqs.length;

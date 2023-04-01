@@ -1,13 +1,14 @@
 pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./InsuranceCompany.sol";
-//import "./Insurance.sol";
 import "./Stakeholder.sol";
+import "./TrustInsure.sol";
 
 contract InsuranceMarket {
 
     InsuranceCompany companyContract;
     Stakeholder stakeholderContract;
+    TrustInsure insureContract;
 
     // ---------------
     // Product related
@@ -26,9 +27,10 @@ contract InsuranceMarket {
 
     uint256[] companyIds;
 
-    constructor (InsuranceCompany companyAddress, Stakeholder stakeholderAddress) public {
+    constructor (InsuranceCompany companyAddress, Stakeholder stakeholderAddress, TrustInsure insureAddress) public {
         companyContract = companyAddress;
         stakeholderContract = stakeholderAddress;
+        insureContract = insureAddress;
     }
 
     // ---------
@@ -46,6 +48,18 @@ contract InsuranceMarket {
         require(keccak256(abi.encode(_productType)) == keccak256(abi.encode("accident")) ||
         keccak256(abi.encode(_productType)) == keccak256(abi.encode("life")), "You should input valid product type, eg. accident or life!");
       
+        _;
+    }
+
+    modifier validStakeholder(uint stakeholderId) {
+        require(stakeholderContract.getStakeholderId(msg.sender) != 0, "Not registered stakeholder!");
+        require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder id!");
+        _;
+    }
+
+
+    modifier validNumber(string memory s) {
+        require(bytes(s).length == 8, "Invalid length of phone number!");
         _;
     }
 
@@ -68,33 +82,39 @@ contract InsuranceMarket {
     // /**
     // * @dev Allow insurance company list product on the market
     // * @param _premium The amount that should be paid yearly
-    // * @param _sumAssured Total amount to buy the insurance
+    // * @param _sumAssured Total amount to claim the insurance
     // * @return uint256 productId
     // */
-    function publishProduct(uint256 companyId, string memory _productType, uint256 _premium, uint256 _sumAssured) 
-    public companyOwnerOnly(companyId) validProduct(_productType)
+
+    function publishProduct(uint256 companyId, string memory productCategory, uint256 premium, uint256 sumOfClaim) 
+    public companyOwnerOnly(companyId) validProduct(productCategory)
     returns(uint256)
     {
-        Product memory newProduct;
-        if (keccak256(abi.encode(_productType)) == keccak256(abi.encode("accident"))) {
-            newProduct = Product(
-                numofProds++,
-                _premium,
-                _sumAssured,
-                productType.accident
-            );
+        require(insureContract.checkInsure(msg.sender) > 1, 
+        "Do not have enought TrustInsure to publish products!");
+        
+        //Add in product list of the company
+        Product storage newProduct =  productList[companyId].push();
+        numofProds++;
+        if (keccak256(abi.encode(productCategory)) == keccak256(abi.encode("accident"))) {
+            newProduct.productid = numofProds;
+            newProduct.premium = premium;
+            newProduct.sumAssured = sumOfClaim;
+            newProduct.prodType = productType.accident;    
         } else {
-            newProduct = Product(
-                numofProds++,
-                _premium,
-                _sumAssured,
-                productType.life
-            );
+            newProduct.productid = numofProds;
+            newProduct.premium = premium;
+            newProduct.sumAssured = sumOfClaim;
+            newProduct.prodType = productType.life;
         }
 
-        productList[companyId].push(newProduct);
+       
         emit productPublished();
         companyIds.push(companyId);
+        
+        //transfer comission fee to the platform
+        insureContract.transferFromInsure(msg.sender, address(this), 1);
+
         return numofProds;
     }
 
@@ -106,7 +126,11 @@ contract InsuranceMarket {
     public companyOwnerOnly(companyId)
     returns(bool)
     {
+        require(insureContract.checkInsure(msg.sender) > 1, 
+        "Do not have enought TrustInsure to withdraw products!");
 
+
+        //find product index in the list
         uint256 index;
         uint256 length = productList[companyId].length;
         bool find = false;
@@ -117,14 +141,18 @@ contract InsuranceMarket {
             }
         }
         
+        //If product exist, delete the product in the list
+        require(find == true, "Please ensure the input product id is valid!");
         if (find) {
             productList[companyId][index] = productList[companyId][length - 1];
             productList[companyId].pop();
             emit productWithdrawedSucceed();
+            //transfer comission fee to the platform
+            insureContract.transferFromInsure(msg.sender, address(this), 1);
         } else {
             emit productWithdrawedFail();
         }
-        
+       
         return find;
     }
 
@@ -141,6 +169,7 @@ contract InsuranceMarket {
 
         uint256 total_products = 0;
 
+        //loop every company and their products
         for (uint256 i  = 0; i < companyIds.length; i++) {
            
             Product[] memory products = productList[companyIds[i]];
@@ -162,38 +191,36 @@ contract InsuranceMarket {
     * @dev stakeholder could initiate buying
     * @return uint256 the request id for stakeholders to track its status if return 0 indicated unsuccessful
     */
-    function wantToBuy(uint256 companyId, uint256 productId) public returns(uint256) {
-        uint256 buyerId = stakeholderContract.getStakeholderId(msg.sender);
-        require(buyerId != 0, "Not registered!");
+    function wantToBuy(uint256 stakeholderId, uint256 companyId, uint256 productId, string memory contact) 
+    public validNumber(contact) validStakeholder(stakeholderId)
+    returns(uint256) 
+    {
 
         Product[] memory products = productList[companyId];
-        require(products.length <= 10, "The company are experiencing high volume of requests, please come back later!");
+        
 
-        uint256 length = products.length;
         string memory typeProduct = "life";
         uint256 id;
-        productType prodtype;
         bool succeed;
         uint256 requestId;
-
-        for (uint256 i = 0; i < length; i++) {
+        
+        //check whether could find the product and add request to the company
+        for (uint256 i = 0; i < products.length; i++) {
             id = products[i].productid;
-            prodtype = products[i].prodType;
 
             if (id == productId) {
-                if (prodtype == productType.accident) typeProduct = "accident";
-                (succeed, requestId) = companyContract.addRequestLists(buyerId, companyId, typeProduct);
+                if (products[i].prodType == productType.accident) typeProduct = "accident";
+                (succeed, requestId) = companyContract.addRequestLists(stakeholderId, companyId, contact, typeProduct);
                 if (succeed) {
                     emit requestSucceed();
+                    stakeholderContract.addRequestIds(stakeholderId, requestId);
                     return requestId;
-                } else {
-                    emit requestFail();
-                    return 0;
-                }
+                } 
             }
         }
         
-        return 0;   
+        emit requestFail();
+        return 0;
     }
 
     // then the company need to verify their requests within 7 days

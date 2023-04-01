@@ -6,20 +6,53 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "contract MedicalCertificate",
-						"name": "mcAddress",
-						"type": "address"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
-			},
-			{
 				"anonymous": false,
 				"inputs": [],
 				"name": "createOneMC",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "requestids",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256[]",
+						"name": "stakeholderids",
+						"type": "uint256[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "string[]",
+						"name": "names",
+						"type": "string[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "string[]",
+						"name": "ics",
+						"type": "string[]"
+					}
+				],
+				"name": "liveRequest",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "numMC",
+						"type": "uint256"
+					}
+				],
+				"name": "mcCreated",
 				"type": "event"
 			},
 			{
@@ -63,8 +96,123 @@
 			{
 				"inputs": [
 					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "MC",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "ID",
+						"type": "bytes"
+					},
+					{
 						"internalType": "uint256",
-						"name": "_hospitalId",
+						"name": "HospitalID",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "personId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "NRIC",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "sex",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "birthdate",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "race_nationality",
+								"type": "string"
+							}
+						],
+						"internalType": "struct MedicalCertificate.personalInfo",
+						"name": "personal_info",
+						"type": "tuple"
+					},
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "incident",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "dateTimeIncident",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "titleOfCertifier",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospital",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "personId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "incidentType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "incidentYYYYMMDDHHMM",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "certifierName",
+						"type": "string"
+					}
+				],
+				"name": "add",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospitalId",
 						"type": "uint256"
 					},
 					{
@@ -87,17 +235,17 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_hospitalId",
+						"name": "hospitalId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "string",
-						"name": "_password",
+						"name": "password",
 						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "_ic",
+						"name": "NRIC",
 						"type": "string"
 					}
 				],
@@ -115,26 +263,16 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "lifeAssuredInfoId",
+						"name": "_requestId",
 						"type": "uint256"
 					},
 					{
-						"internalType": "enum MedicalCertificate.certCategory",
-						"name": "incidentType",
-						"type": "uint8"
-					},
-					{
-						"internalType": "string",
-						"name": "incidentYYYYMMDDHHMM",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "titleName",
-						"type": "string"
+						"internalType": "uint256",
+						"name": "_stakeholderId",
+						"type": "uint256"
 					}
 				],
-				"name": "createMC",
+				"name": "checkMCIdFromStakeholder",
 				"outputs": [
 					{
 						"internalType": "bytes",
@@ -147,6 +285,190 @@
 			},
 			{
 				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_password",
+						"type": "string"
+					}
+				],
+				"name": "checkRequestFromHospital",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "NRIC",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "sex",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "birthdateYYYYMMDD",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "race_nationality",
+						"type": "string"
+					}
+				],
+				"name": "createPersonalInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "president",
+						"type": "address"
+					}
+				],
+				"name": "getHospitalId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "id",
+						"type": "bytes"
+					}
+				],
+				"name": "getMCCategory",
+				"outputs": [
+					{
+						"internalType": "enum MedicalCertificate.certCategory",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "id",
+						"type": "bytes"
+					}
+				],
+				"name": "getMCNRIC",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "id",
+						"type": "bytes"
+					}
+				],
+				"name": "getMCName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospitalId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPassword",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospitalId",
+						"type": "uint256"
+					}
+				],
+				"name": "getPresident",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "infos",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "personId",
+						"type": "uint256"
+					},
 					{
 						"internalType": "string",
 						"name": "name",
@@ -173,76 +495,6 @@
 						"type": "string"
 					}
 				],
-				"name": "createPersonalInfo",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_president",
-						"type": "address"
-					}
-				],
-				"name": "getHospitalId",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_hospitalId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "_password",
-						"type": "string"
-					}
-				],
-				"name": "getPassword",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_hospitalId",
-						"type": "uint256"
-					}
-				],
-				"name": "getPresident",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
 				"stateMutability": "view",
 				"type": "function"
 			},
@@ -250,12 +502,12 @@
 				"inputs": [
 					{
 						"internalType": "string",
-						"name": "_ic",
+						"name": "NRIC",
 						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "_password",
+						"name": "password",
 						"type": "string"
 					}
 				],
@@ -267,6 +519,40 @@
 						"type": "uint256"
 					}
 				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "hospitalId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "stakeholderId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "nameAssured",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "icAssured",
+						"type": "string"
+					}
+				],
+				"name": "requestMC",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -274,12 +560,12 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_hospitalId",
+						"name": "hospitalId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "string",
-						"name": "_password",
+						"name": "password",
 						"type": "string"
 					},
 					{
@@ -289,12 +575,12 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "_requestId",
+						"name": "requestId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
-						"name": "_stakeholderId",
+						"name": "stakeholderId",
 						"type": "uint256"
 					}
 				],
@@ -323,16 +609,16 @@
 				"changePresident(uint256,string,string)": {
 					"details": "change president of hospital",
 					"params": {
-						"_hospitalId": "hospital id",
-						"_ic": "president NRIC",
-						"_password": "password to register"
+						"NRIC": "president NRIC",
+						"hospitalId": "hospital id",
+						"password": "password to register"
 					}
 				},
 				"register(string,string)": {
 					"details": "register the hospital on chain",
 					"params": {
-						"_ic": "president NRIC",
-						"_password": "password to register"
+						"NRIC": "president NRIC",
+						"password": "password to register"
 					},
 					"returns": {
 						"_0": "uint256 registered hospital id"
@@ -364,17 +650,17 @@
 	},
 	"sources": {
 		"contracts/Hospital.sol": {
-			"keccak256": "0x2be2a5cfdc09600c36250c4604115fcdfea779e0218295f643c45904f2b55449",
+			"keccak256": "0x2902b285a6bed7c2e0e45421b8a798d7543ce38696ed17fbd058847c2af8eca3",
 			"urls": [
-				"bzz-raw://bcb7e11fd8e7b92b16993df271c092c81f08a202c35f171621fbf15efaee52c1",
-				"dweb:/ipfs/QmcWC6nLjycdmdj2HQMDL9bhuvm7vLjrHZtqnofzLEFLkG"
+				"bzz-raw://0433604721ac3f12ee3491a3d4ada6a4cb9d5cf675fc0bb3cd816df36b344706",
+				"dweb:/ipfs/QmZNegztT5mLTSXhcgZYkS1zCeggaYixJh72TJ8G9YmvXc"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0x0221b9f54a82c1a5c2162272a6eae0e4cac171114021f95dd0b0475b1b723c7b",
+			"keccak256": "0xd9a9cacad7b83dc5c2ca73ae746a19c861f25fd52855fefe2d86fa66972d1edc",
 			"urls": [
-				"bzz-raw://c49720de9361268f17bd367a1fd3fc9705d2250b35f404b8d16e5dcf4dc11536",
-				"dweb:/ipfs/QmUr4cQ6WJ4hzD9GoxKgeD38Tjqkh7xn63ts2dSZykNx4E"
+				"bzz-raw://a50c0d07c89529ada45b147edc31cc9f69a4371a3d48e23a23bfa87f21da9b10",
+				"dweb:/ipfs/QmeuqPC66WWanSfKujaBMGiSrTitw4bZB1P2vdENwT4zBu"
 			]
 		}
 	},

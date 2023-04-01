@@ -50,7 +50,7 @@
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "nonpayable",
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -130,10 +130,10 @@
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0x915f7f10636365bdeb8b39df826b563d41ab27382a3d32370783565b07ffb659",
+			"keccak256": "0x2cb13c5e61f01ca0793c14c731736af6a1a6ec6e25ed0098ca4cea37485a81d1",
 			"urls": [
-				"bzz-raw://a3dc603313fd0e6b12f990e1313378af992c21b3aa9f605c09dab63c8220900b",
-				"dweb:/ipfs/QmYLzyWSoEmki227n3scq1xMnejYR9uXmtmdJ2RdPf3DyT"
+				"bzz-raw://9542e9d1d6a0aef3e6a9c91e01b80d67dbb2d9b18b46e424a521ee2ac329d257",
+				"dweb:/ipfs/QmPh5F88zCEYKbMxBGG7uuLJEkC6w9VSe4g9srdmiizvut"
 			]
 		}
 	},
