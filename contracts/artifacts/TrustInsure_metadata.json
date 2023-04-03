@@ -123,17 +123,17 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0x6188f4f5383a377dff900a4fc031778791b64d62150f953d228f3739115368a9",
+			"keccak256": "0x7d7c7f6ea2cc2f0903eeeb0e848fd3534804573b26249704fc6ff729bd4933b0",
 			"urls": [
-				"bzz-raw://c7e907edd9f55a53aba6178f73fb33491f64223810d1ba4c8b4689123fd9b1cb",
-				"dweb:/ipfs/QmfEFKoFLa2ztaLMJgmw3ydV4gypnypJCA7Z6j9MrNwFzG"
+				"bzz-raw://56149fb8fb7d62cc18ac93ba780313db896b550a9e23878e30da433b62cf5710",
+				"dweb:/ipfs/QmP76eaFarizgPLRQgFvtuCC7uHD8Kn74mvmyxHrwVMhRm"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0x2cb13c5e61f01ca0793c14c731736af6a1a6ec6e25ed0098ca4cea37485a81d1",
+			"keccak256": "0x39a520c29a33c9582f0804cd8eb9df93005e483e440240a4462cbd748e930e3d",
 			"urls": [
-				"bzz-raw://9542e9d1d6a0aef3e6a9c91e01b80d67dbb2d9b18b46e424a521ee2ac329d257",
-				"dweb:/ipfs/QmPh5F88zCEYKbMxBGG7uuLJEkC6w9VSe4g9srdmiizvut"
+				"bzz-raw://5ed3e485d3e543add1b765b066a4085a95813da2d4cbe82725c7322e61e6318b",
+				"dweb:/ipfs/QmS7jBDCN2LuniwGYwhBDtgatbVXdk6YeESeKBDWUgY77f"
 			]
 		}
 	},

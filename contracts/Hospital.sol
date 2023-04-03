@@ -65,6 +65,11 @@ contract Hospital is MedicalCertificate  {
         _;
     }
 
+    modifier validDate(string memory s) {
+        require(bytes(s).length == 8, "Invalid date!");
+        _;
+    }
+
     
     //since below function already check validity no need here
     // modifier validRequest(uint256  _hospitalId, uint256 _stakeholderId, uint256 _requestId) {
@@ -82,7 +87,7 @@ contract Hospital is MedicalCertificate  {
     * @return uint256 registered hospital id
     */
     function register(string memory NRIC, string memory password) public payable validIC(NRIC) returns(uint256) {
-        require(msg.value == 0.01 ether, "0.01 ETH is needed to register your hospital");
+        require(msg.value >= 0.01 ether, "0.01 ETH is needed to register your hospital");
 
         totalHospital++;
         hospital storage newHospital = registeredHospital[totalHospital];
@@ -102,7 +107,7 @@ contract Hospital is MedicalCertificate  {
     function createPersonalInfo (uint256 hospitalId, string memory password, 
     string memory name, string memory NRIC, string memory sex, 
                 uint256 birthdateYYYYMMDD, string memory race_nationality) 
-    public validHospital(hospitalId) verifyPassword(hospitalId,password)  
+    public validHospital(hospitalId) verifyPassword(hospitalId,password)  validDate(birthdateYYYYMMDD)
     override returns (uint256) {
         numOfPeople++;
         personalInfo storage person = infos[numOfPeople];
@@ -115,11 +120,11 @@ contract Hospital is MedicalCertificate  {
         return numOfPeople;
     }
 
-    function add(uint256 hospital, string memory password, uint256 personId,
+    function addMC(uint256 hospital, string memory password, uint256 personId,
     certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
     string memory certifierName
     ) 
-    public validHospital(hospital) verifyPassword(hospital,password)  
+    public validHospital(hospital) verifyPassword(hospital,password) validDate(incidentYYYYMMDDHHMM)
     override returns(bytes memory) {
         counter = counter + 1;
         bytes memory id = abi.encodePacked(counter, personId);

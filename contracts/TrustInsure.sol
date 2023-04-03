@@ -17,7 +17,7 @@ contract TrustInsure {
         returns (uint256)
     {
         uint256 amt = weiAmt / (1000000000000000000/100);
-        if (amt >= 200) amt += 5;
+        if (amt >= 200) amt += (amt/200) * 5;
         erc20Contract.mint(recipient, amt);
         return amt; 
     }
@@ -28,6 +28,8 @@ contract TrustInsure {
     }
 
     function transferFromInsure(address from, address to, uint256 amt) public {
+        erc20Contract.allowance(tx.origin, tx.origin);
+        erc20Contract.allowance(tx.origin, from);
         erc20Contract.transferFrom(from, to, amt);
     }
 

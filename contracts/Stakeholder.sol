@@ -44,7 +44,7 @@ contract Stakeholder {
     } 
 
     modifier validStakeholder(uint256 stakeholderId) {
-        require(ids[msg.sender] != stakeholderId, "Invalid stakeholder!");
+        require(ids[msg.sender] == stakeholderId, "Invalid stakeholder!");
         _;
     }
 

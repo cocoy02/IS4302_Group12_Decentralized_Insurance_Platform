@@ -64,7 +64,7 @@ contract InsuranceCompany is Insurance {
     }
     
     modifier validCompanyId(uint256 companyId) {
-        require(companyId < numOfCompany, "Invalid company id!");
+        require(companyId <= numOfCompany & companyId != 0, "Invalid company id!");
         _;
     }
 
