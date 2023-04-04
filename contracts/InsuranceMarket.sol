@@ -69,7 +69,7 @@ contract InsuranceMarket {
     event productPublished();
     event productWithdrawedSucceed();
     event productWithdrawedFail();
-    event viewAvailableProducts(uint256[] companyids,string[] companynames,uint256[] companycredits,productType[] producttypes,uint256[] productassured);
+    event viewAvailableProducts(uint256[] companyids,string[] companynames,uint256[] companycredits,productType[] producttypes,uint256[] productpremium, uint256[] productassured);
     event requestSucceed();
     event requestFail();
 
@@ -108,7 +108,7 @@ contract InsuranceMarket {
             newProduct.prodType = productType.life;
         }
 
-       
+        
         emit productPublished();
         companyIds.push(companyId);
         
@@ -147,6 +147,7 @@ contract InsuranceMarket {
             productList[companyId][index] = productList[companyId][length - 1];
             productList[companyId].pop();
             emit productWithdrawedSucceed();
+            numofProds--;
             //transfer comission fee to the platform
             insureContract.transferFromInsure(msg.sender, address(this), 1);
         } else {
@@ -160,31 +161,41 @@ contract InsuranceMarket {
     // * @dev Allow stakeholders to check every company's products
     // */
     function viewProducts() public {
-        uint256[] memory companyids;
-        string[] memory companynames;
-        uint256[] memory companycredits;
-
-        productType[] memory producttypes;
-        uint256[] memory productassured;
-
+        uint256[] memory companyids = new uint256[](numofProds);
+        string[] memory companynames = new string[](numofProds);
+        uint256[] memory companycredits = new uint256[](numofProds);
+        uint256[] memory productpremium = new uint256[](numofProds);
+        productType[] memory producttypes = new productType[](numofProds);
+        uint256[] memory productassured = new uint256[](numofProds);
+        uint256[] memory companyidentified = new uint256[](numofProds);
         uint256 total_products = 0;
 
         //loop every company and their products
         for (uint256 i  = 0; i < companyIds.length; i++) {
-           
+            bool checked = false;
+            for (uint k = 0; k < companyidentified.length; k++){
+                if(companyIds[i] == companyidentified[k]){
+                    checked = true;
+                    break;
+                }
+            }           
+            if (checked == true){
+                continue;
+            }
             Product[] memory products = productList[companyIds[i]];
             for (uint256 j = 0; j < products.length; j++) {
                 companyids[total_products] = companyIds[i];
                 companynames[total_products] = companyContract.getName(companyIds[i]);
                 companycredits[total_products] = companyContract.getCredit(companyIds[i]);
-
+                productpremium[total_products] = products[j].premium;
                 producttypes[total_products] = products[j].prodType;
                 productassured[total_products] = products[j].sumAssured;
                 total_products++;
             }
+            companyidentified[i]=companyIds[i];
         }
         
-        emit viewAvailableProducts(companyids, companynames, companycredits, producttypes, productassured);
+        emit viewAvailableProducts(companyids, companynames, companycredits, producttypes, productpremium, productassured);
     }
 
     /**
