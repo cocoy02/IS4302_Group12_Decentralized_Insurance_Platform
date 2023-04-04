@@ -60,12 +60,6 @@
 						"internalType": "string[]",
 						"name": "producttypes",
 						"type": "string[]"
-					},
-					{
-						"indexed": false,
-						"internalType": "enum InsuranceCompany.requestStatus[]",
-						"name": "statuses",
-						"type": "uint8[]"
 					}
 				],
 				"name": "allRequests",
@@ -183,25 +177,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					}
-				],
-				"name": "add",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "_buyerId",
 						"type": "uint256"
@@ -236,44 +211,6 @@
 					}
 				],
 				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "insuranceId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "companyId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_hospitalId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bytes",
-						"name": "mcId",
-						"type": "bytes"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "NRIC",
-						"type": "string"
-					}
-				],
-				"name": "autoTransfer",
-				"outputs": [],
-				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -315,6 +252,11 @@
 						"internalType": "enum InsuranceCompany.requestStatus",
 						"name": "",
 						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -373,6 +315,11 @@
 				],
 				"name": "companies",
 				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "companyId",
+						"type": "uint256"
+					},
 					{
 						"internalType": "uint256",
 						"name": "credit",
@@ -438,7 +385,7 @@
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -484,6 +431,19 @@
 					}
 				],
 				"name": "getBeneficiary",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getCompanyId",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -788,6 +748,25 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "ids",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
@@ -918,6 +897,25 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					}
+				],
+				"name": "registerCompany",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "newBeneficiary",
 						"type": "uint256"
@@ -967,16 +965,11 @@
 						"internalType": "uint256",
 						"name": "policyOwnerID",
 						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "signature",
-						"type": "string"
 					}
 				],
 				"name": "signInsurance",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -1096,45 +1089,45 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0x6188f4f5383a377dff900a4fc031778791b64d62150f953d228f3739115368a9",
+			"keccak256": "0x7d7c7f6ea2cc2f0903eeeb0e848fd3534804573b26249704fc6ff729bd4933b0",
 			"urls": [
-				"bzz-raw://c7e907edd9f55a53aba6178f73fb33491f64223810d1ba4c8b4689123fd9b1cb",
-				"dweb:/ipfs/QmfEFKoFLa2ztaLMJgmw3ydV4gypnypJCA7Z6j9MrNwFzG"
+				"bzz-raw://56149fb8fb7d62cc18ac93ba780313db896b550a9e23878e30da433b62cf5710",
+				"dweb:/ipfs/QmP76eaFarizgPLRQgFvtuCC7uHD8Kn74mvmyxHrwVMhRm"
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0x2902b285a6bed7c2e0e45421b8a798d7543ce38696ed17fbd058847c2af8eca3",
+			"keccak256": "0xcc7d2af09bfb53ad825c24543823957cd92efd83dc4ef4472d26c9c59b262ca0",
 			"urls": [
-				"bzz-raw://0433604721ac3f12ee3491a3d4ada6a4cb9d5cf675fc0bb3cd816df36b344706",
-				"dweb:/ipfs/QmZNegztT5mLTSXhcgZYkS1zCeggaYixJh72TJ8G9YmvXc"
+				"bzz-raw://60a63c1ad0343d68a875dbc10f4cbf9ba572923629a75c38973e13ef8f133fb6",
+				"dweb:/ipfs/QmQLhaNFJqNsQxL2tC1TPX1HFNV8nAZBDvzPRPu6yDGTTo"
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0x64b87f45acb84ee6d3e33625db55a23b468363d26869f19317c2bcb9c39afe09",
+			"keccak256": "0xddfec69db89669446005ef78e9ef77e38af060ff1eb767f8514aeee406f7153c",
 			"urls": [
-				"bzz-raw://c3493f5b7eda91a8bf8c6dd23b0a8c9454bd610111e472c2fd11b822aa4dd1ea",
-				"dweb:/ipfs/QmYm9aRUHyMQzJxTdKXrtZfKKDhqr7SEtxLWLtQzp1ccqX"
+				"bzz-raw://e1dd276ce9956768ebf539bc2d8784b23877141ab73a0f21a012fd3ac68acce1",
+				"dweb:/ipfs/QmX5X26mU7iGdHhxyoDJ4cgWwCvQWt3zBAgB8kLB3XAHey"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x90f1dc5859cbfa32b6945b3ac96f782cccfd4b165c21e142516e1062b5c631d2",
+			"keccak256": "0x2467d35bb5d5057cc2c28741eef470d7a602b51ae23613df89dbad75439efe66",
 			"urls": [
-				"bzz-raw://d95ed0c7acfae5908df7da3ff977091498ff95f3846e873216f5ab0f743f8ab7",
-				"dweb:/ipfs/QmPqM9YFcHuHeuV8QZXwhGR6DB5JYGq5cnxepAqV7kRChj"
+				"bzz-raw://92e31044385c8400bf1bce35902c77363fea3e543749a8484d4f2ad06162eb71",
+				"dweb:/ipfs/QmYvnrDFbDz3cB7dQWX77g2ho8ME6BoKmvNkVTYFeRUcNV"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0xd9a9cacad7b83dc5c2ca73ae746a19c861f25fd52855fefe2d86fa66972d1edc",
+			"keccak256": "0x477b1fdc7fb3e1c32d19c65c4968aa7df3a01d7b1285b5e9a56f5ef0fdd86975",
 			"urls": [
-				"bzz-raw://a50c0d07c89529ada45b147edc31cc9f69a4371a3d48e23a23bfa87f21da9b10",
-				"dweb:/ipfs/QmeuqPC66WWanSfKujaBMGiSrTitw4bZB1P2vdENwT4zBu"
+				"bzz-raw://e809fb720ebb85e5064e2121e3405c15b5cd678492c926511860233dc08afb5f",
+				"dweb:/ipfs/QmehAPqqopuRR2KbGv6ps9iMxxy7hUNAMAjv8wFf19ELnc"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0x2cb13c5e61f01ca0793c14c731736af6a1a6ec6e25ed0098ca4cea37485a81d1",
+			"keccak256": "0x54c690196d1d125743587d55881c6b95ec9e2dfaffc1d634fe4b37b82670ca7a",
 			"urls": [
-				"bzz-raw://9542e9d1d6a0aef3e6a9c91e01b80d67dbb2d9b18b46e424a521ee2ac329d257",
-				"dweb:/ipfs/QmPh5F88zCEYKbMxBGG7uuLJEkC6w9VSe4g9srdmiizvut"
+				"bzz-raw://64bb0afec1c9d117458895b986181ed3ed06fdc2664194a0782aaec9401b813b",
+				"dweb:/ipfs/QmbP145T8zSrofBtAdgooTDr2fn5kZ3cYyKqW9EamZcqBs"
 			]
 		}
 	},

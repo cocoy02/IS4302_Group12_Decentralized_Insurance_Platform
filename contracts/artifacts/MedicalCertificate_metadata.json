@@ -61,9 +61,9 @@
 								"type": "string"
 							},
 							{
-								"internalType": "uint256",
+								"internalType": "string",
 								"name": "birthdate",
-								"type": "uint256"
+								"type": "string"
 							},
 							{
 								"internalType": "string",
@@ -127,7 +127,7 @@
 						"type": "string"
 					}
 				],
-				"name": "add",
+				"name": "addMC",
 				"outputs": [
 					{
 						"internalType": "bytes",
@@ -166,9 +166,9 @@
 						"type": "string"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "birthdateYYYYMMDD",
-						"type": "uint256"
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -275,9 +275,9 @@
 						"type": "string"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "birthdate",
-						"type": "uint256"
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -317,10 +317,10 @@
 	},
 	"sources": {
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0x0f6fbfcad5f3054ba4c63defd51b378b6e4c5a8a5caa05405b18b14ee156119c",
+			"keccak256": "0x477b1fdc7fb3e1c32d19c65c4968aa7df3a01d7b1285b5e9a56f5ef0fdd86975",
 			"urls": [
-				"bzz-raw://e329aa6e2edfbc74c5d3f966778d6085e0ecf4d06f6b379cfaeb8ab4910ff94a",
-				"dweb:/ipfs/QmZJJ83q1vxXsxwXC7CaZ4mviPwdTCx5mPopDoENsS282v"
+				"bzz-raw://e809fb720ebb85e5064e2121e3405c15b5cd678492c926511860233dc08afb5f",
+				"dweb:/ipfs/QmehAPqqopuRR2KbGv6ps9iMxxy7hUNAMAjv8wFf19ELnc"
 			]
 		}
 	},
