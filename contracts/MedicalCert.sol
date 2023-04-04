@@ -15,7 +15,7 @@ contract MedicalCertificate {
         string name;
         string NRIC;
         string sex;
-        uint256 birthdate; //YYYYMMDD
+        string birthdate; //YYYYMMDD
         string race_nationality;
     }
 
