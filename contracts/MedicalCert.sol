@@ -37,7 +37,7 @@ contract MedicalCertificate {
 
     function createPersonalInfo (uint256 hospitalId, string memory password,
     string memory name, string memory NRIC, string memory sex, 
-    uint256 birthdateYYYYMMDD, string memory race_nationality) public virtual returns (uint256) {}
+    string birthdateYYYYMMDD, string memory race_nationality) public virtual returns (uint256) {}
 
     function addMC(uint256 hospital, string memory password, uint256 personId,
                 certCategory incidentType, string memory incidentYYYYMMDDHHMM, string memory certifierName
