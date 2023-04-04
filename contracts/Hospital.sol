@@ -106,7 +106,7 @@ contract Hospital is MedicalCertificate  {
 
     function createPersonalInfo (uint256 hospitalId, string memory password, 
     string memory name, string memory NRIC, string memory sex, 
-                uint256 birthdateYYYYMMDD, string memory race_nationality) 
+                string memory birthdateYYYYMMDD, string memory race_nationality) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password)  validDate(birthdateYYYYMMDD)
     override returns (uint256) {
         numOfPeople++;

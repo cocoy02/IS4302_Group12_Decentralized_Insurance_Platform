@@ -39,7 +39,7 @@ contract MedicalCertificate {
     string memory name, string memory NRIC, string memory sex, 
     uint256 birthdateYYYYMMDD, string memory race_nationality) public virtual returns (uint256) {}
 
-    function add(uint256 hospital, string memory password, uint256 personId,
+    function addMC(uint256 hospital, string memory password, uint256 personId,
                 certCategory incidentType, string memory incidentYYYYMMDDHHMM, string memory certifierName
                 ) public virtual returns(bytes memory) {
     }
