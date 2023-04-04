@@ -120,7 +120,7 @@ contract Hospital is MedicalCertificate  {
         return numOfPeople;
     }
 
-    function addMC(uint256 hospital, string memory password, uint256 personId,
+    function add(uint256 hospital, string memory password, uint256 personId,
     certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
     string memory certifierName
     ) 
