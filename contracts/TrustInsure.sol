@@ -12,13 +12,15 @@ contract TrustInsure {
         owner = msg.sender;
     }
  
-    function getInsure(address recipient, uint256 weiAmt)
+    //function getInsure(address recipient, uint256 weiAmt)
+    function getInsure()
         public payable
         returns (uint256)
     {
-        uint256 amt = weiAmt / (1000000000000000000/100);
+        //uint256 amt = weiAmt / (1000000000000000000/100);
+        amt = msg.value;
         if (amt >= 200) amt += (amt/200) * 5;
-        erc20Contract.mint(recipient, amt);
+        erc20Contract.mint(msg.sender, amt);
         return amt; 
     }
 
