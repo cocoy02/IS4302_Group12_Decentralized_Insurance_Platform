@@ -30,18 +30,7 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "recipient",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "weiAmt",
-						"type": "uint256"
-					}
-				],
+				"inputs": [],
 				"name": "getInsure",
 				"outputs": [
 					{
@@ -123,17 +112,17 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0x7d7c7f6ea2cc2f0903eeeb0e848fd3534804573b26249704fc6ff729bd4933b0",
+			"keccak256": "0xd21811786d234e0ba0624a740ae502e1c0f25887cf73556309f79b82b359025f",
 			"urls": [
-				"bzz-raw://56149fb8fb7d62cc18ac93ba780313db896b550a9e23878e30da433b62cf5710",
-				"dweb:/ipfs/QmP76eaFarizgPLRQgFvtuCC7uHD8Kn74mvmyxHrwVMhRm"
+				"bzz-raw://b661a37122468a631f772597d585177e0610d746baea69278cf355f1b7c84617",
+				"dweb:/ipfs/QmW7fqRN8MnxzenrKi6jLSY8sqbLepzMk48akuhL8ymJXM"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0x54c690196d1d125743587d55881c6b95ec9e2dfaffc1d634fe4b37b82670ca7a",
+			"keccak256": "0xd626b9ffad372dadca9f4d1d8b85275b346b19eaac4ca48d0b62487d77b9a306",
 			"urls": [
-				"bzz-raw://64bb0afec1c9d117458895b986181ed3ed06fdc2664194a0782aaec9401b813b",
-				"dweb:/ipfs/QmbP145T8zSrofBtAdgooTDr2fn5kZ3cYyKqW9EamZcqBs"
+				"bzz-raw://984d3d6d2307d784e263a69dd98e980c304eb142d95154e956244cdc6a3a7f80",
+				"dweb:/ipfs/QmU4UpuGmeMNYzYrh5dknjshVZyAcmyoxqwftbUSZjfoi2"
 			]
 		}
 	},

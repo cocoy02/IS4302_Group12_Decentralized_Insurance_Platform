@@ -36,6 +36,7 @@ contract Stakeholder {
     mapping(uint256 => stakeholder) public stakeholders; //stakeholder ID to stakeholder
     mapping(address => uint256) ids; //stakeholder address to id
     mapping(uint256 => uint256[]) insuranceReqs; //stakeholder ids => insurance requests ids
+    mapping(uint256 => uint256[]) mcReqs; 
 
     //Modifiers
     modifier onlyPolicyOwner(uint256 policyOwnerID) {
@@ -67,6 +68,16 @@ contract Stakeholder {
 
     function addRequestIds(uint256 stakeholderId, uint256 requestId) public {
         insuranceReqs[stakeholderId].push(requestId);
+    }
+    
+    function requestMC(uint256 hospitalId, string memory nameAssured, string memory icAssured) 
+    public returns(uint256) {
+        uint256 id = getStakeholderId(msg.sender);
+        uint256 reqid = hospitalContract.requestMC(hospitalId, id, nameAssured, icAssured);
+
+        mcReqs[id].push(reqid);
+
+        return reqid;
     }
     
     // /** 

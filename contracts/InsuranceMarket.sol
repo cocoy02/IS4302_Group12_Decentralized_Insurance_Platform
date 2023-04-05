@@ -154,6 +154,7 @@ contract InsuranceMarket {
             emit productWithdrawedFail();
         }
        
+        numofProds--;
         return find;
     }
 
