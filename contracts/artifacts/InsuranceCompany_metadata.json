@@ -1096,10 +1096,10 @@
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0xcc7d2af09bfb53ad825c24543823957cd92efd83dc4ef4472d26c9c59b262ca0",
+			"keccak256": "0x30c3b583df9d7f19cb7472802d77c0a7ad16c68215fcba240dd1d34699772e7f",
 			"urls": [
-				"bzz-raw://60a63c1ad0343d68a875dbc10f4cbf9ba572923629a75c38973e13ef8f133fb6",
-				"dweb:/ipfs/QmQLhaNFJqNsQxL2tC1TPX1HFNV8nAZBDvzPRPu6yDGTTo"
+				"bzz-raw://f6296a50b85ffdc82abfdd449ce90695b876a6d67aa40f0e3c145b78d4b6432e",
+				"dweb:/ipfs/QmNa1Zx7QjcuALra2TusutwMiUUqPH7ajdedmKNnqXNL1i"
 			]
 		},
 		"contracts/Insurance.sol": {

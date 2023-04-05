@@ -205,10 +205,10 @@ contract Hospital is MedicalCertificate  {
     function checkRequestFromHospital (uint256 _hospitalId, string memory _password) 
     public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
     {
-        uint256[] memory requestids;
-        uint256[] memory stakeholderids;
-        string[] memory names;
-        string[]memory ics;
+        uint256[] memory requestids = new uint256[](numOfReqs);
+        uint256[] memory stakeholderids = new uint256[](numOfReqs);
+        string[] memory names = new string[](numOfReqs);
+        string[]memory ics = new string[](numOfReqs);
 
         uint256[] memory requestedstakeholders = stakeholders[_hospitalId];
 
