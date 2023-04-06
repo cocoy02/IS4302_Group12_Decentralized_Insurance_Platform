@@ -10,7 +10,7 @@ contract Stakeholder {
     InsuranceCompany insuranceCompanyContract;
     Hospital hospitalContract;
     TrustInsure insureContract;
-    enum position { policyOwner, beneficiary, lifeAssured }
+    //enum position { policyOwner, beneficiary, lifeAssured }
 
 
     constructor( InsuranceCompany insuranceCompanyAddress, 
