@@ -68,6 +68,11 @@ contract InsuranceCompany is Insurance {
         _;
     }
 
+    modifier validBeneficiary(uint256 insuranceId, uint256 beneficiaryID) {
+        require(insurances[insuranceId].stakeholders.beneficiary == beneficiaryID, "Invalid beneficiary!");
+        _;
+    }
+
     modifier validPolicyOwner(uint256 insuranceId, uint256 policyOwnerID) {
         require(insurances[insuranceId].stakeholders.policyOwner == policyOwnerID, "Invalid policy owner!");
         _;
@@ -195,7 +200,7 @@ contract InsuranceCompany is Insurance {
     // * @dev function to update the credit of company once a insurance is signed
     // * @param {uint256} companyId
     // */
-    function updateCredit(uint256 companyId) public validCompanyId(companyId) {
+    function updateCredit(uint256 companyId) internal validCompanyId(companyId) {
         insuranceCompany storage company = companies[companyId];
         uint256 completed = company.completed;
         if(completed >=50 && completed <=200) {
@@ -226,9 +231,10 @@ contract InsuranceCompany is Insurance {
         emit allPaid(insuranceId);
     }
 
-    function claim(uint256 insuranceID,uint256 companyId, bytes memory mcId,uint256 hospitalId,uint256 policyOwnerID,
+    function claim(uint256 insuranceID,uint256 companyId, 
+    bytes memory mcId,uint256 hospitalId,uint256 beneficiaryID,
     string memory name, string memory NRIC) 
-    public validPolicyOwner(insuranceID, policyOwnerID)
+    public validBeneficiary(insuranceID, beneficiaryID)
     {
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
@@ -321,7 +327,7 @@ contract InsuranceCompany is Insurance {
     // /**
     // * @dev Allow insurance company reject request
     // */
-    function reject(uint256 requestId,uint256 companyId) private {
+    function rejectRequest(uint256 requestId,uint256 companyId) private {
         require(requestId != 0, "Input valid requestId!");
 
         uint256 index;

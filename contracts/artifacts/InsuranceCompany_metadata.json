@@ -286,7 +286,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "policyOwnerID",
+						"name": "beneficiaryID",
 						"type": "uint256"
 					},
 					{
@@ -1032,19 +1032,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "companyId",
-						"type": "uint256"
-					}
-				],
-				"name": "updateCredit",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "enum Insurance.status",
 						"name": "state",
 						"type": "uint8"
@@ -1110,10 +1097,10 @@
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x2467d35bb5d5057cc2c28741eef470d7a602b51ae23613df89dbad75439efe66",
+			"keccak256": "0x51834a886ed7bdb6a4a03f46f2d70b767d214cb834a61862bd9eab6a58ee759f",
 			"urls": [
-				"bzz-raw://92e31044385c8400bf1bce35902c77363fea3e543749a8484d4f2ad06162eb71",
-				"dweb:/ipfs/QmYvnrDFbDz3cB7dQWX77g2ho8ME6BoKmvNkVTYFeRUcNV"
+				"bzz-raw://b9be023b8a324e4d390791b0df9a8f5e66cd5c8f6c3c294ef4f617b43ba37bc3",
+				"dweb:/ipfs/QmRtBV3DyMf4zsw252Z6afiq87mcPVwoLTemMH2YZE7kMY"
 			]
 		},
 		"contracts/MedicalCert.sol": {

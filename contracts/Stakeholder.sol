@@ -28,7 +28,6 @@ contract Stakeholder {
         string name;
         bytes NRIC;
         address stakeholderAddress;
-        mapping(uint256 => position) involvingInsurances; //insurance ID to position   
     }
     
 
