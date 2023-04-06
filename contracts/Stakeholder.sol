@@ -143,5 +143,9 @@ contract Stakeholder {
     function getRequestId(uint256 stakeholderID) public view validStakeholder(stakeholderID) returns(uint256[] memory) {
         return insuranceReqs[stakeholderID];
     }
+
+    function getInsurance(uint256 insuranceId) public view returns (Insurance.insurance memory) {
+        return insuranceCompanyContract.getInsurance(insuranceId);
+    }
     
 }

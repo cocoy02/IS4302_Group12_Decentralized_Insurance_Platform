@@ -137,4 +137,6 @@ contract Insurance {
         // if not enough, after one month, check again.
         // otherwise, terminate the insurance until stakeholder could pay
     }
+
+    
 }
