@@ -203,7 +203,7 @@ contract InsuranceCompany is Insurance {
     // * @dev function to update the credit of company once a insurance is signed
     // * @param {uint256} companyId
     // */
-    function updateCredit(uint256 companyId) internal validCompanyId(companyId) {
+    function updateCredit(uint256 companyId) private validCompanyId(companyId) {
         insuranceCompany storage company = companies[companyId];
         uint256 completed = company.completed;
         if(completed >=50 && completed <=200) {
@@ -252,7 +252,7 @@ contract InsuranceCompany is Insurance {
     // * @param  {uint256} insuranceId, {uint256} companyId,{uint256} _hospitalId,{bytes} mcId
     // */
     function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes memory mcId,
-    string memory name, string memory NRIC) internal {
+    string memory name, string memory NRIC) private {
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insurances[insuranceId].status == Insurance.status.paid, "Stakeholder haven't paid the insurance!");
         //insurance valid from date 
