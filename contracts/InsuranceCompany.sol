@@ -330,7 +330,9 @@ contract InsuranceCompany is Insurance {
     // /**
     // * @dev Allow insurance company reject request
     // */
-    function rejectRequest(uint256 requestId,uint256 companyId) private {
+    function rejectRequest(uint256 requestId,uint256 companyId) public
+    validCompanyId(companyId) ownerOnly(companyId)  
+    {
         require(requestId != 0, "Input valid requestId!");
 
         uint256 index;
