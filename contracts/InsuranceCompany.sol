@@ -16,7 +16,7 @@ contract InsuranceCompany is Insurance {
         address owner;
         uint256 completed; //number range to stars
         mapping(uint256 => insurance) insuranceIds;
-        Request[] requestLists;//!!!!!company only could have at most ten requests, they need to fast approve!!!!!!//
+        Request[] requestLists;
     }
 
     struct Request {
@@ -28,7 +28,10 @@ contract InsuranceCompany is Insurance {
         uint256 insuranceId;
     }
 
-    constructor(Hospital hospitalInstanceAddress, TrustInsure trustinsureInstanceAddress) public {
+    constructor(Hospital hospitalInstanceAddress, 
+                TrustInsure trustinsureInstanceAddress) 
+    public 
+    {
         hospitalInstance = hospitalInstanceAddress;  
         trustinsureInstance = trustinsureInstanceAddress;    
     }
@@ -47,7 +50,6 @@ contract InsuranceCompany is Insurance {
         string[] producttypes);
     event requestSolve(uint256 requestId,uint256 insuranceId);
     event requestReject(uint256 requestId);
-    //event passedToStakeholder();
     event checkRequest(requestStatus status);
     event allPaid(uint256 insuranceID);
     event askingCert (uint256 insuranceID);
@@ -88,11 +90,11 @@ contract InsuranceCompany is Insurance {
 // =====================================================================================
 
 
-    // /**
-    // * @dev Company register
-    // * @param name the name of the company
-    // * @return uint256 id of the company
-    // */
+    /**
+    * dev Register an insurance company
+    * param namae (string): the name of the new insurance company
+    * return uint256 id of the company
+    */
     function registerCompany(string memory name) public payable returns(uint256) {
         require(msg.value > 0.01 ether, "at least 0.01 ETH is needed to create a company");
         
@@ -384,7 +386,8 @@ contract InsuranceCompany is Insurance {
 // =====================================================================================
 // getters
 // =====================================================================================
-
+    
+    //get the company credit
     function getCredit(uint256 companyId) public view validCompanyId(companyId) returns (uint256) {
         return companies[companyId].credit;
     }
@@ -396,10 +399,6 @@ contract InsuranceCompany is Insurance {
     function getOwner(uint256 companyId) public view validCompanyId(companyId) returns (address) {
         return companies[companyId].owner;
     }
-    
-    // function getCompanyById(uint256 companyId) public view validCompanyId(companyId) returns (insuranceCompany memory) {
-    //     return companies[companyId];
-    // }
     
     function getCompanyId() public view returns(uint256) {
         return ids[msg.sender];
