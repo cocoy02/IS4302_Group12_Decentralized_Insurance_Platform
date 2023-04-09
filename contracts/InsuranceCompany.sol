@@ -191,7 +191,7 @@ contract InsuranceCompany is Insurance {
     // */
     //stakeholder call this function to sign the insurance
     function signInsurance(uint256 insuranceId,uint256 companyId, uint256 policyOwnerID) 
-    public  
+    external
     validCompanyId(companyId) validPolicyOwner(insuranceId, policyOwnerID)
     {
         insurances[insuranceId].status = Insurance.status.processing;
@@ -223,7 +223,7 @@ contract InsuranceCompany is Insurance {
         } 
     }
 
-    function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID, address policyOwner) public validPolicyOwner(insuranceId, policyOwnerID){
+    function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID, address policyOwner) external validPolicyOwner(insuranceId, policyOwnerID){
         address companyAddress = companies[insurances[insuranceId].companyId].owner;
         trustinsureInstance.transferFromInsure(policyOwner,companyAddress,amount);
 
@@ -239,7 +239,7 @@ contract InsuranceCompany is Insurance {
     function claim(uint256 insuranceID,uint256 companyId, 
     bytes memory mcId,uint256 hospitalId,uint256 beneficiaryID,
     string memory name, string memory NRIC) 
-    public validBeneficiary(insuranceID, beneficiaryID)
+    external validBeneficiary(insuranceID, beneficiaryID)
     {
         //step1: ask for cert from hospital
         emit askingCert(insuranceID);
@@ -359,7 +359,7 @@ contract InsuranceCompany is Insurance {
     // /**
     // * @dev Allow stakeholder to check request status
     // */
-    function checkRequestsFromStakeholder(uint256 companyId, uint256 requestId) public returns (requestStatus, uint256) {
+    function checkRequestsFromStakeholder(uint256 companyId, uint256 requestId) external returns (requestStatus, uint256) {
         require(requestId != 0, "Invalid request id!");
 
         uint256 index;

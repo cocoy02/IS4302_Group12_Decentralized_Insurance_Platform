@@ -534,10 +534,10 @@
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x7d7083cbbec706628f45b088167a653a5df1535a0066c9181ea0fcf3c7c453aa",
+			"keccak256": "0xbc3a3dfdee1a884ace6d4b028063b30e6570ddc4bbe28653f3295ef32138233c",
 			"urls": [
-				"bzz-raw://254b50cf97e3acd924481d068bdf5fd5f48ca0b6231a24be54c24cf8a41931e9",
-				"dweb:/ipfs/QmVT64NLzz9asEWQfKHf5etBq2LM5BY4LppWDdqtwwzitY"
+				"bzz-raw://91160eb444d5b60235a92ac9aaa60bcc6fdec7a44ff5b5b052141422774f98a5",
+				"dweb:/ipfs/QmSuXUZQEG1oCtefQvQ9dJjkniZW4tvMT9Kzjt8KEfojju"
 			]
 		},
 		"contracts/MedicalCert.sol": {
@@ -548,10 +548,10 @@
 			]
 		},
 		"contracts/Stakeholder.sol": {
-			"keccak256": "0x7e80e3c47ad955bd42d5001f2c645fde1efa29cb127b9a532f53edc516420b65",
+			"keccak256": "0x4bd7bec06b538e2692fd6e42bd1d68d1e2b6fce365f29b2b0baade9af2bc466d",
 			"urls": [
-				"bzz-raw://fadecb2374efb5178a5abfbb91931895e17b7176abebc770fb3b7db122757074",
-				"dweb:/ipfs/Qmd6eT9V4sdaFvNBvsD2ryKmRpqype1xpvw7YU6YdPFZ5i"
+				"bzz-raw://22e8650e67434f8fad2f50305c190a21acca30dac44bd3adf1c526f08efab300",
+				"dweb:/ipfs/QmNeEJjXtdnxKzKKU2cfjG8pocifjMBQJc4pfRrTusnuUL"
 			]
 		},
 		"contracts/TrustInsure.sol": {

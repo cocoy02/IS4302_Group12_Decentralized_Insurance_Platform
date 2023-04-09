@@ -65,7 +65,7 @@ contract Stakeholder {
         return numStakeholder;
     }
 
-    function addRequestIds(uint256 stakeholderId, uint256 requestId) public {
+    function addRequestIds(uint256 stakeholderId, uint256 requestId) external {
         insuranceReqs[stakeholderId].push(requestId);
     }
     

@@ -182,7 +182,7 @@ contract Hospital is MedicalCertificate  {
     // * @return uint256 number of requests
     // */
     function requestMC(uint256 hospitalId, uint256 stakeholderId, string memory nameAssured, string memory icAssured) 
-    public validHospital(hospitalId) returns(uint256) {
+    external validHospital(hospitalId) returns(uint256) {
         //require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder!");
   
         numOfReqs++;
@@ -241,7 +241,7 @@ contract Hospital is MedicalCertificate  {
     // * @return  byte32 mcId
     // */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
-      public view validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
+      external view validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
       returns(bytes memory)
     {
         Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
