@@ -917,6 +917,24 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "companyId",
+						"type": "uint256"
+					}
+				],
+				"name": "rejectRequest",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "newBeneficiary",
 						"type": "uint256"
 					},
@@ -1090,17 +1108,17 @@
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0xddfec69db89669446005ef78e9ef77e38af060ff1eb767f8514aeee406f7153c",
+			"keccak256": "0xef1e8cada88748a800ea6487f0f7c1ba42aa6c88fec76079f14180f869a8931d",
 			"urls": [
-				"bzz-raw://e1dd276ce9956768ebf539bc2d8784b23877141ab73a0f21a012fd3ac68acce1",
-				"dweb:/ipfs/QmX5X26mU7iGdHhxyoDJ4cgWwCvQWt3zBAgB8kLB3XAHey"
+				"bzz-raw://0217b9da8fd41401176133a51fa2fb06431a6606d94cd171dc9bab2cbf176fda",
+				"dweb:/ipfs/QmTumRVyp1Vwvysc57znwYs5U5Ly2pJeBcBkNAXut6wXzj"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x51834a886ed7bdb6a4a03f46f2d70b767d214cb834a61862bd9eab6a58ee759f",
+			"keccak256": "0xe1f5c59902dd400d925f081a8b9e11f498dd5d5113cb6dec03276eead14e12e0",
 			"urls": [
-				"bzz-raw://b9be023b8a324e4d390791b0df9a8f5e66cd5c8f6c3c294ef4f617b43ba37bc3",
-				"dweb:/ipfs/QmRtBV3DyMf4zsw252Z6afiq87mcPVwoLTemMH2YZE7kMY"
+				"bzz-raw://97de65c3212e8bd8f5b7958443440a47bc6cf94f3c1a06d4318124af1ad5caa0",
+				"dweb:/ipfs/QmT41VjWqK8cBQEvxeFyq33xrivwY2u5FEayfbxwGceVXf"
 			]
 		},
 		"contracts/MedicalCert.sol": {

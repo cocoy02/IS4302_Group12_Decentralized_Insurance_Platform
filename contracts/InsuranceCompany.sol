@@ -140,9 +140,9 @@ contract InsuranceCompany is Insurance {
     override returns(uint256) 
     {
         require(trustinsureInstance.checkInsure(msg.sender) > 1, "1 TrustInsure is needed to create a new insurance"); 
-        require(issueDateYYYMMDD > 10000000, "Invalid issue date!");
+        require(issueDateYYYYMMDD > 10000000, "Invalid issue date!");
         require(expiryDateYYYYMMDD > 10000000, "Invalid expiry date!");
-        require(issueDateYYYMMDD < expiryDateYYYYMMDD, "Invalid expiry date!");
+        require(issueDateYYYYMMDD < expiryDateYYYYMMDD, "Invalid expiry date!");
         numInsurance++;
         //new insurance object
         insurance storage newInsurance = insurances[numInsurance];

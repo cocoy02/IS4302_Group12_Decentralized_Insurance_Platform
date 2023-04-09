@@ -529,10 +529,10 @@
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x51834a886ed7bdb6a4a03f46f2d70b767d214cb834a61862bd9eab6a58ee759f",
+			"keccak256": "0xe1f5c59902dd400d925f081a8b9e11f498dd5d5113cb6dec03276eead14e12e0",
 			"urls": [
-				"bzz-raw://b9be023b8a324e4d390791b0df9a8f5e66cd5c8f6c3c294ef4f617b43ba37bc3",
-				"dweb:/ipfs/QmRtBV3DyMf4zsw252Z6afiq87mcPVwoLTemMH2YZE7kMY"
+				"bzz-raw://97de65c3212e8bd8f5b7958443440a47bc6cf94f3c1a06d4318124af1ad5caa0",
+				"dweb:/ipfs/QmT41VjWqK8cBQEvxeFyq33xrivwY2u5FEayfbxwGceVXf"
 			]
 		},
 		"contracts/MedicalCert.sol": {
