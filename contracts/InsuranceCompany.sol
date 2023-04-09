@@ -131,6 +131,7 @@ contract InsuranceCompany is Insurance {
     function createInsurance (
         uint256 stakeholderInfoId,
         uint256 companyId,
+        uint256 premium,
         uint256 insuredAmount,
         Insurance.insuranceType insType,
         uint256 issueDateYYYYMMDD,
@@ -148,6 +149,7 @@ contract InsuranceCompany is Insurance {
         insurance storage newInsurance = insurances[numInsurance];
         newInsurance.stakeholders = stakeholderinfos[stakeholderInfoId];
         newInsurance.companyId = companyId;
+        newInsurance.premium = premium;
         newInsurance.insuredAmount = insuredAmount;
         newInsurance.currentAmount = 0;
         newInsurance.insType = insType;
@@ -221,13 +223,13 @@ contract InsuranceCompany is Insurance {
         } 
     }
 
-    function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID) public validPolicyOwner(insuranceId, policyOwnerID){
+    function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID, address policyOwner) public validPolicyOwner(insuranceId, policyOwnerID){
         address companyAddress = companies[insurances[insuranceId].companyId].owner;
-        trustinsureInstance.transferFromInsure(msg.sender,companyAddress,amount);
+        trustinsureInstance.transferFromInsure(policyOwner,companyAddress,amount);
 
         //mark as paid      
         insurances[insuranceId].currentAmount += amount;
-        if (insurances[insuranceId].currentAmount == insurances[insuranceId].insuredAmount) {
+        if (insurances[insuranceId].currentAmount == insurances[insuranceId].premium) {
             insurances[insuranceId].status = status.paid;
         }
         

@@ -21,6 +21,7 @@ contract Insurance {
         uint256 ID;
         uint256 companyId;
         stakeholderInfo stakeholders;
+        uint256 premium;
         uint256 insuredAmount;
         uint256 currentAmount;
         insuranceType insType;
@@ -49,6 +50,7 @@ contract Insurance {
     function createInsurance(
         uint256 stakeholderInfoId,
         uint256 companyId,
+        uint256 premium,
         uint256 insuredAmount,
         insuranceType insType,
         uint256 issueDateYYYYMMDD,

@@ -96,8 +96,8 @@ contract Stakeholder {
     }
 
     function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID) 
-    public validStakeholder(policyOwnerID) {
-        insuranceCompanyContract.payPremium(insuranceId, amount, policyOwnerID);
+    public validStakeholder(policyOwnerID) {     
+        insuranceCompanyContract.payPremium(insuranceId, amount, policyOwnerID,stakeholders[policyOwnerID].stakeholderAddress);
     }
 
     function claimInsurance (uint256 insuranceID,uint256 companyId, bytes memory mcId,

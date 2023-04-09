@@ -220,6 +220,11 @@
 							},
 							{
 								"internalType": "uint256",
+								"name": "premium",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "insuredAmount",
 								"type": "uint256"
 							},
@@ -522,17 +527,17 @@
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0xef1e8cada88748a800ea6487f0f7c1ba42aa6c88fec76079f14180f869a8931d",
+			"keccak256": "0xd66aec4d40bcea4f1ab00f0a669d051b7bc44e710cee84caaa99721f90269650",
 			"urls": [
-				"bzz-raw://0217b9da8fd41401176133a51fa2fb06431a6606d94cd171dc9bab2cbf176fda",
-				"dweb:/ipfs/QmTumRVyp1Vwvysc57znwYs5U5Ly2pJeBcBkNAXut6wXzj"
+				"bzz-raw://b7d2c05e02bbbc647f2365fd0acc053d12c08ae4fe04d1bbed32c14d2ec48f4c",
+				"dweb:/ipfs/QmXETwES33rUeAFCET7PkpvvEutPRpi91Tzq4bH94hfpBm"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0xe1f5c59902dd400d925f081a8b9e11f498dd5d5113cb6dec03276eead14e12e0",
+			"keccak256": "0x7d7083cbbec706628f45b088167a653a5df1535a0066c9181ea0fcf3c7c453aa",
 			"urls": [
-				"bzz-raw://97de65c3212e8bd8f5b7958443440a47bc6cf94f3c1a06d4318124af1ad5caa0",
-				"dweb:/ipfs/QmT41VjWqK8cBQEvxeFyq33xrivwY2u5FEayfbxwGceVXf"
+				"bzz-raw://254b50cf97e3acd924481d068bdf5fd5f48ca0b6231a24be54c24cf8a41931e9",
+				"dweb:/ipfs/QmVT64NLzz9asEWQfKHf5etBq2LM5BY4LppWDdqtwwzitY"
 			]
 		},
 		"contracts/MedicalCert.sol": {

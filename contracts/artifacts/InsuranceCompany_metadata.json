@@ -358,6 +358,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "premium",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "insuredAmount",
 						"type": "uint256"
 					},
@@ -540,6 +545,11 @@
 								"internalType": "struct Insurance.stakeholderInfo",
 								"name": "stakeholders",
 								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "premium",
+								"type": "uint256"
 							},
 							{
 								"internalType": "uint256",
@@ -813,6 +823,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "premium",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "insuredAmount",
 						"type": "uint256"
 					},
@@ -887,6 +902,11 @@
 						"internalType": "uint256",
 						"name": "policyOwnerID",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "policyOwner",
+						"type": "address"
 					}
 				],
 				"name": "payPremium",
@@ -1108,17 +1128,17 @@
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0xef1e8cada88748a800ea6487f0f7c1ba42aa6c88fec76079f14180f869a8931d",
+			"keccak256": "0xd66aec4d40bcea4f1ab00f0a669d051b7bc44e710cee84caaa99721f90269650",
 			"urls": [
-				"bzz-raw://0217b9da8fd41401176133a51fa2fb06431a6606d94cd171dc9bab2cbf176fda",
-				"dweb:/ipfs/QmTumRVyp1Vwvysc57znwYs5U5Ly2pJeBcBkNAXut6wXzj"
+				"bzz-raw://b7d2c05e02bbbc647f2365fd0acc053d12c08ae4fe04d1bbed32c14d2ec48f4c",
+				"dweb:/ipfs/QmXETwES33rUeAFCET7PkpvvEutPRpi91Tzq4bH94hfpBm"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0xe1f5c59902dd400d925f081a8b9e11f498dd5d5113cb6dec03276eead14e12e0",
+			"keccak256": "0x6d5d3a940f2a21ab64d817af4d4e0b3b05a2ba768bed0937db1f0aec4c3fd3c4",
 			"urls": [
-				"bzz-raw://97de65c3212e8bd8f5b7958443440a47bc6cf94f3c1a06d4318124af1ad5caa0",
-				"dweb:/ipfs/QmT41VjWqK8cBQEvxeFyq33xrivwY2u5FEayfbxwGceVXf"
+				"bzz-raw://f878f6d4b65fdf6c4b30a68ec63419056fac68c893023846ba4161b955bcaf30",
+				"dweb:/ipfs/QmWz6VK6fzZ83GyGzANpD7GVmDY6ciEyCZkA8CwvWZnquZ"
 			]
 		},
 		"contracts/MedicalCert.sol": {

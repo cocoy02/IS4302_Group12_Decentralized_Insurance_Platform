@@ -26,6 +26,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "premium",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "insuredAmount",
 						"type": "uint256"
 					},
@@ -176,6 +181,11 @@
 								"internalType": "struct Insurance.stakeholderInfo",
 								"name": "stakeholders",
 								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "premium",
+								"type": "uint256"
 							},
 							{
 								"internalType": "uint256",
@@ -379,6 +389,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "premium",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "insuredAmount",
 						"type": "uint256"
 					},
@@ -554,10 +569,10 @@
 	},
 	"sources": {
 		"contracts/Insurance.sol": {
-			"keccak256": "0xef1e8cada88748a800ea6487f0f7c1ba42aa6c88fec76079f14180f869a8931d",
+			"keccak256": "0xd66aec4d40bcea4f1ab00f0a669d051b7bc44e710cee84caaa99721f90269650",
 			"urls": [
-				"bzz-raw://0217b9da8fd41401176133a51fa2fb06431a6606d94cd171dc9bab2cbf176fda",
-				"dweb:/ipfs/QmTumRVyp1Vwvysc57znwYs5U5Ly2pJeBcBkNAXut6wXzj"
+				"bzz-raw://b7d2c05e02bbbc647f2365fd0acc053d12c08ae4fe04d1bbed32c14d2ec48f4c",
+				"dweb:/ipfs/QmXETwES33rUeAFCET7PkpvvEutPRpi91Tzq4bH94hfpBm"
 			]
 		}
 	},

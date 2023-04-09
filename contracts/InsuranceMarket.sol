@@ -69,7 +69,7 @@ contract InsuranceMarket {
     event productPublished();
     event productWithdrawedSucceed();
     event productWithdrawedFail();
-    event viewAvailableProducts(uint256[] companyids,string[] companynames,uint256[] companycredits,productType[] producttypes,uint256[] productpremium, uint256[] productassured);
+    event viewAvailableProducts(uint256[] companyids,string[] companynames,uint256[] companycredits,uint256[] productids,productType[] producttypes,uint256[] productpremium, uint256[] productassured);
     event requestSucceed();
     event requestFail();
 
@@ -165,11 +165,14 @@ contract InsuranceMarket {
         uint256[] memory companyids = new uint256[](numofProds);
         string[] memory companynames = new string[](numofProds);
         uint256[] memory companycredits = new uint256[](numofProds);
+        uint256[] memory productids = new uint256[](numofProds);
         uint256[] memory productpremium = new uint256[](numofProds);
         productType[] memory producttypes = new productType[](numofProds);
         uint256[] memory productassured = new uint256[](numofProds);
         uint256[] memory companyidentified = new uint256[](numofProds);
         uint256 total_products = 0;
+
+        //add product id 
 
         //loop every company and their products
         for (uint256 i  = 0; i < companyIds.length; i++) {
@@ -188,6 +191,7 @@ contract InsuranceMarket {
                 companyids[total_products] = companyIds[i];
                 companynames[total_products] = companyContract.getName(companyIds[i]);
                 companycredits[total_products] = companyContract.getCredit(companyIds[i]);
+                productids[total_products] = products[j].productid;
                 productpremium[total_products] = products[j].premium;
                 producttypes[total_products] = products[j].prodType;
                 productassured[total_products] = products[j].sumAssured;
@@ -196,7 +200,7 @@ contract InsuranceMarket {
             companyidentified[i]=companyIds[i];
         }
         
-        emit viewAvailableProducts(companyids, companynames, companycredits, producttypes, productpremium, productassured);
+        emit viewAvailableProducts(companyids, companynames, companycredits, productids,producttypes, productpremium, productassured);
     }
 
     /**
