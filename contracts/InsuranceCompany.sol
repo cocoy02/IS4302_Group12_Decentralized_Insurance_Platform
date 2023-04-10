@@ -53,7 +53,7 @@ contract InsuranceCompany is Insurance {
     event checkRequest(requestStatus status);
     event allPaid(uint256 insuranceID);
     event askingCert (uint256 insuranceID);
-    event claimingFromComp (uint256 insuranceID, bytes mcId);
+    event claimingFromComp (uint256 insuranceID, uint256 mcId);
 
 
 // =====================================================================================
@@ -239,7 +239,7 @@ contract InsuranceCompany is Insurance {
     }
 
     function claim(uint256 insuranceID,uint256 companyId, 
-    bytes memory mcId,uint256 beneficiaryID,
+    uint256 mcId,uint256 beneficiaryID,
     address beneficiaryAddress,
     string memory name, string memory NRIC) 
     external validBeneficiary(insuranceID, beneficiaryID)
@@ -256,7 +256,7 @@ contract InsuranceCompany is Insurance {
     // * @dev check stakeholder details and mc details, if correct auto transfer money
     // * @param  {uint256} insuranceId, {uint256} companyId,{uint256} _hospitalId,{bytes} mcId
     // */
-    function autoTransfer(uint256 insuranceId,uint256 companyId,bytes memory mcId,
+    function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 mcId,
     address beneficiaryAddress,string memory name, string memory NRIC) private {
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insurances[insuranceId].status == Insurance.status.paid, "Stakeholder haven't paid the insurance!");

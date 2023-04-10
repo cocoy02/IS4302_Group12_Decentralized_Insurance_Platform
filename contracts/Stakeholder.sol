@@ -101,7 +101,7 @@ contract Stakeholder {
     }
 
     function claimInsurance (uint256 insuranceID,uint256 companyId, 
-    bytes memory mcId,uint256 beneficiaryID,
+    uint256 mcId,uint256 beneficiaryID,
     string memory lifeAssuredName, string memory lifeAssuredNRIC)   
     public validStakeholder(beneficiaryID) {
         insuranceCompanyContract.claim(insuranceID,companyId,mcId,
