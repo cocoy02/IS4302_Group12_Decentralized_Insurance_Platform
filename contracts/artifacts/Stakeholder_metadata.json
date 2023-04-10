@@ -101,26 +101,26 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_hospitalId",
+						"name": "hospitalId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
-						"name": "_requestId",
+						"name": "requestId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
-						"name": "_stakeholderId",
+						"name": "stakeholderId",
 						"type": "uint256"
 					}
 				],
 				"name": "checkMCRequests",
 				"outputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -139,28 +139,23 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "bytes",
-						"name": "mcId",
-						"type": "bytes"
-					},
-					{
 						"internalType": "uint256",
-						"name": "hospitalId",
+						"name": "mcId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
-						"name": "policyOwnerID",
+						"name": "beneficiaryID",
 						"type": "uint256"
 					},
 					{
 						"internalType": "string",
-						"name": "name",
+						"name": "lifeAssuredName",
 						"type": "string"
 					},
 					{
 						"internalType": "string",
-						"name": "NRIC",
+						"name": "lifeAssuredNRIC",
 						"type": "string"
 					}
 				],
@@ -192,31 +187,9 @@
 								"type": "uint256"
 							},
 							{
-								"components": [
-									{
-										"internalType": "uint256",
-										"name": "policyOwner",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "beneficiary",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "lifeAssured",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "payingAccount",
-										"type": "uint256"
-									}
-								],
-								"internalType": "struct Insurance.stakeholderInfo",
+								"internalType": "uint256",
 								"name": "stakeholders",
-								"type": "tuple"
+								"type": "uint256"
 							},
 							{
 								"internalType": "uint256",
@@ -539,38 +512,38 @@
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0xef953682e871fdeaf7b9cdba6804ba633d332b1242bbe8ad3d9f2a3750510496",
+			"keccak256": "0x28fa8f51983be52f38078f2dfcdb91f90b42ce79a0e87b47a4fbd488e4adfa83",
 			"urls": [
-				"bzz-raw://5f8e0addeef6d695b672695f671aa3ac77a570bda223f65bfd7ac3fd188c015e",
-				"dweb:/ipfs/QmezjZeFvLA82u8GQRRgdwoCsp7iy8uSTA3iR3G67N5HEo"
+				"bzz-raw://cfe56bbf4cb7cc15f43c76bae454ad47a84a929b21e7247c7ad8bd9512f0e8d3",
+				"dweb:/ipfs/QmTR6AzENJ3YDWBJ5HdgXN1BKGyc5fVjxrP4zR4YmP4aFz"
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0x282e1b8a93af2b414bcc798608850ed3a1f38035dfa2c4f249ba39e5390df02a",
+			"keccak256": "0xf46e8899d8211fe18718236e308e700cc8df5ce49e38e802fbf6a68befe21ceb",
 			"urls": [
-				"bzz-raw://b26148984a86ce478ca5497214e1c2eacc5b79632e404f8cf642a82cb612b545",
-				"dweb:/ipfs/QmQZ3sVJxkjFgUmWEpWqH9CXR88Ujbh4MxnmYgBxhhdta7"
+				"bzz-raw://57fd60ea63791778de3b600cfc49e9157641f765b388fe867eba3213b756989e",
+				"dweb:/ipfs/QmZwVxDeUxhqtNhwguEzYtDTiRLeNKb7RHA3moykhbo1r6"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0xfe459369505fd7d3a8c97149d43a0ac0ee66dfa3d84b78d4ed37b5656b9c122b",
+			"keccak256": "0x7073288fdc2735a729105de6c0d53beef5f2a074f2dbc884364ed78121fd1f23",
 			"urls": [
-				"bzz-raw://24af9d120a62efe6f6b2c9cf77504a99020c3ff426193ec89a6c13859a0a6699",
-				"dweb:/ipfs/QmZwMQAsRo7a3E47yiAT7Ze31yu5gYW3DsyGgACY6BpE1C"
+				"bzz-raw://23c174a2705aa1282cd8ea0771217f03d1e95f24abbbc534dbadbec3ec64a42f",
+				"dweb:/ipfs/QmapNQrmqxJuHJUXwzLtqiNfS9JzAnxUGzquJEmDuti574"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0x477b1fdc7fb3e1c32d19c65c4968aa7df3a01d7b1285b5e9a56f5ef0fdd86975",
+			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
 			"urls": [
-				"bzz-raw://e809fb720ebb85e5064e2121e3405c15b5cd678492c926511860233dc08afb5f",
-				"dweb:/ipfs/QmehAPqqopuRR2KbGv6ps9iMxxy7hUNAMAjv8wFf19ELnc"
+				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
+				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
 			]
 		},
 		"contracts/Stakeholder.sol": {
-			"keccak256": "0x9c5d92582762c8473b3b03702fcfe63d6b282a9661c1f471e679fea6e13ae44c",
+			"keccak256": "0xc6ab8c9e8962c077304d8b3a75676063b4ce56e901b05597ea675b1e5632aba5",
 			"urls": [
-				"bzz-raw://7667d68f3f204b9adc86cd762466c748addce9641b9fce2864b548507d8ec5d6",
-				"dweb:/ipfs/QmdTTtFDjJpPiA3EjEkh6Nkth91PgdAoQZzWE7RpB6bRdF"
+				"bzz-raw://d416e98dd70069c8c567f3c06c0365ab65831f7768243cd1af76c241ebe8cee7",
+				"dweb:/ipfs/QmeCJv9PzVr383Vj3cjp7GoCceUSFZpU3SWXEbMdSJ5WJR"
 			]
 		},
 		"contracts/TrustInsure.sol": {

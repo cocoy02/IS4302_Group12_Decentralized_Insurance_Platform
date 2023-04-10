@@ -24,7 +24,7 @@ contract Hospital is MedicalCertificate  {
         uint256 stakeholderId;
         string nameAssured;
         string icAssured;
-        bytes mcid;
+        uint256 mcid;
     }
     
     uint256 numOfReqs = 0;
@@ -127,7 +127,7 @@ contract Hospital is MedicalCertificate  {
         return numOfPeople;
     }
 
-    function addMC(uint256 hospital, string memory password, uint256 personId,
+    function addMC(uint256 hospital, string memory password, uint256 personInfoId,
     certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
     string memory certifierName
     ) 
@@ -140,7 +140,7 @@ contract Hospital is MedicalCertificate  {
         
         mc.ID = numOfMC ;
         mc.HospitalID = hospital;
-        mc.personal_info = personId;
+        mc.personal_info = personInfoId;
         mc.incident = incidentType0incident1death2suicide;
         mc.dateTimeIncident = incidentYYYYMMDDHHMM;
         mc.titleOfCertifier = certifierName;
@@ -150,10 +150,10 @@ contract Hospital is MedicalCertificate  {
         return numOfMC;    
     }
     
-    function solveRequest(uint256 hospitalId, string memory password, bytes memory mcId,
+    function solveRequest(uint256 hospitalId, string memory password, 
+    uint256 mcId,
     uint256 requestId, uint256 stakeholderId) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password) 
-    returns(bytes memory)
     {
 
         if (requestId != 0) {
@@ -172,7 +172,7 @@ contract Hospital is MedicalCertificate  {
             
             require(find == true, "Invalid request id!");
             if (find) {
-                reqs[index].mcid = mcId;
+                registeredHospital[hospitalId].requests[stakeholderId][index].mcid = mcId;
                 emit requestSolve(requestId);
             }
         }        
@@ -249,7 +249,7 @@ contract Hospital is MedicalCertificate  {
     // */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
       external view validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
-      returns(bytes memory)
+      returns(uint256)
     {
         Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
         uint256 length = reqs.length;

@@ -21,82 +21,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"name": "MC",
-				"outputs": [
-					{
-						"internalType": "bytes",
-						"name": "ID",
-						"type": "bytes"
-					},
-					{
-						"internalType": "uint256",
-						"name": "HospitalID",
-						"type": "uint256"
-					},
-					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "personId",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "NRIC",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "sex",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "birthdate",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "race_nationality",
-								"type": "string"
-							}
-						],
-						"internalType": "struct MedicalCertificate.personalInfo",
-						"name": "personal_info",
-						"type": "tuple"
-					},
-					{
-						"internalType": "enum MedicalCertificate.certCategory",
-						"name": "incident",
-						"type": "uint8"
-					},
-					{
-						"internalType": "string",
-						"name": "dateTimeIncident",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "titleOfCertifier",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "hospital",
 						"type": "uint256"
@@ -113,7 +37,7 @@
 					},
 					{
 						"internalType": "enum MedicalCertificate.certCategory",
-						"name": "incidentType",
+						"name": "incidentType0incident1death2suicide",
 						"type": "uint8"
 					},
 					{
@@ -130,9 +54,9 @@
 				"name": "addMC",
 				"outputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -190,9 +114,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "id",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"name": "getMCCategory",
@@ -209,9 +133,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "id",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"name": "getMCNRIC",
@@ -228,9 +152,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "id",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"name": "getMCName",
@@ -238,50 +162,6 @@
 					{
 						"internalType": "string",
 						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "infos",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "personId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "NRIC",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "sex",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "birthdate",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "race_nationality",
 						"type": "string"
 					}
 				],
@@ -317,10 +197,10 @@
 	},
 	"sources": {
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0x477b1fdc7fb3e1c32d19c65c4968aa7df3a01d7b1285b5e9a56f5ef0fdd86975",
+			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
 			"urls": [
-				"bzz-raw://e809fb720ebb85e5064e2121e3405c15b5cd678492c926511860233dc08afb5f",
-				"dweb:/ipfs/QmehAPqqopuRR2KbGv6ps9iMxxy7hUNAMAjv8wFf19ELnc"
+				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
+				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
 			]
 		}
 	},

@@ -132,7 +132,7 @@ contract Insurance {
     }
 
     function getRestAmount(uint256 insuranceId) public view returns(uint256) {
-        return insurances[insuranceId].insuredAmount - insurances[insuranceId].currentAmount;
+        return insurances[insuranceId].premium - insurances[insuranceId].currentAmount;
     }
 
 }

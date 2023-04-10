@@ -518,10 +518,10 @@
 	},
 	"sources": {
 		"contracts/Insurance.sol": {
-			"keccak256": "0x1aa298f00836b54070771185a78dbcc361e7b9be6ce97c64ced5c745022afeb7",
+			"keccak256": "0xf46e8899d8211fe18718236e308e700cc8df5ce49e38e802fbf6a68befe21ceb",
 			"urls": [
-				"bzz-raw://928b3c9b325fb26569136699c0d14563d545c8e75e01655cd9cdc3b140a1ba7e",
-				"dweb:/ipfs/QmdazbDteKeoXhAc75pNb9T2o5s8axXo15kyrFP99711bZ"
+				"bzz-raw://57fd60ea63791778de3b600cfc49e9157641f765b388fe867eba3213b756989e",
+				"dweb:/ipfs/QmZwVxDeUxhqtNhwguEzYtDTiRLeNKb7RHA3moykhbo1r6"
 			]
 		}
 	},

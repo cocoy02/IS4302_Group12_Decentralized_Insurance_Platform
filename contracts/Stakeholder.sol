@@ -110,7 +110,7 @@ contract Stakeholder {
     }
     
     function checkMCRequests(uint256 hospitalId, uint256 requestId, uint256 stakeholderId) public view
-    returns(bytes memory)
+    returns(uint256)
     {
         return hospitalContract.checkMCIdFromStakeholder(hospitalId, requestId, stakeholderId);
     }

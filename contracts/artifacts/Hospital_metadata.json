@@ -96,50 +96,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"name": "MC",
-				"outputs": [
-					{
-						"internalType": "bytes",
-						"name": "ID",
-						"type": "bytes"
-					},
-					{
-						"internalType": "uint256",
-						"name": "HospitalID",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "personal_info",
-						"type": "uint256"
-					},
-					{
-						"internalType": "enum MedicalCertificate.certCategory",
-						"name": "incident",
-						"type": "uint8"
-					},
-					{
-						"internalType": "string",
-						"name": "dateTimeIncident",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "titleOfCertifier",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "uint256",
 						"name": "hospital",
 						"type": "uint256"
@@ -151,7 +107,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "personId",
+						"name": "personInfoId",
 						"type": "uint256"
 					},
 					{
@@ -173,9 +129,9 @@
 				"name": "addMC",
 				"outputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -248,9 +204,9 @@
 				"name": "checkMCIdFromStakeholder",
 				"outputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -345,9 +301,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "id",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"name": "getMCCategory",
@@ -364,9 +320,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "id",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"name": "getMCNRIC",
@@ -383,9 +339,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "id",
-						"type": "bytes"
+						"type": "uint256"
 					}
 				],
 				"name": "getMCName",
@@ -432,50 +388,6 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"name": "infos",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "personId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "NRIC",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "sex",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "birthdate",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "race_nationality",
-						"type": "string"
 					}
 				],
 				"stateMutability": "view",
@@ -552,9 +464,9 @@
 						"type": "string"
 					},
 					{
-						"internalType": "bytes",
+						"internalType": "uint256",
 						"name": "mcId",
-						"type": "bytes"
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -568,13 +480,7 @@
 					}
 				],
 				"name": "solveRequest",
-				"outputs": [
-					{
-						"internalType": "bytes",
-						"name": "",
-						"type": "bytes"
-					}
-				],
+				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			}
@@ -633,17 +539,17 @@
 	},
 	"sources": {
 		"contracts/Hospital.sol": {
-			"keccak256": "0xfc94bac81e533c6146b3dbd27a0b2870bb48aa5f4068fa6bd0f581240b56f262",
+			"keccak256": "0x28fa8f51983be52f38078f2dfcdb91f90b42ce79a0e87b47a4fbd488e4adfa83",
 			"urls": [
-				"bzz-raw://73cdf73f07e58280da7f561f691f05e44a7c05c80b56f181a6769f00258fc2fc",
-				"dweb:/ipfs/QmQYaaXgfeVH4ZiMUKXaQeK4473YZFwSceFBJPUnbtLe9e"
+				"bzz-raw://cfe56bbf4cb7cc15f43c76bae454ad47a84a929b21e7247c7ad8bd9512f0e8d3",
+				"dweb:/ipfs/QmTR6AzENJ3YDWBJ5HdgXN1BKGyc5fVjxrP4zR4YmP4aFz"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0x217ab4c4f269cdc15aea870c11886900f5c02d92c764b6ccf8c7399db75945d5",
+			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
 			"urls": [
-				"bzz-raw://0c97d10c42ba936c0a0dd2815415d7be7716651b7ccdec699c619be4922a3e6f",
-				"dweb:/ipfs/QmXzEPD7wLE9A6g9uNPXTZygLxSwPYXcKxgZD3LYB1xSni"
+				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
+				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
 			]
 		}
 	},

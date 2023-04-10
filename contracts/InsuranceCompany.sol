@@ -261,14 +261,14 @@ contract InsuranceCompany is Insurance {
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insurances[insuranceId].status == Insurance.status.paid, "Stakeholder haven't paid the insurance!");
         //insurance valid from date 
-        require(insurances[insuranceId].issueDate + 90 days >= block.timestamp, "Haven't take effect!");
+        require(insurances[insuranceId].issueDate * 100 + 90 days >= block.timestamp, "Haven't take effect!");
 
         require(keccak256(abi.encodePacked(hospitalInstance.getMCName(mcId))) == keccak256(abi.encodePacked(name)) && 
         keccak256(abi.encodePacked(hospitalInstance.getMCNRIC(mcId))) ==  keccak256(abi.encodePacked(NRIC)), 
         "Invalid life assured name and NRIC!");
         //cert if its suicide
         if(hospitalInstance.getMCCategory(mcId) == MedicalCertificate.certCategory.suicide) {  
-            require(insurances[insuranceId].issueDate + 2*365 days >= block.timestamp, "If suicide cannot claim within 2 years!");
+            require(insurances[insuranceId].issueDate * 100 + 2*365 days >= block.timestamp, "If suicide cannot claim within 2 years!");
         }
 
         uint256 value = insurances[insuranceId].insuredAmount;
