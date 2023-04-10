@@ -28,11 +28,8 @@ contract Hospital is MedicalCertificate  {
     }
     
     uint256 numOfReqs = 0;
-    mapping(uint256 => medicalCert) public MC;
-    mapping(uint256 => personalInfo) public infos;
-
     uint256 numOfPeople = 0;
-    event mcCreated(uint256 numMC);
+    uint256 numOfMC = 0;
 
     // events
     event registered();
@@ -136,21 +133,21 @@ contract Hospital is MedicalCertificate  {
     ) 
     public validHospital(hospital) verifyPassword(hospital,password) validIncidentDate(incidentYYYYMMDDHHMM)
     override returns(uint256) {
-        counter = counter + 1;
+        numOfMC++;
 
 
-        medicalCert storage mc = MC[counter];
+        medicalCert storage mc = MC[numOfMC];
         
-        mc.ID = counter;
+        mc.ID = numOfMC ;
         mc.HospitalID = hospital;
         mc.personal_info = personId;
         mc.incident = incidentType0incident1death2suicide;
         mc.dateTimeIncident = incidentYYYYMMDDHHMM;
         mc.titleOfCertifier = certifierName;
 
-        emit mcCreated(counter);
+        emit mcCreated(numOfMC);
 
-        return counter;    
+        return numOfMC;    
     }
     
     function solveRequest(uint256 hospitalId, string memory password, bytes memory mcId,
@@ -321,16 +318,4 @@ contract Hospital is MedicalCertificate  {
     // {
     //     return medicalCert.getMC(_mcId);
     // }
-
-    function getMCName(uint256 id) public view returns(string memory) {
-        return infos[MC[id].personal_info].name;
-    }
-
-    function getMCNRIC(uint256 id) public view returns(string memory) {
-        return infos[MC[id].personal_info].NRIC;
-    }
-
-    function getMCCategory(uint256 id) public view returns(certCategory) {
-        return MC[id].incident;
-    }
 }

@@ -29,14 +29,31 @@ contract MedicalCertificate {
     }
 
 
+    mapping(uint256 => medicalCert) MC;
+    mapping(uint256 => personalInfo) infos;
 
+   
+    event mcCreated(uint256 numMC);
 
     function createPersonalInfo (uint256 hospitalId, string memory password,
     string memory name, string memory NRIC, string memory sex, 
     string memory birthdateYYYYMMDD, string memory race_nationality) public virtual returns (uint256) {}
 
     function addMC(uint256 hospital, string memory password, uint256 personId,
-                certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, string memory certifierName
+                certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
+                string memory certifierName
                 ) public virtual returns(uint256) {
+    }
+
+    function getMCName(uint256 id) public view returns(string memory) {
+        return infos[MC[id].personal_info].name;
+    }
+
+    function getMCNRIC(uint256 id) public view returns(string memory) {
+        return infos[MC[id].personal_info].NRIC;
+    }
+
+    function getMCCategory(uint256 id) public view returns(certCategory) {
+        return MC[id].incident;
     }
 }
