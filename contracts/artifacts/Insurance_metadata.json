@@ -1,17 +1,10 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
-			{
-				"inputs": [],
-				"name": "autoTrigger",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
 			{
 				"inputs": [
 					{
@@ -36,7 +29,7 @@
 					},
 					{
 						"internalType": "enum Insurance.insuranceType",
-						"name": "insType",
+						"name": "insType0life1accident",
 						"type": "uint8"
 					},
 					{
@@ -156,31 +149,9 @@
 								"type": "uint256"
 							},
 							{
-								"components": [
-									{
-										"internalType": "uint256",
-										"name": "policyOwner",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "beneficiary",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "lifeAssured",
-										"type": "uint256"
-									},
-									{
-										"internalType": "uint256",
-										"name": "payingAccount",
-										"type": "uint256"
-									}
-								],
-								"internalType": "struct Insurance.stakeholderInfo",
+								"internalType": "uint256",
 								"name": "stakeholders",
-								"type": "tuple"
+								"type": "uint256"
 							},
 							{
 								"internalType": "uint256",
@@ -361,31 +332,9 @@
 						"type": "uint256"
 					},
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "policyOwner",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "beneficiary",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "lifeAssured",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "payingAccount",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct Insurance.stakeholderInfo",
+						"internalType": "uint256",
 						"name": "stakeholders",
-						"type": "tuple"
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -569,10 +518,10 @@
 	},
 	"sources": {
 		"contracts/Insurance.sol": {
-			"keccak256": "0xd66aec4d40bcea4f1ab00f0a669d051b7bc44e710cee84caaa99721f90269650",
+			"keccak256": "0x1aa298f00836b54070771185a78dbcc361e7b9be6ce97c64ced5c745022afeb7",
 			"urls": [
-				"bzz-raw://b7d2c05e02bbbc647f2365fd0acc053d12c08ae4fe04d1bbed32c14d2ec48f4c",
-				"dweb:/ipfs/QmXETwES33rUeAFCET7PkpvvEutPRpi91Tzq4bH94hfpBm"
+				"bzz-raw://928b3c9b325fb26569136699c0d14563d545c8e75e01655cd9cdc3b140a1ba7e",
+				"dweb:/ipfs/QmdazbDteKeoXhAc75pNb9T2o5s8axXo15kyrFP99711bZ"
 			]
 		}
 	},

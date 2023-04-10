@@ -22,7 +22,7 @@ contract MedicalCertificate {
     struct medicalCert{
         bytes ID;
         uint256 HospitalID;
-        personalInfo personal_info;
+        uint256 personal_info;
         certCategory incident;
         string dateTimeIncident; //YYYYMMDDHHMM
         string titleOfCertifier;
@@ -40,16 +40,16 @@ contract MedicalCertificate {
     string memory birthdateYYYYMMDD, string memory race_nationality) public virtual returns (uint256) {}
 
     function addMC(uint256 hospital, string memory password, uint256 personId,
-                certCategory incidentType, string memory incidentYYYYMMDDHHMM, string memory certifierName
+                certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, string memory certifierName
                 ) public virtual returns(bytes memory) {
     }
 
     function getMCName(bytes memory id) public view returns(string memory) {
-        return MC[keccak256(id)].personal_info.name;
+        return infos[MC[keccak256(id)].personal_info].name;
     }
 
     function getMCNRIC(bytes memory id) public view returns(string memory) {
-        return MC[keccak256(id)].personal_info.NRIC;
+        return infos[MC[keccak256(id)].personal_info].NRIC;
     }
 
     function getMCCategory(bytes memory id) public view returns(certCategory) {

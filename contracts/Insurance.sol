@@ -20,7 +20,7 @@ contract Insurance {
     struct insurance {
         uint256 ID;
         uint256 companyId;
-        stakeholderInfo stakeholders;
+        uint256 stakeholders;
         uint256 premium;
         uint256 insuredAmount;
         uint256 currentAmount;
@@ -52,7 +52,7 @@ contract Insurance {
         uint256 companyId,
         uint256 premium,
         uint256 insuredAmount,
-        insuranceType insType,
+        insuranceType insType0life1accident,
         uint256 issueDateYYYYMMDD,
         uint256 expiryDateYYYYMMDD
     ) 
@@ -74,7 +74,7 @@ contract Insurance {
     // SETTERS 
 
     function setBeneficiary(uint256 newBeneficiary, uint256 insuranceId) public {//policyOwnerOnly(insuranceId) {
-        insurances[insuranceId].stakeholders.beneficiary = newBeneficiary;
+        stakeholderinfos[insurances[insuranceId].stakeholders].beneficiary = newBeneficiary;
     }
 
     function updateStatus(status state, uint256 insuranceId) public { //policyOwnerOnly(insuranceId) {
@@ -124,7 +124,7 @@ contract Insurance {
     }
 
     function getBeneficiary(uint256 insuranceId) public view returns (uint256) {
-        return insurances[insuranceId].stakeholders.beneficiary;
+        return stakeholderinfos[insurances[insuranceId].stakeholders].beneficiary;
     }
 
     function getPolicyOwner(uint256 stakeholderinfoId) public view returns (uint256) {
@@ -135,10 +135,4 @@ contract Insurance {
         return insurances[insuranceId].insuredAmount - insurances[insuranceId].currentAmount;
     }
 
-    function autoTrigger() public {
-        // if not enough, after one month, check again.
-        // otherwise, terminate the insurance until stakeholder could pay
-    }
-
-    
 }

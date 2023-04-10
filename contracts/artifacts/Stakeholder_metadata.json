@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -285,6 +285,25 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "getRestAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "stakeholderID",
 						"type": "uint256"
 					}
@@ -520,24 +539,24 @@
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0x30c3b583df9d7f19cb7472802d77c0a7ad16c68215fcba240dd1d34699772e7f",
+			"keccak256": "0xef953682e871fdeaf7b9cdba6804ba633d332b1242bbe8ad3d9f2a3750510496",
 			"urls": [
-				"bzz-raw://f6296a50b85ffdc82abfdd449ce90695b876a6d67aa40f0e3c145b78d4b6432e",
-				"dweb:/ipfs/QmNa1Zx7QjcuALra2TusutwMiUUqPH7ajdedmKNnqXNL1i"
+				"bzz-raw://5f8e0addeef6d695b672695f671aa3ac77a570bda223f65bfd7ac3fd188c015e",
+				"dweb:/ipfs/QmezjZeFvLA82u8GQRRgdwoCsp7iy8uSTA3iR3G67N5HEo"
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0xd66aec4d40bcea4f1ab00f0a669d051b7bc44e710cee84caaa99721f90269650",
+			"keccak256": "0x282e1b8a93af2b414bcc798608850ed3a1f38035dfa2c4f249ba39e5390df02a",
 			"urls": [
-				"bzz-raw://b7d2c05e02bbbc647f2365fd0acc053d12c08ae4fe04d1bbed32c14d2ec48f4c",
-				"dweb:/ipfs/QmXETwES33rUeAFCET7PkpvvEutPRpi91Tzq4bH94hfpBm"
+				"bzz-raw://b26148984a86ce478ca5497214e1c2eacc5b79632e404f8cf642a82cb612b545",
+				"dweb:/ipfs/QmQZ3sVJxkjFgUmWEpWqH9CXR88Ujbh4MxnmYgBxhhdta7"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0xbc3a3dfdee1a884ace6d4b028063b30e6570ddc4bbe28653f3295ef32138233c",
+			"keccak256": "0xfe459369505fd7d3a8c97149d43a0ac0ee66dfa3d84b78d4ed37b5656b9c122b",
 			"urls": [
-				"bzz-raw://91160eb444d5b60235a92ac9aaa60bcc6fdec7a44ff5b5b052141422774f98a5",
-				"dweb:/ipfs/QmSuXUZQEG1oCtefQvQ9dJjkniZW4tvMT9Kzjt8KEfojju"
+				"bzz-raw://24af9d120a62efe6f6b2c9cf77504a99020c3ff426193ec89a6c13859a0a6699",
+				"dweb:/ipfs/QmZwMQAsRo7a3E47yiAT7Ze31yu5gYW3DsyGgACY6BpE1C"
 			]
 		},
 		"contracts/MedicalCert.sol": {
@@ -548,10 +567,10 @@
 			]
 		},
 		"contracts/Stakeholder.sol": {
-			"keccak256": "0x4bd7bec06b538e2692fd6e42bd1d68d1e2b6fce365f29b2b0baade9af2bc466d",
+			"keccak256": "0x9c5d92582762c8473b3b03702fcfe63d6b282a9661c1f471e679fea6e13ae44c",
 			"urls": [
-				"bzz-raw://22e8650e67434f8fad2f50305c190a21acca30dac44bd3adf1c526f08efab300",
-				"dweb:/ipfs/QmNeEJjXtdnxKzKKU2cfjG8pocifjMBQJc4pfRrTusnuUL"
+				"bzz-raw://7667d68f3f204b9adc86cd762466c748addce9641b9fce2864b548507d8ec5d6",
+				"dweb:/ipfs/QmdTTtFDjJpPiA3EjEkh6Nkth91PgdAoQZzWE7RpB6bRdF"
 			]
 		},
 		"contracts/TrustInsure.sol": {

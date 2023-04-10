@@ -100,19 +100,19 @@ contract Stakeholder {
         insuranceCompanyContract.payPremium(insuranceId, amount, policyOwnerID,stakeholders[policyOwnerID].stakeholderAddress);
     }
 
-    function claimInsurance (uint256 insuranceID,uint256 companyId, bytes memory mcId,
-    uint256 hospitalId,uint256 policyOwnerID,
-    string memory name, string memory NRIC) 
-    public validStakeholder(policyOwnerID) {
+    function claimInsurance (uint256 insuranceID,uint256 companyId, 
+    bytes memory mcId,uint256 beneficiaryID,
+    string memory lifeAssuredName, string memory lifeAssuredNRIC)   
+    public validStakeholder(beneficiaryID) {
         insuranceCompanyContract.claim(insuranceID,companyId,mcId,
-         hospitalId, policyOwnerID,
-         name, NRIC);
+         beneficiaryID, stakeholders[beneficiaryID].stakeholderAddress,
+         lifeAssuredName,lifeAssuredNRIC);
     }
-
-    function checkMCRequests(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId) public view
+    
+    function checkMCRequests(uint256 hospitalId, uint256 requestId, uint256 stakeholderId) public view
     returns(bytes memory)
     {
-        return hospitalContract.checkMCIdFromStakeholder(_hospitalId, _requestId,_stakeholderId);
+        return hospitalContract.checkMCIdFromStakeholder(hospitalId, requestId, stakeholderId);
     }
 
     //Getters
@@ -146,6 +146,10 @@ contract Stakeholder {
 
     function getInsurance(uint256 insuranceId) public view returns (Insurance.insurance memory) {
         return insuranceCompanyContract.getInsurance(insuranceId);
+    }
+
+    function getRestAmount(uint256 insuranceId) public view returns(uint256) {
+        return insuranceCompanyContract.getRestAmount(insuranceId);
     }
     
 }

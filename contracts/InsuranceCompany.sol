@@ -71,12 +71,12 @@ contract InsuranceCompany is Insurance {
     }
 
     modifier validBeneficiary(uint256 insuranceId, uint256 beneficiaryID) {
-        require(insurances[insuranceId].stakeholders.beneficiary == beneficiaryID, "Invalid beneficiary!");
+        require(stakeholderinfos[insurances[insuranceId].stakeholders].beneficiary == beneficiaryID, "Invalid beneficiary!");
         _;
     }
 
     modifier validPolicyOwner(uint256 insuranceId, uint256 policyOwnerID) {
-        require(insurances[insuranceId].stakeholders.policyOwner == policyOwnerID, "Invalid policy owner!");
+        require(stakeholderinfos[insurances[insuranceId].stakeholders].policyOwner == policyOwnerID, "Invalid policy owner!");
         _;
     }
 
@@ -135,7 +135,7 @@ contract InsuranceCompany is Insurance {
         uint256 companyId,
         uint256 premium,
         uint256 insuredAmount,
-        Insurance.insuranceType insType,
+        Insurance.insuranceType insType0life1accident,
         uint256 issueDateYYYYMMDD,
         uint256 expiryDateYYYYMMDD
     ) 
@@ -149,12 +149,12 @@ contract InsuranceCompany is Insurance {
         numInsurance++;
         //new insurance object
         insurance storage newInsurance = insurances[numInsurance];
-        newInsurance.stakeholders = stakeholderinfos[stakeholderInfoId];
+        newInsurance.stakeholders = stakeholderInfoId;
         newInsurance.companyId = companyId;
         newInsurance.premium = premium;
         newInsurance.insuredAmount = insuredAmount;
         newInsurance.currentAmount = 0;
-        newInsurance.insType = insType;
+        newInsurance.insType = insType0life1accident;
         newInsurance.status = status.unapproved; // initialise  status to unapproved
         newInsurance.issueDate = issueDateYYYYMMDD;
         newInsurance.expiryDate = expiryDateYYYYMMDD; 
@@ -239,7 +239,8 @@ contract InsuranceCompany is Insurance {
     }
 
     function claim(uint256 insuranceID,uint256 companyId, 
-    bytes memory mcId,uint256 hospitalId,uint256 beneficiaryID,
+    bytes memory mcId,uint256 beneficiaryID,
+    address beneficiaryAddress,
     string memory name, string memory NRIC) 
     external validBeneficiary(insuranceID, beneficiaryID)
     {
@@ -247,7 +248,7 @@ contract InsuranceCompany is Insurance {
         emit askingCert(insuranceID);
 
         //step2: tell insurance company to pay back
-        autoTransfer(insuranceID, companyId,  hospitalId, mcId, name, NRIC);
+        autoTransfer(insuranceID, companyId, mcId, beneficiaryAddress, name, NRIC);
         emit claimingFromComp(insuranceID,mcId);
     }
 
@@ -255,8 +256,8 @@ contract InsuranceCompany is Insurance {
     // * @dev check stakeholder details and mc details, if correct auto transfer money
     // * @param  {uint256} insuranceId, {uint256} companyId,{uint256} _hospitalId,{bytes} mcId
     // */
-    function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 _hospitalId,bytes memory mcId,
-    string memory name, string memory NRIC) private {
+    function autoTransfer(uint256 insuranceId,uint256 companyId,bytes memory mcId,
+    address beneficiaryAddress,string memory name, string memory NRIC) private {
         // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
         require(insurances[insuranceId].status == Insurance.status.paid, "Stakeholder haven't paid the insurance!");
         //insurance valid from date 
@@ -264,7 +265,7 @@ contract InsuranceCompany is Insurance {
 
         require(keccak256(abi.encodePacked(hospitalInstance.getMCName(mcId))) == keccak256(abi.encodePacked(name)) && 
         keccak256(abi.encodePacked(hospitalInstance.getMCNRIC(mcId))) ==  keccak256(abi.encodePacked(NRIC)), 
-        "Not the same stakeholder!");
+        "Invalid life assured name and NRIC!");
         //cert if its suicide
         if(hospitalInstance.getMCCategory(mcId) == MedicalCertificate.certCategory.suicide) {  
             require(insurances[insuranceId].issueDate + 2*365 days >= block.timestamp, "If suicide cannot claim within 2 years!");
@@ -276,10 +277,9 @@ contract InsuranceCompany is Insurance {
         address companyOwner  = address(company.owner);
         require(trustinsureInstance.checkInsure(companyOwner) >= value,"not enough TrustInsure to pay!");
         
-        address recipient = address(uint160(insurances[insuranceId].stakeholders.beneficiary));
-        trustinsureInstance.transferFromInsure(companyOwner, recipient, value);
+        trustinsureInstance.transferFromInsure(companyOwner, beneficiaryAddress, value);
         insurances[insuranceId].status = Insurance.status.claimed;
-        emit transfer(recipient, value);
+        emit transfer(beneficiaryAddress, value);
     }
 
     // /**

@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -1093,7 +1093,11 @@
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"registerCompany(string)": {
+					"notice": "dev Register an insurance company param namae (string): the name of the new insurance company return uint256 id of the company"
+				}
+			},
 			"version": 1
 		}
 	},
@@ -1121,10 +1125,10 @@
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0x30c3b583df9d7f19cb7472802d77c0a7ad16c68215fcba240dd1d34699772e7f",
+			"keccak256": "0xef953682e871fdeaf7b9cdba6804ba633d332b1242bbe8ad3d9f2a3750510496",
 			"urls": [
-				"bzz-raw://f6296a50b85ffdc82abfdd449ce90695b876a6d67aa40f0e3c145b78d4b6432e",
-				"dweb:/ipfs/QmNa1Zx7QjcuALra2TusutwMiUUqPH7ajdedmKNnqXNL1i"
+				"bzz-raw://5f8e0addeef6d695b672695f671aa3ac77a570bda223f65bfd7ac3fd188c015e",
+				"dweb:/ipfs/QmezjZeFvLA82u8GQRRgdwoCsp7iy8uSTA3iR3G67N5HEo"
 			]
 		},
 		"contracts/Insurance.sol": {
@@ -1135,10 +1139,10 @@
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x6d5d3a940f2a21ab64d817af4d4e0b3b05a2ba768bed0937db1f0aec4c3fd3c4",
+			"keccak256": "0x343a26004a26be94e67dfb8202fbe1348abeacc7f551f392e98e950bddb494fc",
 			"urls": [
-				"bzz-raw://f878f6d4b65fdf6c4b30a68ec63419056fac68c893023846ba4161b955bcaf30",
-				"dweb:/ipfs/QmWz6VK6fzZ83GyGzANpD7GVmDY6ciEyCZkA8CwvWZnquZ"
+				"bzz-raw://4dafd4632d560ea6180606a15a5588aa717daf7323307bfbc7e7cd8b6f499483",
+				"dweb:/ipfs/QmVVzVCenPL1FCoVktDNtSgo3CLNvhY2CCuZ4fRPTDVEhp"
 			]
 		},
 		"contracts/MedicalCert.sol": {

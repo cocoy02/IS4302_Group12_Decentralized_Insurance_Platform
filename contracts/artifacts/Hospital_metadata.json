@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -114,41 +114,9 @@
 						"type": "uint256"
 					},
 					{
-						"components": [
-							{
-								"internalType": "uint256",
-								"name": "personId",
-								"type": "uint256"
-							},
-							{
-								"internalType": "string",
-								"name": "name",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "NRIC",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "sex",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "birthdate",
-								"type": "string"
-							},
-							{
-								"internalType": "string",
-								"name": "race_nationality",
-								"type": "string"
-							}
-						],
-						"internalType": "struct MedicalCertificate.personalInfo",
+						"internalType": "uint256",
 						"name": "personal_info",
-						"type": "tuple"
+						"type": "uint256"
 					},
 					{
 						"internalType": "enum MedicalCertificate.certCategory",
@@ -188,7 +156,7 @@
 					},
 					{
 						"internalType": "enum MedicalCertificate.certCategory",
-						"name": "incidentType",
+						"name": "incidentType0incident1death2suicide",
 						"type": "uint8"
 					},
 					{
@@ -292,12 +260,12 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_hospitalId",
+						"name": "hospitalId",
 						"type": "uint256"
 					},
 					{
 						"internalType": "string",
-						"name": "_password",
+						"name": "password",
 						"type": "string"
 					}
 				],
@@ -665,17 +633,17 @@
 	},
 	"sources": {
 		"contracts/Hospital.sol": {
-			"keccak256": "0x30c3b583df9d7f19cb7472802d77c0a7ad16c68215fcba240dd1d34699772e7f",
+			"keccak256": "0xfc94bac81e533c6146b3dbd27a0b2870bb48aa5f4068fa6bd0f581240b56f262",
 			"urls": [
-				"bzz-raw://f6296a50b85ffdc82abfdd449ce90695b876a6d67aa40f0e3c145b78d4b6432e",
-				"dweb:/ipfs/QmNa1Zx7QjcuALra2TusutwMiUUqPH7ajdedmKNnqXNL1i"
+				"bzz-raw://73cdf73f07e58280da7f561f691f05e44a7c05c80b56f181a6769f00258fc2fc",
+				"dweb:/ipfs/QmQYaaXgfeVH4ZiMUKXaQeK4473YZFwSceFBJPUnbtLe9e"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0x477b1fdc7fb3e1c32d19c65c4968aa7df3a01d7b1285b5e9a56f5ef0fdd86975",
+			"keccak256": "0x217ab4c4f269cdc15aea870c11886900f5c02d92c764b6ccf8c7399db75945d5",
 			"urls": [
-				"bzz-raw://e809fb720ebb85e5064e2121e3405c15b5cd678492c926511860233dc08afb5f",
-				"dweb:/ipfs/QmehAPqqopuRR2KbGv6ps9iMxxy7hUNAMAjv8wFf19ELnc"
+				"bzz-raw://0c97d10c42ba936c0a0dd2815415d7be7716651b7ccdec699c619be4922a3e6f",
+				"dweb:/ipfs/QmXzEPD7wLE9A6g9uNPXTZygLxSwPYXcKxgZD3LYB1xSni"
 			]
 		}
 	},

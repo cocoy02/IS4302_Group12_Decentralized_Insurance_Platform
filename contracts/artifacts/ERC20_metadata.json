@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -418,10 +418,10 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0x7d7c7f6ea2cc2f0903eeeb0e848fd3534804573b26249704fc6ff729bd4933b0",
+			"keccak256": "0xd21811786d234e0ba0624a740ae502e1c0f25887cf73556309f79b82b359025f",
 			"urls": [
-				"bzz-raw://56149fb8fb7d62cc18ac93ba780313db896b550a9e23878e30da433b62cf5710",
-				"dweb:/ipfs/QmP76eaFarizgPLRQgFvtuCC7uHD8Kn74mvmyxHrwVMhRm"
+				"bzz-raw://b661a37122468a631f772597d585177e0610d746baea69278cf355f1b7c84617",
+				"dweb:/ipfs/QmW7fqRN8MnxzenrKi6jLSY8sqbLepzMk48akuhL8ymJXM"
 			]
 		}
 	},

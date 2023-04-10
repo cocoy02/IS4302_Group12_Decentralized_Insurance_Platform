@@ -69,6 +69,10 @@ contract Hospital is MedicalCertificate  {
         require(bytes(s).length == 8, "Invalid date!");
         _;
     }
+    modifier validIncidentDate(string memory s) {
+        require(bytes(s).length == 12, "Invalid date!");
+        _;
+    }
 
     
     //since below function already check validity no need here
@@ -121,10 +125,10 @@ contract Hospital is MedicalCertificate  {
     }
 
     function addMC(uint256 hospital, string memory password, uint256 personId,
-    certCategory incidentType, string memory incidentYYYYMMDDHHMM, 
+    certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
     string memory certifierName
     ) 
-    public validHospital(hospital) verifyPassword(hospital,password) validDate(incidentYYYYMMDDHHMM)
+    public validHospital(hospital) verifyPassword(hospital,password) validIncidentDate(incidentYYYYMMDDHHMM)
     override returns(bytes memory) {
         counter = counter + 1;
         bytes memory id = abi.encodePacked(counter, personId);
@@ -133,8 +137,8 @@ contract Hospital is MedicalCertificate  {
         medicalCert memory mc = MC[keccak256(id)];
         mc.ID = id;
         mc.HospitalID = hospital;
-        mc.personal_info = infos[personId];
-        mc.incident = incidentType;
+        mc.personal_info = personId;
+        mc.incident = incidentType0incident1death2suicide;
         mc.dateTimeIncident = incidentYYYYMMDDHHMM;
         mc.titleOfCertifier = certifierName;
 
@@ -202,21 +206,21 @@ contract Hospital is MedicalCertificate  {
     // * @param _hospitalId the hospital id 
     // * @param _password password to register
     // */
-    function checkRequestFromHospital (uint256 _hospitalId, string memory _password) 
-    public validHospital(_hospitalId) verifyPassword(_hospitalId,_password) 
+    function checkRequestFromHospital (uint256 hospitalId, string memory password) 
+    public validHospital(hospitalId) verifyPassword(hospitalId,password) 
     {
         uint256[] memory requestids = new uint256[](numOfReqs);
         uint256[] memory stakeholderids = new uint256[](numOfReqs);
         string[] memory names = new string[](numOfReqs);
         string[]memory ics = new string[](numOfReqs);
 
-        uint256[] memory requestedstakeholders = stakeholders[_hospitalId];
+        uint256[] memory requestedstakeholders = stakeholders[hospitalId];
 
         uint256 total_reqs = 0;
 
         for (uint256 i = 0; i < requestedstakeholders.length; i++) {
             uint256 stakeholderId = requestedstakeholders[i];
-            Request[] memory reqs = registeredHospital[_hospitalId].requests[stakeholderId];
+            Request[] memory reqs = registeredHospital[hospitalId].requests[stakeholderId];
             for(uint256 j = 0; j < reqs.length; j++) {
                 Request memory req = reqs[j];
                 
