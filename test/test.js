@@ -126,15 +126,15 @@ contract('InsuranceMarket', function (accounts){
 
 
 
-        // const numIns = insuranceCompanyInstance.numInsurance;
+        const numIns = insuranceCompanyInstance.numInsurance;
 
-        // assert.strictEqual(numIns.toNumber(), 1, 'Insurance creation incorrect');
+        assert.strictEqual(numIns.toNumber(), 1, 'Insurance creation incorrect');
 
-        // let solve = insuranceCompanyInstance.solveRequest(1,1,1, {from:accounts[9]});
-        // truffleAssert.eventEmitted('requestSolve');
-        // let status2, approved = await insuranceCompanyInstance.checkRequestsFromStakeholder(1,1); 
-        // assert.strictEqual(status2, InsuranceCompany.requestStatus.approved, 'Wrong status');
-        // assert.strictEqual(approved.toNumber(), 1, 'Wrong request id'); 
+        let solve = insuranceCompanyInstance.solveRequest(1,1,1, {from:accounts[9]});
+        truffleAssert.eventEmitted('requestSolve');
+        let status2, approved = await insuranceCompanyInstance.checkRequestsFromStakeholder(1,1); 
+        assert.strictEqual(status2, InsuranceCompany.requestStatus.approved, 'Wrong status');
+        assert.strictEqual(approved.toNumber(), 1, 'Wrong request id'); 
 
     });
 

@@ -177,6 +177,8 @@ contract InsuranceCompany is Insurance {
         newInsurance.status = status.unapproved; // initialise  status to unapproved
         newInsurance.issueDate = issueDateYYYYMMDD;
         newInsurance.expiryDate = expiryDateYYYYMMDD; 
+
+        emit create(numInsurance);
         
         return numInsurance;   //return new insurance Id
     }
