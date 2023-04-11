@@ -28,11 +28,14 @@ contract Hospital is MedicalCertificate  {
     }
     
     uint256 numOfReqs = 0;
+    //mapping(uint256 => medicalCert) public MC;
+    //mapping(uint256 => personalInfo) public infos;
+
     uint256 numOfPeople = 0;
-    uint256 numOfMC = 0;
+    //event mcCreated(uint256 numMC);
 
     // events
-    event registered();
+    event registered(uint256 hospitalId);
     event createOneMC();
     event presidentChanged();
     event requestSolve(uint256 requestId);
@@ -106,7 +109,7 @@ contract Hospital is MedicalCertificate  {
         
         ids[msg.sender] = totalHospital;
         
-        emit registered();
+        emit registered(totalHospital);
         return totalHospital;
     }
 
@@ -127,33 +130,33 @@ contract Hospital is MedicalCertificate  {
         return numOfPeople;
     }
 
-    function addMC(uint256 hospital, string memory password, uint256 personInfoId,
+    function addMC(uint256 hospital, string memory password, uint256 personId,
     certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
     string memory certifierName
     ) 
     public validHospital(hospital) verifyPassword(hospital,password) validIncidentDate(incidentYYYYMMDDHHMM)
     override returns(uint256) {
-        numOfMC++;
+        counter = counter + 1;
 
 
-        medicalCert storage mc = MC[numOfMC];
+        medicalCert storage mc = MC[counter];
         
-        mc.ID = numOfMC ;
+        mc.ID = counter;
         mc.HospitalID = hospital;
-        mc.personal_info = personInfoId;
+        mc.personal_info = personId;
         mc.incident = incidentType0incident1death2suicide;
         mc.dateTimeIncident = incidentYYYYMMDDHHMM;
         mc.titleOfCertifier = certifierName;
 
-        emit mcCreated(numOfMC);
+        emit mcCreated(counter);
 
-        return numOfMC;    
+        return counter;    
     }
     
-    function solveRequest(uint256 hospitalId, string memory password, 
-    uint256 mcId,
+    function solveRequest(uint256 hospitalId, string memory password, uint256 mcId,
     uint256 requestId, uint256 stakeholderId) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password) 
+    returns(uint256)
     {
 
         if (requestId != 0) {
@@ -172,7 +175,7 @@ contract Hospital is MedicalCertificate  {
             
             require(find == true, "Invalid request id!");
             if (find) {
-                registeredHospital[hospitalId].requests[stakeholderId][index].mcid = mcId;
+                reqs[index].mcid = mcId;
                 emit requestSolve(requestId);
             }
         }        
@@ -318,4 +321,16 @@ contract Hospital is MedicalCertificate  {
     // {
     //     return medicalCert.getMC(_mcId);
     // }
+
+//    function getMCName(uint256 id) public view returns(string memory) {
+//        return infos[MC[id].personal_info].name;
+//    }
+
+//    function getMCNRIC(uint256 id) public view returns(string memory) {
+//        return infos[MC[id].personal_info].NRIC;
+//    }
+
+//    function getMCCategory(uint256 id) public view returns(certCategory) {
+//        return MC[id].incident;
+//    }
 }

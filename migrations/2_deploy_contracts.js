@@ -1,19 +1,25 @@
 const ERC20 = artifacts.require("ERC20");
-const RNG = artifacts.require("RNG");
-const DiceToken = artifacts.require("DiceToken");
-const Dice = artifacts.require("Dice");
-const DiceCasino = artifacts.require("DiceCasino");
+const MedicalCert = artifacts.require("MedicalCertificate");
+const TrustInsure = artifacts.require("TrustInsure");
+const Hospital = artifacts.require("Hospital");
+const InsuranceCompany = artifacts.require("InsuranceCompany");
+const Stakeholder = artifacts.require("Stakeholder");
+const InsuranceMarket = artifacts.require("InsuranceMarket");
+
 
 module.exports = (deployer, network, accounts) => {
   deployer
-    .deploy(DiceToken)
+    .deploy(TrustInsure)
     .then(function () {
-      return deployer.deploy(RNG);
+      return deployer.deploy(Hospital);
     })
     .then(function () {
-      return deployer.deploy(Dice, DiceToken.address,RNG.address);
+      return deployer.deploy(InsuranceCompany, TrustInsure.address,Hospital.address);
     })
     .then(function () {
-      return deployer.deploy(DiceCasino, Dice.address, DiceToken.address);
+      return deployer.deploy(Stakeholder, InsuranceCompany.address, TrustInsure.address, Hospital.address);
+    })
+    .then(function () {
+      return deployer.deploy(InsuranceMarket, InsuranceCompany.address, Stakeholder.address, TrustInsure.address);
     });
 };

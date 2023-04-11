@@ -18,7 +18,7 @@ contract TrustInsure {
         returns (uint256)
     {
         //uint256 amt = weiAmt / (1000000000000000000/100);
-        uint256  amt = msg.value;
+        uint256  amt = msg.value / (1000000000000000000/100);
         if (amt >= 200) amt += (amt/200) * 5;
         erc20Contract.mint(msg.sender, amt);
         return amt; 
