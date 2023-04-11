@@ -45,7 +45,10 @@ contract Hospital is MedicalCertificate  {
         string[] names,
         string[] ics);
 
-    //modifiers
+// =====================================================================================
+// modifiers
+// =====================================================================================
+
     modifier validHospital(uint256 _hospitalId) {
         require(registeredHospital[_hospitalId].hospitalId > 0, "Invalid hospital id!");
         _;
@@ -86,8 +89,9 @@ contract Hospital is MedicalCertificate  {
     //     _;
     // }
     
-    //functions
-
+// =====================================================================================
+// functions
+// =====================================================================================
 
      /** 
     * @dev register the hospital on chain
@@ -113,6 +117,17 @@ contract Hospital is MedicalCertificate  {
         return totalHospital;
     }
 
+    /**
+    * @dev Create information profile for the assured person
+    * @param hospitalId hospital id
+    * @param password password for hospital
+    * @param name the name of the person who has accident
+    * @param NRIC the NRIC of the person who has accident
+    * @param sex the sexof the person who has accident
+    * @param birthdateYYYYMMDD the birthdate of the person who has accident
+    * @param race_nationality the race and nationality of the person who has accident
+    * @return uint256 number of people
+     */
     function createPersonalInfo (uint256 hospitalId, string memory password, 
     string memory name, string memory NRIC, string memory sex, 
                 string memory birthdateYYYYMMDD, string memory race_nationality) 
@@ -129,7 +144,16 @@ contract Hospital is MedicalCertificate  {
 
         return numOfPeople;
     }
-
+    /**
+    * @dev Create the medical certificate for the injured or dead person
+    * @param hospital the id of the hospital
+    * @param password password for hospital
+    * @param personId the id of the person who has accident
+    * @param incidentType0incident1death2suicide the incident type of accident where 0 is incident 1 is death and 2 is suicide
+    * @param incidentYYYYMMDDHHMM the incident date and time of the incident
+    * @param certifierName the certifier of the MC of the accident
+    * @return uint256 MC id in bytes
+     */
     function addMC(uint256 hospital, string memory password, uint256 personId,
     certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
     string memory certifierName
@@ -152,7 +176,15 @@ contract Hospital is MedicalCertificate  {
 
         return counter;    
     }
-    
+
+    /**
+    * @dev Create the medical certificate for the injured or dead person
+    * @param hospitalId the id of the hospital
+    * @param password password for hospital
+    * @param mcId the mc id of the request
+    * @param requestId the id of the request
+    * @param stakeholderId the id of the stakeholder
+     */
     function solveRequest(uint256 hospitalId, string memory password, uint256 mcId,
     uint256 requestId, uint256 stakeholderId) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password) 
@@ -183,14 +215,14 @@ contract Hospital is MedicalCertificate  {
 
     }
 
-    //  /** 
-    // * @dev stakeholder request to create MC
-    // * @param hospitalId the hospital id 
-    // * @param stakeholderId the stakeholder Id
-    // * @param nameAssured the assured person's name
-    // * @param icAssured the assured person's NRIC
-    // * @return uint256 number of requests
-    // */
+    /** 
+    * @dev stakeholder request to create MC
+    * @param hospitalId the hospital id 
+    * @param stakeholderId the stakeholder Id
+    * @param nameAssured the assured person's name
+    * @param icAssured the assured person's NRIC
+    * @return uint256 number of requests
+    */
     function requestMC(uint256 hospitalId, uint256 stakeholderId, string memory nameAssured, string memory icAssured) 
     external validHospital(hospitalId) returns(uint256) {
         //require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder!");
@@ -296,15 +328,33 @@ contract Hospital is MedicalCertificate  {
     }
 
 
-    //getters
+// =====================================================================================
+// getters
+// =====================================================================================
+    
+    /** 
+    * @dev Get the hospital Id
+    * @param president president of hospital
+    * @return uint256 hospital id
+    */
     function getHospitalId(address president) public view returns(uint256) {
         return ids[president];
     }
 
+    /** 
+    * @dev Get the president of hospital
+    * @param hospitalId id of hospital
+    * @return address president
+    */
     function getPresident(uint256 hospitalId) public view returns(address) {
         return  registeredHospital[ hospitalId].president;
     }
 
+    /** 
+    * @dev Get the password of hospital
+    * @param hospitalId id of hospital
+    * @return string password
+    */
     function getPassword(uint256 hospitalId) 
         public view 
         onlyOwner(hospitalId) 
@@ -313,6 +363,10 @@ contract Hospital is MedicalCertificate  {
         (string memory password, string memory s) = abi.decode(registeredHospital[hospitalId].password, (string,string));
         return password;
     }
+
+// =====================================================================================
+// archived code
+// =====================================================================================
 
     // function getMC(uint256 _hospitalId, bytes memory  _mcId) 
     //     public view 

@@ -3,8 +3,6 @@ pragma experimental ABIEncoderV2;
 
 contract Insurance {
 
-
-    
     enum insuranceType { life, accident }
     enum status { unapproved, processing,  unpaid, paid, claimed, unclaimed}
     enum reasonType { suicide, others }
@@ -36,17 +34,33 @@ contract Insurance {
     uint256 public numStakeholder = 0;
     mapping(uint256 => stakeholderInfo) public stakeholderinfos;
 
-
+// =====================================================================================
+// functions
+// =====================================================================================
+    
+    /** 
+    * @dev Create related stakeholders profile for the insurance
+    * @param policyOwner the id of the stakeholder who want to purchase the insurance policy
+    * @param beneficiary the id of the stakeholder who will be benefited when the insurance is claimed
+    * @param lifeAssured the id of the stakeholder being assured
+    * @param payingAccount the id of the stakeholder who will receive the payment
+    */
     function createStakeholderInfo (uint256 policyOwner,
         uint256  beneficiary,
         uint256 lifeAssured,
         uint256 payingAccount) 
     public virtual returns(uint256) {}
 
-    //  /** 
-    // * @dev function to create a new insurance, and add to 'insurances' map. requires at least 0.01ETH to create
-    // * @return uint256 new insurance id
-    // */
+    /** 
+    * @dev Create the insurance
+    * @param stakeholderInfoId the id of the stakeholder info that created before
+    * @param companyId the id of the company
+    * @param premium the total amount of premium fee that stakeholder should pay before claim
+    * @param insuredAmount the total amount of payment when the insurnace is claimed
+    * @param insType0life1accident the type of insurance, 0 for life or 1 for accident insurance
+    * @param issueDateYYYYMMDD The date of the insurance being created
+    * @param expiryDateYYYYMMDD The date of the insurance will be expired
+    */
     function createInsurance(
         uint256 stakeholderInfoId,
         uint256 companyId,
@@ -71,8 +85,9 @@ contract Insurance {
     //     _;
     // }
 
-    // SETTERS 
-
+// =====================================================================================
+// setters
+// =====================================================================================
     function setBeneficiary(uint256 newBeneficiary, uint256 insuranceId) public {//policyOwnerOnly(insuranceId) {
         stakeholderinfos[insurances[insuranceId].stakeholders].beneficiary = newBeneficiary;
     }
@@ -97,7 +112,10 @@ contract Insurance {
 
     //     return false;
     // }
-    // GETTERS
+
+// =====================================================================================
+// getters
+// =====================================================================================
 
     function getInsurance(uint256 insuranceId) public view returns (insurance memory) {
         return insurances[insuranceId];

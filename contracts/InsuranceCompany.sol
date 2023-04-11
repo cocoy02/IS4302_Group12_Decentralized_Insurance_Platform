@@ -91,9 +91,9 @@ contract InsuranceCompany is Insurance {
 
 
     /**
-    * dev Register an insurance company
-    * param namae (string): the name of the new insurance company
-    * return uint256 id of the company
+    * @dev Register an insurance company
+    * @param name (string): the name of the new insurance company
+    * @return uint256 id of the company
     */
     function registerCompany(string memory name) public payable returns(uint256) {
         require(msg.value > 0.01 ether, "at least 0.01 ETH is needed to create a company");
@@ -112,6 +112,14 @@ contract InsuranceCompany is Insurance {
         return numOfCompany; 
     }
 
+    /**
+    * @dev Create related stakeholders profile for the insurance
+    * @param policyOwner the id of the stakeholder who want to purchase the insurance policy
+    * @param beneficiary the id of the stakeholder who will be benefited when the insurance is claimed
+    * @param lifeAssured the id of the stakeholder being assured
+    * @param payingAccount the id of the stakeholder who will receive the payment
+    * @return uint256 number of stakeholder
+    */
     function createStakeholderInfo (uint256 policyOwner,
         uint256  beneficiary,
         uint256 lifeAssured,
@@ -130,6 +138,17 @@ contract InsuranceCompany is Insurance {
         return numStakeholder;
     }
 
+    /**
+    * @dev Create the insurance
+    * @param stakeholderInfoId the id of the stakeholder info that created before
+    * @param companyId the id of the company
+    * @param premium the total amount of premium fee that stakeholder should pay before claim
+    * @param insuredAmount the total amount of payment when the insurnace is claimed
+    * @param insType0life1accident the type of insurance, 0 for life or 1 for accident insurance
+    * @param issueDateYYYYMMDD The date of the insurance being created
+    * @param expiryDateYYYYMMDD The date of the insurance will be expired
+    * @return uint256 insurance id
+    */
     function createInsurance (
         uint256 stakeholderInfoId,
         uint256 companyId,
@@ -162,7 +181,12 @@ contract InsuranceCompany is Insurance {
         return numInsurance;   //return new insurance Id
     }
 
-
+    /**
+    * @dev Update request status and related insurance information
+    * @param companyId the id of the company
+    * @param requestId which request the company want to update and address
+    * @param insuranceId the id of the insurance that the company created specific for the request
+    */
     function solveRequest(uint256 companyId, uint256 requestId, uint256 insuranceId) 
     public  onlyCompanyOwner
     {
@@ -187,10 +211,12 @@ contract InsuranceCompany is Insurance {
         }        
     }
 
-    // /** 
-    // * @dev insurance need to have a insurance state(boolean) to indicate whether approved by beneficiary and add count for credit
-    // * @param {uint256} insuranceId, {uint256} companyId
-    // */
+    /** 
+    * @dev Allow the policyowner to verify the insurance contract information and sign
+    * @param insuranceId the id of the insurance
+    * @param companyId the id of the company
+    * @param policyOwnerID the id of the policy owner
+    */
     //stakeholder call this function to sign the insurance
     function signInsurance(uint256 insuranceId,uint256 companyId, uint256 policyOwnerID) 
     external
@@ -203,10 +229,10 @@ contract InsuranceCompany is Insurance {
         updateCredit(companyId);
     }
 
-    // /** 
-    // * @dev function to update the credit of company once a insurance is signed
-    // * @param {uint256} companyId
-    // */
+    /** 
+    * @dev function to update the credit of company once a insurance is signed
+    * @param companyId the id of the company
+    */
     function updateCredit(uint256 companyId) private validCompanyId(companyId) {
         insuranceCompany storage company = companies[companyId];
         uint256 completed = company.completed;
@@ -225,6 +251,13 @@ contract InsuranceCompany is Insurance {
         } 
     }
 
+    /** 
+    * @dev Allow the policy owner to pay the premium
+    * @param insuranceId the id of the insurance
+    * @param amount the id of the insurance
+    * @param policyOwnerID the id of the policy owner
+    * @param policyOwner the address of policyowner
+    */
     function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID, address policyOwner) external validPolicyOwner(insuranceId, policyOwnerID){
         address companyAddress = companies[insurances[insuranceId].companyId].owner;
         trustinsureInstance.transferFromInsure(policyOwner,companyAddress,amount);
@@ -238,6 +271,16 @@ contract InsuranceCompany is Insurance {
         emit allPaid(insuranceId);
     }
 
+    /** 
+    * @dev Claim insurance
+    * @param insuranceID the id of the insurance
+    * @param companyId the id of the company
+    * @param mcId the id of the medical certificate
+    * @param beneficiaryID the id of beneficiary
+    * @param beneficiaryAddress the address of beneficiary
+    * @param name the name of the life assured
+    * @param NRIC the NRIC of the life assured
+    */
     function claim(uint256 insuranceID,uint256 companyId, 
     uint256 mcId,uint256 beneficiaryID,
     address beneficiaryAddress,

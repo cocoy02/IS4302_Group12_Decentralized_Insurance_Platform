@@ -71,8 +71,25 @@ contract ERC20 {
     event Mint(address indexed to, uint256 amount);
     event MintFinished();
 
+// =====================================================================================
+// modifiers
+// =====================================================================================
+
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
   
-    /**
+  modifier canMint() {
+    require(!mintingFinished);
+    _;
+  }
+
+// =====================================================================================
+// functions
+// =====================================================================================
+
+  /**
   * @dev Gets the balance of the specified address.
   * @param _owner The address to query the the balance of.
   * @return An uint256 representing the amount owned by the passed address.
@@ -80,7 +97,6 @@ contract ERC20 {
   function balanceOf(address _owner) public view returns (uint256) {
     return balances[_owner];
   }
-
 
   /**
   * @dev transfer token for a specified address
@@ -97,8 +113,6 @@ contract ERC20 {
     return true;
   }
 
-  
-  
     /**
    * @dev Function to mint tokens
    * @param _to The address that will receive the minted tokens.
@@ -113,24 +127,12 @@ contract ERC20 {
     return true;
   }
 
-  
+    /**
+  * @dev Function returns the owner of the token
+  */
   function getOwner() public view returns (address){
       return owner;
   }
-  
-  
-   modifier onlyOwner() {
-    require(msg.sender == owner);
-    _;
-  }
-  
-  
-  modifier canMint() {
-    require(!mintingFinished);
-    _;
-  }
-
-
 
   /**
    * @dev Function to stop minting new tokens.
@@ -141,7 +143,6 @@ contract ERC20 {
     emit MintFinished();
     return true;
   }
-
 
   /**
    * @dev Transfer tokens from one address to another
@@ -186,7 +187,6 @@ contract ERC20 {
   function allowance(address _owner, address _spender) public view returns (uint256) {
     return allowed[_owner][_spender];
   }
-
 
   /**
   * @dev total number of tokens in existence

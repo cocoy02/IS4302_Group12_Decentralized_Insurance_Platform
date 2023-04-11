@@ -33,9 +33,10 @@ contract InsuranceMarket {
         insureContract = insureAddress;
     }
 
-    // ---------
-    // modifiers
-    // ---------
+// =====================================================================================
+// modifiers
+// =====================================================================================
+
     /*check company owner*/
     modifier companyOwnerOnly(uint256 companyId) {
         require(companyContract.getOwner(companyId) == msg.sender, "You are not allowed to list the product!");
@@ -63,9 +64,10 @@ contract InsuranceMarket {
         _;
     }
 
-    // ------
-    // events
-    // ------
+// =====================================================================================
+// events
+// =====================================================================================
+
     event productPublished();
     event productWithdrawedSucceed();
     event productWithdrawedFail();
@@ -73,19 +75,16 @@ contract InsuranceMarket {
     event requestSucceed();
     event requestFail();
 
-
-    // ---------
-    // functions
-    // ---------
-
-
+// =====================================================================================
+// functions
+// =====================================================================================
+    
     // /**
     // * @dev Allow insurance company list product on the market
     // * @param _premium The amount that should be paid yearly
     // * @param _sumAssured Total amount to claim the insurance
     // * @return uint256 productId
     // */
-
     function publishProduct(uint256 companyId, string memory productCategory, uint256 premium, uint256 sumOfClaim) 
     public companyOwnerOnly(companyId) validProduct(productCategory)
     returns(uint256)
@@ -245,8 +244,6 @@ contract InsuranceMarket {
     // then create contract in insuranceConpany contract
     // then send it to policy owners to verify
     // once the verification is done, the insurance is issued successfully
-
-    
     function getProductInfo(Product memory _product) internal view returns(uint256, uint256,uint256, productType) {
         return (_product.productid, _product.premium, _product.sumAssured, _product.prodType);
     }
