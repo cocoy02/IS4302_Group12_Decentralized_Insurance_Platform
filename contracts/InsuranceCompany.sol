@@ -454,4 +454,5 @@ contract InsuranceCompany is Insurance {
         return numOfCompany;
     }
 
+
 }

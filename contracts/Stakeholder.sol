@@ -37,6 +37,8 @@ contract Stakeholder {
     mapping(uint256 => uint256[]) insuranceReqs; //stakeholder ids => insurance requests ids
     mapping(uint256 => uint256[]) mcReqs; 
 
+    event signInsure (uint256 insuranceId);
+
     //Modifiers
 
     modifier validStakeholder(uint256 stakeholderId) {
@@ -116,6 +118,8 @@ contract Stakeholder {
     uint256 policyOwnerID, string memory signature) 
     public validStakeholder(policyOwnerID) {
         insuranceCompanyContract.signInsurance(insuranceId, companyId, policyOwnerID);
+        emit signInsure(insuranceId);
+
     }
 
     /** 

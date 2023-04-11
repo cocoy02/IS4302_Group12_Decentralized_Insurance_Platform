@@ -153,4 +153,8 @@ contract Insurance {
         return insurances[insuranceId].premium - insurances[insuranceId].currentAmount;
     }
 
+    function getNumberOfInsurance() public view returns(uint256) {
+        return numInsurance;
+    }
+
 }
