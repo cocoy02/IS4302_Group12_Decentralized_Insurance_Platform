@@ -38,10 +38,6 @@ contract Stakeholder {
     mapping(uint256 => uint256[]) mcReqs; 
 
     //Modifiers
-    modifier onlyPolicyOwner(uint256 policyOwnerID) {
-        require(msg.sender == stakeholders[policyOwnerID].stakeholderAddress);
-        _;
-    } 
 
     modifier validStakeholder(uint256 stakeholderId) {
         require(ids[msg.sender] == stakeholderId, "Invalid stakeholder!");
