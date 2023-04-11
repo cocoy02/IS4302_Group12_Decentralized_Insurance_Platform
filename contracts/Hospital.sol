@@ -26,8 +26,13 @@ contract Hospital is MedicalCertificate  {
         string icAssured;
         uint256 mcid;
     }
-    
+    //NEWWWWWWWW
+    uint256 hospitalCounter = 0;
+
     uint256 numOfReqs = 0;
+
+    
+
     //mapping(uint256 => medicalCert) public MC;
     //mapping(uint256 => personalInfo) public infos;
 
@@ -74,11 +79,11 @@ contract Hospital is MedicalCertificate  {
     }
 
     modifier validDate(string memory s) {
-        require(bytes(s).length == 8, "Invalid date!");
+        require(bytes(s).length == 8, "Invalid birth date!");
         _;
     }
     modifier validIncidentDate(string memory s) {
-        require(bytes(s).length == 12, "Invalid date!");
+        require(bytes(s).length == 12, "Invalid incident date!");
         _;
     }
 
@@ -160,21 +165,20 @@ contract Hospital is MedicalCertificate  {
     ) 
     public validHospital(hospital) verifyPassword(hospital,password) validIncidentDate(incidentYYYYMMDDHHMM)
     override returns(uint256) {
-        counter = counter + 1;
+        hospitalCounter++;
 
-
-        medicalCert storage mc = MC[counter];
+        medicalCert storage mc = MC[hospitalCounter];
         
-        mc.ID = counter;
+        mc.ID = hospitalCounter;
         mc.HospitalID = hospital;
         mc.personal_info = personId;
         mc.incident = incidentType0incident1death2suicide;
         mc.dateTimeIncident = incidentYYYYMMDDHHMM;
         mc.titleOfCertifier = certifierName;
 
-        emit mcCreated(counter);
+        emit mcCreated(hospitalCounter);
 
-        return counter;    
+        return hospitalCounter;    
     }
 
     /**
@@ -362,6 +366,30 @@ contract Hospital is MedicalCertificate  {
     {
         (string memory password, string memory s) = abi.decode(registeredHospital[hospitalId].password, (string,string));
         return password;
+    }
+
+    /** 
+    * @dev Get number of requests
+    * @return uint256 number of requests
+    */
+    function getNumOfReqs() public view returns(uint256) {
+        return numOfReqs;
+    }
+
+    /** 
+    * @dev Get number of people
+    * @return uint256 number of people
+    */
+    function getNumOfPeople() public view returns(uint256) {
+        return numOfPeople;
+    }
+
+    /** 
+    * @dev Get number of hospital
+    * @return uint256 number of hospital
+    */
+    function getHospitalCounter() public view returns(uint256) {
+        return hospitalCounter;
     }
 
 // =====================================================================================

@@ -153,25 +153,25 @@ contract('InsuranceMarket', function (accounts){
 
     it('MC Request', async () => {
         let m1 = await stakeholderInstance.requestMC(1, 'Bob Wang', 'S1234567A', {from: accounts[1]});
-        const numMCReq = await hospitalInstance.numOfReqs;
+        const numMCReq = await hospitalInstance.getNumOfReqs();
 
         await assert.strictEqual(numMCReq.toNumber(), 1, 'requestMC incorrect');
         // hospital checkmcrequest
 
 
-        let pi1 = await hospitalInstance.createPersonalInfo(1, 'password', 'Bob Wang', 'S1234567A', 'Male', 19820202, 'Chinese Singaporean', {from: accounts[9]});
-        const numP = await hospitalInstance.numOfPeople;
+        let pi1 = await hospitalInstance.createPersonalInfo(1, 'password', 'Bob Wang', 'S1234567A', 'Male', '19721023', 'Chinese Singaporean', {from: accounts[9]});
+        const numP = await hospitalInstance.getNumOfPeople();
 
         await assert.strictEqual(numP.toNumber(), 1, 'createPersonalInfo incorrect');
 
-        let mc1 = await hospitalInstance.addMC(1, 'password', 1, Hospital.certCategory.suicide, 202304061400, 'Strange', {from: accounts[9]});
-        const numMC = await hospital.counter;
+        let mc1 = await hospitalInstance.addMC(1, 'password', 1, 2, '202304061400', 'Strange', {from: accounts[9]});
+        const numMC = await hospitalInstance.getHospitalCounter();
 
         await assert.strictEqual(numMC.toNumber(),1 ,'addMC incorrect');
 
         let solve1 = await hospitalInstance.solveRequest(1, 'password', 1, 1, 1, {from: accounts[9]});
         
-        await truffleAssert.eventEmitted('requestSolve');
+        await truffleAssert.eventEmitted(solve1, 'requestSolve');
 
     });    
 
