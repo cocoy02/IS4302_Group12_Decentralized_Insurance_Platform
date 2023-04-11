@@ -69,7 +69,6 @@ contract Stakeholder {
     * @dev Record the preferred product one wants to purchase
     * @param stakeholderId the id of the stakeholder
     * @param requestId the id of the request
-    * @return uint256 id of request
     */
     function addRequestIds(uint256 stakeholderId, uint256 requestId) external {
         insuranceReqs[stakeholderId].push(requestId);
