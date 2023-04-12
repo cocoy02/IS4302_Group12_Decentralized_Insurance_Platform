@@ -1,1 +1,1 @@
-# IS4302_Group12
+# IS4302_Group12_Decentralized_Insurance_Platform
