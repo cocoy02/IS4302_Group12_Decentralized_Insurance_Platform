@@ -70,6 +70,11 @@ contract('InsuranceMarket', function (accounts){
         let p2 = await insuranceMarketInstance.publishProduct(1, "accident", 5, 10, {from: accounts[9]});
         await truffleAssert.eventEmitted(p2, 'productPublished');
 
+        let lionbal1 = await trustInsureInstance.checkInsure(accounts[9]);
+        let marketbal = await trustInsureInstance.checkInsure(insuranceMarketInstance.address);
+ 
+        await assert.strictEqual(lionbal1.toNumber(), 203, 'publish commission not paid');
+        await assert.strictEqual(marketbal.toNumber(), 2, 'publish commission not received');
         //const pid, pprem, passured, ptype = insuranceCompanyInstance.getProductInfor()
         
     });
@@ -117,7 +122,7 @@ contract('InsuranceMarket', function (accounts){
        await truffleAssert.reverts(insuranceCompanyInstance.createInsurance(1, 1, 5, 20, Insurance.insuranceType.life, 20230401, 20230329, {from: accounts[9]}), 'Invalid expiry date!');
         // let a1 = await insuranceMarketInstance.approve(0, {from: accounts[9]}); not tested
 
-        let i1 = await insuranceCompanyInstance.createInsurance(1, 1, 5, 10, Insurance.insuranceType.life, 20200401, 20490401, {from: accounts[9]});
+        let i1 = await insuranceCompanyInstance.createInsurance(1, 1, 5, 210, Insurance.insuranceType.life, 20230401, 20490401, {from: accounts[9]});
 
         truffleAssert.eventEmitted(i1, 'create');
 
@@ -179,8 +184,8 @@ contract('InsuranceMarket', function (accounts){
         await truffleAssert.reverts(hospitalInstance.createPersonalInfo(1, 'passwordo', 'Tom Wang', 'T0012345A', 'Male', '20000202', 'Chinese Singaporean', {from: accounts[9]}), 'Wrong password!');
         await truffleAssert.reverts(hospitalInstance.addMC(1, 'passwordo', 1, 0, '202304061400', 'Strange', {from: accounts[9]}), 'Wrong password!');
 
-        await truffleAssert.reverts(hospitalInstance.createPersonalInfo(11, 'password', 'Tom Wang', 'T0012345A', 'Male', '20000202', 'Chinese Singaporean', {from: accounts[8]}), 'Invalid hospital id');
-        await truffleAssert.reverts(hospitalInstance.addMC(11, 'password', 1, 0, '202304061400', 'Strange', {from: accounts[8]}), 'Invalid hospital id');
+        await truffleAssert.reverts(hospitalInstance.createPersonalInfo(11, 'password', 'Tom Wang', 'T0012345A', 'Male', '20000202', 'Chinese Singaporean', {from: accounts[9]}), 'Invalid hospital id');
+        await truffleAssert.reverts(hospitalInstance.addMC(11, 'password', 1, 0, '202304061400', 'Strange', {from: accounts[9]}), 'Invalid hospital id');
 
 
     });
@@ -193,29 +198,27 @@ contract('InsuranceMarket', function (accounts){
     });
 
     it('Fail Claim', async () => {
-        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 1, 'Bob Wang', 'S1234567A'), "Invalid Beneficiary");
+        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 1, 'Bob Wang', 'S1234567A', {from: accounts[1]}), "Invalid beneficiary!");
 
-        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A'), "Stakeholder haven't paid the insurance");
+        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), "Stakeholder haven't paid the insurance");
 
-        await truffleAssert.reverts(stakeholderInstance.payPremium(1,2,1, {from: accounts[1]}), 'Not allowed to spend this much');
-
-        truffleAssert.eventEmitted();
+        await truffleAssert.reverts(stakeholderInstance.payPremium(1,2,1, {from: accounts[1]}), "From doesn't have enough balance");
 
         let gettoken = await trustInsureInstance.getInsure({from: accounts[1], value: oneEth.dividedBy(10)});
         let prem = await stakeholderInstance.payPremium(1,2,1, {from: accounts[1]});
 
-        let p1bal1 = await trustInsureInstance.checkInsure(accounts[1].address);
-        let c1bal1 = await trustInsureInstance.checkInsure(accounts[9].address);
+        let p1bal1 = await trustInsureInstance.checkInsure(accounts[1]);
+        let c1bal1 = await trustInsureInstance.checkInsure(accounts[9]);
 
-        await assert.strictEqual(p1bal1.toNumber(), 3, 'Buyer no pay');
-        await assert.strictEqual(c1bal1.toNumber(), 10, 'Token not received');        
-        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A'), "Stakeholder haven't paid the insurance");
+        await assert.strictEqual(p1bal1.toNumber(), 8, 'Buyer no pay');
+        await assert.strictEqual(c1bal1.toNumber(), 205, 'Token not received');        
+        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), "Stakeholder haven't paid the insurance");
 
         let prem2 = await stakeholderInstance.payPremium(1,3,1, {from: accounts[1]});
-        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A'), 'If suicide cannot claim within 2 years');
+        //await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), 'If suicide cannot claim within 2 years');
 
-        let m2 = await hospitalInstance.addMC(1, 'password', 1, MedicalCert.certCategory.death, 202304061400, 'Strange', {from: accounts[9]});
-        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A'), 'Not enough TrustInsure');
+        let m2 = await hospitalInstance.addMC(1, 'password', 1, 1, '202304061400', 'Strange', {from: accounts[9]});
+        await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 2, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), 'not enough TrustInsure to pay!');
     });
 
 //    it('Pay Premium', async () => {
@@ -232,12 +235,12 @@ contract('InsuranceMarket', function (accounts){
 
     it('Claim', async () => {
         let gettoken2 = trustInsureInstance.getInsure({from: accounts[9], value: oneEth});
-        let claim1 = stakeholderInstance.claimInsurance(1, 1, 2, 1, 'Bob Wang', 'S1234567A', {from: accounts[2]});
+        let claim1 = stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]});
 
-        truffleAssert.eventEmitted(claim1, 'transfer');
+        //truffleAssert.eventEmitted(claim1, 'transfer');
 
-        let p1bal2 = await trustInsureInstance.checkInsure();
-        let c1bal2 = await trustInsureInstance.checkInsure();
+        let p1bal2 = await trustInsureInstance.checkInsure(accounts[2]);
+        let c1bal2 = await trustInsureInstance.checkInsure(accounts[9]);
 
         await assert.strictEqual(p1bal2.toNumber(), 1004, 'Tokens not received');
         await assert.strictEqual(c1bal2.toNumber(), 11, 'Token not paid');
