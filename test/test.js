@@ -176,11 +176,11 @@ contract('InsuranceMarket', function (accounts){
     });    
 
     it('Wrong Password CreateMC', async () => {
-        await truffleAssert.reverts(hospitalInstance.createPersonalInfo(1, 'passwordo', 'Tom Wang', 'T0012345A', 'Male', 20000202, 'Chinese Singaporean', {from: accounts[9]}), 'Wrong password!');
-        await truffleAssert.reverts(hospitalInstance.addMC(1, 'passwordo', 1, MedicalCert.certCategory.incident, 202304061400, 'Strange', {from: accounts[9]}), 'Wrong password!');
+        await truffleAssert.reverts(hospitalInstance.createPersonalInfo(1, 'passwordo', 'Tom Wang', 'T0012345A', 'Male', '20000202', 'Chinese Singaporean', {from: accounts[9]}), 'Wrong password!');
+        await truffleAssert.reverts(hospitalInstance.addMC(1, 'passwordo', 1, 0, '202304061400', 'Strange', {from: accounts[9]}), 'Wrong password!');
 
-        await truffleAssert.reverts(hospitalInstance.createPersonalInfo(1, 'password', 'Tom Wang', 'T0012345A', 'Male', 20000202, 'Chinese Singaporean', {from: accounts[8]}), 'Invalid hospital id');
-        await truffleAssert.reverts(hospitalInstance.addMC(1, 'password', 1, MedicalCert.certCategory.incident, 202304061400, 'Strange', {from: accounts[8]}), 'Invalid hospital id');
+        await truffleAssert.reverts(hospitalInstance.createPersonalInfo(11, 'password', 'Tom Wang', 'T0012345A', 'Male', '20000202', 'Chinese Singaporean', {from: accounts[8]}), 'Invalid hospital id');
+        await truffleAssert.reverts(hospitalInstance.addMC(11, 'password', 1, 0, '202304061400', 'Strange', {from: accounts[8]}), 'Invalid hospital id');
 
 
     });
