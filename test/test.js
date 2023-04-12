@@ -234,16 +234,16 @@ contract('InsuranceMarket', function (accounts){
 //    });
 
     it('Claim', async () => {
-        let gettoken2 = trustInsureInstance.getInsure({from: accounts[9], value: oneEth});
-        let claim1 = stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]});
+        let gettoken2 = await trustInsureInstance.getInsure({from: accounts[9], value: oneEth.dividedBy(10)});
+        let claim1 = await stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]});
 
         //truffleAssert.eventEmitted(claim1, 'transfer');
 
         let p1bal2 = await trustInsureInstance.checkInsure(accounts[2]);
         let c1bal2 = await trustInsureInstance.checkInsure(accounts[9]);
 
-        await assert.strictEqual(p1bal2.toNumber(), 1004, 'Tokens not received');
-        await assert.strictEqual(c1bal2.toNumber(), 11, 'Token not paid');
+        await assert.strictEqual(p1bal2.toNumber(), 210, 'Tokens not received');
+        await assert.strictEqual(c1bal2.toNumber(), 8, 'Token not paid'); // 205 + 3 + 10 - 210
         
     });
 
