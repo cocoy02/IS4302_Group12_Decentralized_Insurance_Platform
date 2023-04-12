@@ -26,12 +26,9 @@ contract Hospital is MedicalCertificate  {
         string icAssured;
         uint256 mcid;
     }
-    //NEWWWWWWWW
-    uint256 hospitalCounter = 0;
-
-    uint256 numOfReqs = 0;
-
     
+    uint256 hospitalCounter = 0;
+    uint256 numOfReqs = 0;
 
     //mapping(uint256 => medicalCert) public MC;
     //mapping(uint256 => personalInfo) public infos;
