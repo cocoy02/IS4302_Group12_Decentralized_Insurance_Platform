@@ -240,11 +240,11 @@ contract Hospital is MedicalCertificate  {
         return numOfReqs;
     }
 
-    // /** 
-    // * @dev check requests from hospital
-    // * @param _hospitalId the hospital id 
-    // * @param _password password to register
-    // */
+    /** 
+    * @dev check requests from hospital
+    * @param hospitalId the hospital id 
+    * @param password password to register
+    */
     function checkRequestFromHospital (uint256 hospitalId, string memory password) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password) 
     {
@@ -276,13 +276,13 @@ contract Hospital is MedicalCertificate  {
         emit liveRequest(requestids,stakeholderids, names,ics);
     }
 
-    // /** 
-    // * @dev check mc Ids from stakeholder
-    // * @param _hospitalId hospital id
-    // * @param _requestId whether the MC is for some request
-    // * @param _stakeholderId if it's a request, what's the stakeholder id
-    // * @return  byte32 mcId
-    // */
+    /** 
+    * @dev check mc Ids from stakeholder
+    * @param _hospitalId hospital id
+    * @param _requestId whether the MC is for some request
+    * @param _stakeholderId if it's a request, what's the stakeholder id
+    * @return uint256 mcId
+    */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
       external view validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
       returns(uint256)
@@ -303,6 +303,7 @@ contract Hospital is MedicalCertificate  {
             return reqs[index].mcid;
         }         
     }
+    
     /** 
     * @dev change president of hospital
     * @param NRIC president NRIC
