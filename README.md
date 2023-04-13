@@ -38,11 +38,3 @@ The following table contains a brief description of the files and folders in thi
 | **test/test.js** | Test cases for smart contracts |
 | **migrations/1_initial_migration.js** | Initial migration |
 | **migrations/2_deploy_contracts.js** | Deploy contracts |
-| **.vscode** | settings and configurations for the Visual Studio Code editor |
-| **Archive** | Code log |
-| **build/contracts** | Compiled code files |
-| **node_modules** | External dependencies that the project relies on |
-| **.DS_Store** | Hidden file created by the macOS |
-| **package-lock.json** | Description of versions of the dependencies |
-| **remix-compiler.config.js** | Configurations for the Remix compiler |
-| **truffle-config.js** | Configurations for the Truffle framework |
