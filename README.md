@@ -27,10 +27,10 @@ The following table contains a brief description of the files and folders in thi
 | - | - |
 | **contracts/ERC20.sol** | Fungible tokens created using Ethereum blockchain |
 | **contracts/TrustInsure.sol** | Native token curated for this project |
-| **contracts/Hospital.sol** | Hospital contract for |
-| **contracts/Insurance.sol** | Insurance contract |
-| **contracts/InsuranceCompany.sol** | Insurance company contract |
-| **contracts/InsuranceMarket.sol** | Insurance market contract |
+| **contracts/Hospital.sol** | Representing registered hospitals that issue medical certificates|
+| **contracts/Insurance.sol** | Insurance contract|
+| **contracts/InsuranceCompany.sol** | Representing insurance companies registered on the chain |
+| **contracts/InsuranceMarket.sol** | Market for transactions of insurances |
 | **contracts/MedicalCert.sol** | Medical certificate contract |
-| **contracts/Migration.sol** | |
-| **contracts/Stakeholder.sol** | Stakeholder contract |
+| **contracts/Stakeholder.sol** | Representing stakeholder that buys contract|
+| **contracts/Migration.sol** | Admin file|
