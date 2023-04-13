@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.12;
 pragma experimental ABIEncoderV2;
 import "./MedicalCert.sol";
@@ -139,7 +140,7 @@ contract Hospital is MedicalCertificate  {
 
     /**
     * @dev Create the medical certificate for the injured or dead person
-    * @param hospital the id of the hospital
+    * @param hospitalId the id of the hospital
     * @param password password for hospital
     * @param personId the id of the person who has accident
     * @param incidentType0incident1death2suicide the incident type of accident where 0 is incident 1 is death and 2 is suicide
@@ -148,18 +149,18 @@ contract Hospital is MedicalCertificate  {
     * @return uint256 MC id in bytes
      */
     function addMC(
-        uint256 hospital, string memory password, uint256 personId,
+        uint256 hospitalId, string memory password, uint256 personId,
         certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
         string memory certifierName
     ) 
-    public validHospital(hospital) verifyPassword(hospital,password) validIncidentDate(incidentYYYYMMDDHHMM)
+    public validHospital(hospitalId) verifyPassword(hospitalId,password) validIncidentDate(incidentYYYYMMDDHHMM)
     override returns(uint256) {
         hospitalCounter++;
 
         medicalCert storage mc = MC[hospitalCounter];
         
         mc.ID = hospitalCounter;
-        mc.HospitalID = hospital;
+        mc.HospitalID = hospitalId;
         mc.personal_info = personId;
         mc.incident = incidentType0incident1death2suicide;
         mc.dateTimeIncident = incidentYYYYMMDDHHMM;
@@ -274,11 +275,11 @@ contract Hospital is MedicalCertificate  {
     * @param _hospitalId hospital id
     * @param _requestId whether the MC is for some request
     * @param _stakeholderId if it's a request, what's the stakeholder id
-    * @return uint256 mcId
+    * @return mcid uint256 mcId
     */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
       external view validHospital(_hospitalId) 
-      returns(uint256)
+      returns(uint256 mcid)
     {
         Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
         uint256 length = reqs.length;
@@ -355,7 +356,7 @@ contract Hospital is MedicalCertificate  {
         onlyOwner(hospitalId) 
         returns(string memory) 
     {
-        (string memory password, string memory s) = abi.decode(registeredHospital[hospitalId].password, (string,string));
+        (string memory password,) = abi.decode(registeredHospital[hospitalId].password, (string,string));
         return password;
     }
 
