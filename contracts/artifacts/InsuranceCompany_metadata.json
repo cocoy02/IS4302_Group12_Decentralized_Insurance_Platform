@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -651,6 +651,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getNumberOfInsurance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -1037,16 +1050,119 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"addRequestLists(uint256,uint256,string,string)": {
+					"details": "Allow insurance market to update requests",
+					"params": {
+						"_buyerId": "id of stakeholder",
+						"_companyId": "id of company",
+						"_typeProduct": "life or accident product",
+						"contact": "stakeholder contact"
+					},
+					"returns": {
+						"_0": "bool whether added successfullly",
+						"_1": "uint256 numOfReq request id"
+					}
+				},
+				"checkRequestsFromCompany(uint256)": {
+					"details": "Allow insurance company check all requests",
+					"params": {
+						"companyId": "id of company"
+					}
+				},
+				"checkRequestsFromStakeholder(uint256,uint256)": {
+					"details": "Allow stakeholder to check request status",
+					"params": {
+						"companyId": "id of company",
+						"requestId": "id of reqeust"
+					}
+				},
+				"claim(uint256,uint256,uint256,uint256,address,string,string)": {
+					"details": "Claim insurance",
+					"params": {
+						"NRIC": "the NRIC of the life assured",
+						"beneficiaryAddress": "the address of beneficiary",
+						"beneficiaryID": "the id of beneficiary",
+						"companyId": "the id of the company",
+						"insuranceID": "the id of the insurance",
+						"mcId": "the id of the medical certificate",
+						"name": "the name of the life assured"
+					}
+				},
+				"createInsurance(uint256,uint256,uint256,uint256,uint8,uint256,uint256)": {
+					"details": "Create the insurance",
+					"params": {
+						"companyId": "the id of the company",
+						"expiryDateYYYYMMDD": "The date of the insurance will be expired",
+						"insType0life1accident": "the type of insurance, 0 for life or 1 for accident insurance",
+						"insuredAmount": "the total amount of payment when the insurnace is claimed",
+						"issueDateYYYYMMDD": "The date of the insurance being created",
+						"premium": "the total amount of premium fee that stakeholder should pay before claim",
+						"stakeholderInfoId": "the id of the stakeholder info that created before"
+					},
+					"returns": {
+						"_0": "uint256 insurance id"
+					}
+				},
+				"createStakeholderInfo(uint256,uint256,uint256,uint256)": {
+					"details": "Create related stakeholders profile for the insurance",
+					"params": {
+						"beneficiary": "the id of the stakeholder who will be benefited when the insurance is claimed",
+						"lifeAssured": "the id of the stakeholder being assured",
+						"payingAccount": "the id of the stakeholder who will receive the payment",
+						"policyOwner": "the id of the stakeholder who want to purchase the insurance policy"
+					},
+					"returns": {
+						"_0": "uint256 number of stakeholder"
+					}
+				},
+				"payPremium(uint256,uint256,uint256,address)": {
+					"details": "Allow the policy owner to pay the premium",
+					"params": {
+						"amount": "the id of the insurance",
+						"insuranceId": "the id of the insurance",
+						"policyOwner": "the address of policyowner",
+						"policyOwnerID": "the id of the policy owner"
+					}
+				},
+				"registerCompany(string)": {
+					"details": "Register an insurance company",
+					"params": {
+						"name": "(string): the name of the new insurance company"
+					},
+					"returns": {
+						"_0": "uint256 id of the company"
+					}
+				},
+				"rejectRequest(uint256,uint256)": {
+					"details": "Allow insurance company reject request",
+					"params": {
+						"companyId": "id of company",
+						"requestId": "id of reqeust"
+					}
+				},
+				"signInsurance(uint256,uint256,uint256)": {
+					"details": "Allow the policyowner to verify the insurance contract information and sign",
+					"params": {
+						"companyId": "the id of the company",
+						"insuranceId": "the id of the insurance",
+						"policyOwnerID": "the id of the policy owner"
+					}
+				},
+				"solveRequest(uint256,uint256,uint256)": {
+					"details": "Update request status and related insurance information",
+					"params": {
+						"companyId": "the id of the company",
+						"insuranceId": "the id of the insurance that the company created specific for the request",
+						"requestId": "which request the company want to update and address"
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {
-				"registerCompany(string)": {
-					"notice": "dev Register an insurance company param namae (string): the name of the new insurance company return uint256 id of the company"
-				}
-			},
+			"methods": {},
 			"version": 1
 		}
 	},
@@ -1067,45 +1183,45 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0xd21811786d234e0ba0624a740ae502e1c0f25887cf73556309f79b82b359025f",
+			"keccak256": "0xa317f82a0d2618512427b26c8ca3af4ea70c9e99180ef3aa6fc1db7dd4b37378",
 			"urls": [
-				"bzz-raw://b661a37122468a631f772597d585177e0610d746baea69278cf355f1b7c84617",
-				"dweb:/ipfs/QmW7fqRN8MnxzenrKi6jLSY8sqbLepzMk48akuhL8ymJXM"
+				"bzz-raw://f260a43f9f173fe07a0c6de6865011acc97bc6a830b2a87587f7964b3ff1352c",
+				"dweb:/ipfs/QmTWfmUufm9WVLPDnBB7E6RqLidjZ4M2vwVsmZ32ZFRAsd"
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0x28fa8f51983be52f38078f2dfcdb91f90b42ce79a0e87b47a4fbd488e4adfa83",
+			"keccak256": "0xaad8b180b32af073943d6ea2fef69317796b55a2e1c099f38bf02c78015816bb",
 			"urls": [
-				"bzz-raw://cfe56bbf4cb7cc15f43c76bae454ad47a84a929b21e7247c7ad8bd9512f0e8d3",
-				"dweb:/ipfs/QmTR6AzENJ3YDWBJ5HdgXN1BKGyc5fVjxrP4zR4YmP4aFz"
+				"bzz-raw://e6730adf7b56f1c8cfa9b6a38280bf11b11cd24e25f8568fdd30bdd50b90ddf2",
+				"dweb:/ipfs/QmcUzXCdwyFh7TVbZoceAsvunhk8Gfgt2GjuRymEcDXVRc"
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0xf46e8899d8211fe18718236e308e700cc8df5ce49e38e802fbf6a68befe21ceb",
+			"keccak256": "0x2f0facadd21bf5acf10887aa07e74ef9226bf92ef0b4ab9ead58aef1c8e9a745",
 			"urls": [
-				"bzz-raw://57fd60ea63791778de3b600cfc49e9157641f765b388fe867eba3213b756989e",
-				"dweb:/ipfs/QmZwVxDeUxhqtNhwguEzYtDTiRLeNKb7RHA3moykhbo1r6"
+				"bzz-raw://b4335a5f1ff4a93ae6eee5e0e7d9a5034fc3b794a75f243234ec30f94403d9fb",
+				"dweb:/ipfs/QmRcP7sYfX83xBAhzn1pXsbZT4yEHLBcyeFETmpDV6puQr"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x7073288fdc2735a729105de6c0d53beef5f2a074f2dbc884364ed78121fd1f23",
+			"keccak256": "0xc57a116d28446a9e753125f78ee0fec265e6eb79237806c106d66644d4eb172f",
 			"urls": [
-				"bzz-raw://23c174a2705aa1282cd8ea0771217f03d1e95f24abbbc534dbadbec3ec64a42f",
-				"dweb:/ipfs/QmapNQrmqxJuHJUXwzLtqiNfS9JzAnxUGzquJEmDuti574"
+				"bzz-raw://79a07cfa74705fbf01e4300160409a717f3846a597d80f237161fbb2f5281d2d",
+				"dweb:/ipfs/QmaU5B1gignTW1cRmYw2X23mzkhhDiDA9R7FW9PYoBFYkD"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
+			"keccak256": "0xe8078b5ffb8c10d495e8a160c8116d357021c29f286bb87c63a3108fd346c6b9",
 			"urls": [
-				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
-				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
+				"bzz-raw://0023a5e3580c29c58154dee985efaf9113e0b7d6508f6ccd15201cb55ab65576",
+				"dweb:/ipfs/QmemFrBRkfjLfhtPfjp9vbFhysLvVbFLX6mcxhWTM5v9vU"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0xd626b9ffad372dadca9f4d1d8b85275b346b19eaac4ca48d0b62487d77b9a306",
+			"keccak256": "0xb4d6cb63e3219aaaea6c5c28366c54f51b4a1038136c5181e43ce3c95b8d9ddd",
 			"urls": [
-				"bzz-raw://984d3d6d2307d784e263a69dd98e980c304eb142d95154e956244cdc6a3a7f80",
-				"dweb:/ipfs/QmU4UpuGmeMNYzYrh5dknjshVZyAcmyoxqwftbUSZjfoi2"
+				"bzz-raw://3f92d8b7aebd7170a9715f80e092f4c01102e84ccbde306194b2197abd601585",
+				"dweb:/ipfs/QmV9wjhnbx2z2yAEMHDdw1rWskNsSManCBdnwzN7gDbW9e"
 			]
 		}
 	},

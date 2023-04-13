@@ -3,8 +3,10 @@ pragma experimental ABIEncoderV2;
 import "./Insurance.sol";
 import "./Hospital.sol";
 import "./TrustInsure.sol";
+import "./Datetime.sol";
 
 contract InsuranceCompany is Insurance {
+    using SafeMath for uint256;
     TrustInsure trustinsureInstance;
     Hospital hospitalInstance;
     enum requestStatus {approved, rejected, pending}
@@ -312,14 +314,15 @@ contract InsuranceCompany is Insurance {
 
         require(insurances[insuranceId].status == Insurance.status.paid, "Stakeholder haven't paid the insurance!");
         //insurance valid from date 
-        require(insurances[insuranceId].issueDate * 100 + 90 days >= block.timestamp, "Haven't take effect!");
+        uint256 issueDateUTC = DateTime.timestampFromDate(insurances[insuranceId].issueDate.div(10000), insurances[insuranceId].issueDate.mod(10000).div(100), insurances[insuranceId].issueDate.mod(100));
+        require(issueDateUTC + 90 days < block.timestamp, "Haven't take effect!");
 
         require(keccak256(abi.encodePacked(hospitalInstance.getMCName(mcId))) == keccak256(abi.encodePacked(name)) && 
         keccak256(abi.encodePacked(hospitalInstance.getMCNRIC(mcId))) ==  keccak256(abi.encodePacked(NRIC)), 
         "Invalid life assured name and NRIC!");
         //cert if its suicide
         if(hospitalInstance.getMCCategory(mcId) == MedicalCertificate.certCategory.suicide) {  
-            require(insurances[insuranceId].issueDate * 100 + 2*365 days >= block.timestamp, "If suicide cannot claim within 2 years!");
+            require(issueDateUTC + 2*365 days < block.timestamp, "If suicide cannot claim within 2 years!");
         }
 
         uint256 value = insurances[insuranceId].insuredAmount;

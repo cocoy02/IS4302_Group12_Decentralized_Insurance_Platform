@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -86,7 +86,38 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"checkInsure(address)": {
+					"details": "Check balance of tokens",
+					"params": {
+						"ad": "Input the address of the user who want to check balance of"
+					},
+					"returns": {
+						"_0": "uint256 credit balance of the input address"
+					}
+				},
+				"getInsure()": {
+					"details": "Mint TrustInsure tokens",
+					"returns": {
+						"_0": "uint256 amount of tokens minted and transferred to the user's address"
+					}
+				},
+				"transferFromInsure(address,address,uint256)": {
+					"details": "Transfer tokens from one address to another",
+					"params": {
+						"amt": "the amount of tokens to be transfered",
+						"from": "the address of the account which TrustInsure will be transfered from",
+						"to": "the address of the account which TrustInsure will be transfered to"
+					}
+				},
+				"transferInsure(address,uint256)": {
+					"details": "Transfer tokens to others",
+					"params": {
+						"amt": "the amount of tokens to be transfered",
+						"to": "the address of the account which TrustInsure will be transfered to"
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
@@ -112,17 +143,17 @@
 	},
 	"sources": {
 		"contracts/ERC20.sol": {
-			"keccak256": "0xd21811786d234e0ba0624a740ae502e1c0f25887cf73556309f79b82b359025f",
+			"keccak256": "0xa317f82a0d2618512427b26c8ca3af4ea70c9e99180ef3aa6fc1db7dd4b37378",
 			"urls": [
-				"bzz-raw://b661a37122468a631f772597d585177e0610d746baea69278cf355f1b7c84617",
-				"dweb:/ipfs/QmW7fqRN8MnxzenrKi6jLSY8sqbLepzMk48akuhL8ymJXM"
+				"bzz-raw://f260a43f9f173fe07a0c6de6865011acc97bc6a830b2a87587f7964b3ff1352c",
+				"dweb:/ipfs/QmTWfmUufm9WVLPDnBB7E6RqLidjZ4M2vwVsmZ32ZFRAsd"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0xd626b9ffad372dadca9f4d1d8b85275b346b19eaac4ca48d0b62487d77b9a306",
+			"keccak256": "0xb4d6cb63e3219aaaea6c5c28366c54f51b4a1038136c5181e43ce3c95b8d9ddd",
 			"urls": [
-				"bzz-raw://984d3d6d2307d784e263a69dd98e980c304eb142d95154e956244cdc6a3a7f80",
-				"dweb:/ipfs/QmU4UpuGmeMNYzYrh5dknjshVZyAcmyoxqwftbUSZjfoi2"
+				"bzz-raw://3f92d8b7aebd7170a9715f80e092f4c01102e84ccbde306194b2197abd601585",
+				"dweb:/ipfs/QmV9wjhnbx2z2yAEMHDdw1rWskNsSManCBdnwzN7gDbW9e"
 			]
 		}
 	},

@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -171,7 +171,31 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"addMC(uint256,string,uint256,uint8,string,string)": {
+					"details": "Create the medical certificate for the injured or dead person",
+					"params": {
+						"certifierName": "the certifier of the MC of the accident",
+						"hospital": "the id of the hospital",
+						"incidentType0incident1death2suicide": "the incident type of accident where 0 is incident 1 is death and 2 is suicide",
+						"incidentYYYYMMDDHHMM": "the incident date and time of the incident",
+						"password": "the password of the hosptial",
+						"personId": "the id of the person who has accident"
+					}
+				},
+				"createPersonalInfo(uint256,string,string,string,string,string,string)": {
+					"details": "Create information profile for the assured person",
+					"params": {
+						"NRIC": "the NRIC of the person who has accident",
+						"birthdateYYYYMMDD": "the birthdate of the person who has accident",
+						"hospitalId": "the id of the hospital",
+						"name": "the name of the person who has accident",
+						"password": "the password of the hospital",
+						"race_nationality": "the race and nationality of the person who has accident",
+						"sex": "the sex of the person who has accident"
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
@@ -197,10 +221,10 @@
 	},
 	"sources": {
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
+			"keccak256": "0xe8078b5ffb8c10d495e8a160c8116d357021c29f286bb87c63a3108fd346c6b9",
 			"urls": [
-				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
-				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
+				"bzz-raw://0023a5e3580c29c58154dee985efaf9113e0b7d6508f6ccd15201cb55ab65576",
+				"dweb:/ipfs/QmemFrBRkfjLfhtPfjp9vbFhysLvVbFLX6mcxhWTM5v9vU"
 			]
 		}
 	},

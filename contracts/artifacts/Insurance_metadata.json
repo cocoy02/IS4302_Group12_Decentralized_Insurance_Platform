@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -255,6 +255,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getNumberOfInsurance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -492,7 +505,29 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"createInsurance(uint256,uint256,uint256,uint256,uint8,uint256,uint256)": {
+					"details": "Create the insurance",
+					"params": {
+						"companyId": "the id of the company",
+						"expiryDateYYYYMMDD": "The date of the insurance will be expired",
+						"insType0life1accident": "the type of insurance, 0 for life or 1 for accident insurance",
+						"insuredAmount": "the total amount of payment when the insurnace is claimed",
+						"issueDateYYYYMMDD": "The date of the insurance being created",
+						"premium": "the total amount of premium fee that stakeholder should pay before claim",
+						"stakeholderInfoId": "the id of the stakeholder info that created before"
+					}
+				},
+				"createStakeholderInfo(uint256,uint256,uint256,uint256)": {
+					"details": "Create related stakeholders profile for the insurance",
+					"params": {
+						"beneficiary": "the id of the stakeholder who will be benefited when the insurance is claimed",
+						"lifeAssured": "the id of the stakeholder being assured",
+						"payingAccount": "the id of the stakeholder who will receive the payment",
+						"policyOwner": "the id of the stakeholder who want to purchase the insurance policy"
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
@@ -518,10 +553,10 @@
 	},
 	"sources": {
 		"contracts/Insurance.sol": {
-			"keccak256": "0xf46e8899d8211fe18718236e308e700cc8df5ce49e38e802fbf6a68befe21ceb",
+			"keccak256": "0x2f0facadd21bf5acf10887aa07e74ef9226bf92ef0b4ab9ead58aef1c8e9a745",
 			"urls": [
-				"bzz-raw://57fd60ea63791778de3b600cfc49e9157641f765b388fe867eba3213b756989e",
-				"dweb:/ipfs/QmZwVxDeUxhqtNhwguEzYtDTiRLeNKb7RHA3moykhbo1r6"
+				"bzz-raw://b4335a5f1ff4a93ae6eee5e0e7d9a5034fc3b794a75f243234ec30f94403d9fb",
+				"dweb:/ipfs/QmRcP7sYfX83xBAhzn1pXsbZT4yEHLBcyeFETmpDV6puQr"
 			]
 		}
 	},

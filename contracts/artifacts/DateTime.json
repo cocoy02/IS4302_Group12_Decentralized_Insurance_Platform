@@ -1,0 +1,101 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220afaeda212bc830fd37f6b923a8ab7a8248c7165f5a8f8bb820d692f1c5c9ba3864736f6c63430008130033",
+			"opcodes": "PUSH1 0x56 PUSH1 0x50 PUSH1 0xB DUP3 DUP3 DUP3 CODECOPY DUP1 MLOAD PUSH1 0x0 BYTE PUSH1 0x73 EQ PUSH1 0x43 JUMPI PUSH32 0x4E487B7100000000000000000000000000000000000000000000000000000000 PUSH1 0x0 MSTORE PUSH1 0x0 PUSH1 0x4 MSTORE PUSH1 0x24 PUSH1 0x0 REVERT JUMPDEST ADDRESS PUSH1 0x0 MSTORE PUSH1 0x73 DUP2 MSTORE8 DUP3 DUP2 RETURN INVALID PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0xAF 0xAE 0xDA 0x21 0x2B 0xC8 ADDRESS REVERT CALLDATACOPY 0xF6 0xB9 0x23 0xA8 0xAB PUSH27 0x8248C7165F5A8F8BB820D692F1C5C9BA3864736F6C634300081300 CALLER ",
+			"sourceMap": "929:13273:0:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220afaeda212bc830fd37f6b923a8ab7a8248c7165f5a8f8bb820d692f1c5c9ba3864736f6c63430008130033",
+			"opcodes": "PUSH20 0x0 ADDRESS EQ PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 0xAF 0xAE 0xDA 0x21 0x2B 0xC8 ADDRESS REVERT CALLDATACOPY 0xF6 0xB9 0x23 0xA8 0xAB PUSH27 0x8248C7165F5A8F8BB820D692F1C5C9BA3864736F6C634300081300 CALLER ",
+			"sourceMap": "929:13273:0:-:0;;;;;;;;"
+		},
+		"gasEstimates": {
+			"creation": {
+				"codeDepositCost": "17200",
+				"executionCost": "97",
+				"totalCost": "17297"
+			},
+			"internal": {
+				"_daysFromDate(uint256,uint256,uint256)": "infinite",
+				"_daysToDate(uint256)": "infinite",
+				"_getDaysInMonth(uint256,uint256)": "infinite",
+				"_isLeapYear(uint256)": "infinite",
+				"addDays(uint256,uint256)": "infinite",
+				"addHours(uint256,uint256)": "infinite",
+				"addMinutes(uint256,uint256)": "infinite",
+				"addMonths(uint256,uint256)": "infinite",
+				"addSeconds(uint256,uint256)": "infinite",
+				"addYears(uint256,uint256)": "infinite",
+				"diffDays(uint256,uint256)": "infinite",
+				"diffHours(uint256,uint256)": "infinite",
+				"diffMinutes(uint256,uint256)": "infinite",
+				"diffMonths(uint256,uint256)": "infinite",
+				"diffSeconds(uint256,uint256)": "infinite",
+				"diffYears(uint256,uint256)": "infinite",
+				"getDay(uint256)": "infinite",
+				"getDayOfWeek(uint256)": "infinite",
+				"getDaysInMonth(uint256)": "infinite",
+				"getHour(uint256)": "infinite",
+				"getMinute(uint256)": "infinite",
+				"getMonth(uint256)": "infinite",
+				"getSecond(uint256)": "infinite",
+				"getYear(uint256)": "infinite",
+				"isLeapYear(uint256)": "infinite",
+				"isValidDate(uint256,uint256,uint256)": "infinite",
+				"isValidDateTime(uint256,uint256,uint256,uint256,uint256,uint256)": "infinite",
+				"isWeekDay(uint256)": "infinite",
+				"isWeekEnd(uint256)": "infinite",
+				"subDays(uint256,uint256)": "infinite",
+				"subHours(uint256,uint256)": "infinite",
+				"subMinutes(uint256,uint256)": "infinite",
+				"subMonths(uint256,uint256)": "infinite",
+				"subSeconds(uint256,uint256)": "infinite",
+				"subYears(uint256,uint256)": "infinite",
+				"timestampFromDate(uint256,uint256,uint256)": "infinite",
+				"timestampFromDateTime(uint256,uint256,uint256,uint256,uint256,uint256)": "infinite",
+				"timestampToDate(uint256)": "infinite",
+				"timestampToDateTime(uint256)": "infinite"
+			}
+		},
+		"methodIdentifiers": {}
+	},
+	"abi": []
+}

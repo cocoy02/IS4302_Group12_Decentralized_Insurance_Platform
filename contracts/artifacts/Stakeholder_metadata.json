@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -25,6 +25,19 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "insuranceId",
+						"type": "uint256"
+					}
+				],
+				"name": "signInsure",
+				"type": "event"
 			},
 			{
 				"inputs": [
@@ -479,7 +492,86 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"addRequestIds(uint256,uint256)": {
+					"details": "Record the preferred product one wants to purchase",
+					"params": {
+						"requestId": "the id of the request",
+						"stakeholderId": "the id of the stakeholder"
+					}
+				},
+				"addStakeholder(string,string)": {
+					"details": "create new stakeholder",
+					"params": {
+						"NRIC": "NRIC of stakeholder",
+						"name": "name of stakeholder"
+					},
+					"returns": {
+						"_0": "uint256 id of new stakeholder"
+					}
+				},
+				"checkInsuranceRequests(uint256,uint256,uint256)": {
+					"details": "Check the insurance requests status",
+					"params": {
+						"companyId": "id of company",
+						"requestId": "id of request",
+						"stakeholderId": "id of stakeholder"
+					},
+					"returns": {
+						"_0": "uint256 insurance id"
+					}
+				},
+				"checkMCRequests(uint256,uint256,uint256)": {
+					"details": "Check MC requests",
+					"params": {
+						"hospitalId": "id of hospital",
+						"requestId": "the id of request",
+						"stakeholderId": "the id of stakeholder"
+					},
+					"returns": {
+						"_0": "uint256 mc id"
+					}
+				},
+				"claimInsurance(uint256,uint256,uint256,uint256,string,string)": {
+					"details": "Claim insurance",
+					"params": {
+						"beneficiaryID": "the id of the policy owner",
+						"companyId": "the id of the company",
+						"insuranceID": "id of insurance",
+						"lifeAssuredNRIC": "the NRIC of the life assured",
+						"lifeAssuredName": "the name of the life assured",
+						"mcId": "the id of the medical certificate"
+					}
+				},
+				"payPremium(uint256,uint256,uint256)": {
+					"details": "Pay premium for the contract",
+					"params": {
+						"amount": "the sum to be paid",
+						"insuranceId": "id of insurance",
+						"policyOwnerID": "id of policy owner"
+					}
+				},
+				"requestMC(uint256,string,string)": {
+					"details": "Request for MC",
+					"params": {
+						"hospitalId": "the id of the hospital",
+						"icAssured": "the NRIC of the life assured",
+						"nameAssured": "the name of the life assured"
+					},
+					"returns": {
+						"_0": "uint256 id of request"
+					}
+				},
+				"signInsurance(uint256,uint256,uint256,string)": {
+					"details": "Sign insurance",
+					"params": {
+						"companyId": "id of company",
+						"insuranceId": "id of insurance",
+						"policyOwnerID": "id of policy owner",
+						"signature": "the signature of the stakeholder."
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
@@ -504,53 +596,61 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/ERC20.sol": {
-			"keccak256": "0xd21811786d234e0ba0624a740ae502e1c0f25887cf73556309f79b82b359025f",
+		"contracts/Datetime.sol": {
+			"keccak256": "0x6e6a57c2128f8b8caf22221621009cb6dda0e95878e74a957c11bbc81764dd27",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://b661a37122468a631f772597d585177e0610d746baea69278cf355f1b7c84617",
-				"dweb:/ipfs/QmW7fqRN8MnxzenrKi6jLSY8sqbLepzMk48akuhL8ymJXM"
+				"bzz-raw://01108c9b04712c477bcc759b3cbaa29fef101b094c699e8f81d94e9f4c38a953",
+				"dweb:/ipfs/QmYtFqC8vmrQdq5oLhfKbemJ3mxt2qCaf7jZZzPPaM6S3j"
+			]
+		},
+		"contracts/ERC20.sol": {
+			"keccak256": "0x8dce7e7a68277bba541db99df03c1c0ee8859e614ca999cc734308ebd32332e5",
+			"urls": [
+				"bzz-raw://b6b432320306ec9ee6fb79d3bf4c60bf1831460190dffdaccacd26056b013ece",
+				"dweb:/ipfs/QmW5QTND8XpMdzB8C7XhtSMtaiA8wujCFTGu8D1tQNYZwV"
 			]
 		},
 		"contracts/Hospital.sol": {
-			"keccak256": "0x28fa8f51983be52f38078f2dfcdb91f90b42ce79a0e87b47a4fbd488e4adfa83",
+			"keccak256": "0xaad8b180b32af073943d6ea2fef69317796b55a2e1c099f38bf02c78015816bb",
 			"urls": [
-				"bzz-raw://cfe56bbf4cb7cc15f43c76bae454ad47a84a929b21e7247c7ad8bd9512f0e8d3",
-				"dweb:/ipfs/QmTR6AzENJ3YDWBJ5HdgXN1BKGyc5fVjxrP4zR4YmP4aFz"
+				"bzz-raw://e6730adf7b56f1c8cfa9b6a38280bf11b11cd24e25f8568fdd30bdd50b90ddf2",
+				"dweb:/ipfs/QmcUzXCdwyFh7TVbZoceAsvunhk8Gfgt2GjuRymEcDXVRc"
 			]
 		},
 		"contracts/Insurance.sol": {
-			"keccak256": "0xf46e8899d8211fe18718236e308e700cc8df5ce49e38e802fbf6a68befe21ceb",
+			"keccak256": "0x2f0facadd21bf5acf10887aa07e74ef9226bf92ef0b4ab9ead58aef1c8e9a745",
 			"urls": [
-				"bzz-raw://57fd60ea63791778de3b600cfc49e9157641f765b388fe867eba3213b756989e",
-				"dweb:/ipfs/QmZwVxDeUxhqtNhwguEzYtDTiRLeNKb7RHA3moykhbo1r6"
+				"bzz-raw://b4335a5f1ff4a93ae6eee5e0e7d9a5034fc3b794a75f243234ec30f94403d9fb",
+				"dweb:/ipfs/QmRcP7sYfX83xBAhzn1pXsbZT4yEHLBcyeFETmpDV6puQr"
 			]
 		},
 		"contracts/InsuranceCompany.sol": {
-			"keccak256": "0x7073288fdc2735a729105de6c0d53beef5f2a074f2dbc884364ed78121fd1f23",
+			"keccak256": "0x5c98f49b624080aef5af1832a5e009118a85f5842e233faa1e674584acd3cdf4",
 			"urls": [
-				"bzz-raw://23c174a2705aa1282cd8ea0771217f03d1e95f24abbbc534dbadbec3ec64a42f",
-				"dweb:/ipfs/QmapNQrmqxJuHJUXwzLtqiNfS9JzAnxUGzquJEmDuti574"
+				"bzz-raw://3150e54d24063de81f8635576692647c2e2ffd7389a9e4aebf5c94aac9c3b2de",
+				"dweb:/ipfs/QmPpZtT2Qk7gJZfsHK77xaeMVutKPuDYLmY7pv8FUEc2Qe"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
+			"keccak256": "0xe8078b5ffb8c10d495e8a160c8116d357021c29f286bb87c63a3108fd346c6b9",
 			"urls": [
-				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
-				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
+				"bzz-raw://0023a5e3580c29c58154dee985efaf9113e0b7d6508f6ccd15201cb55ab65576",
+				"dweb:/ipfs/QmemFrBRkfjLfhtPfjp9vbFhysLvVbFLX6mcxhWTM5v9vU"
 			]
 		},
 		"contracts/Stakeholder.sol": {
-			"keccak256": "0xc6ab8c9e8962c077304d8b3a75676063b4ce56e901b05597ea675b1e5632aba5",
+			"keccak256": "0x10d98942ec1062bf529e7039ee3b98f8f6aae95ff7a6854972a4fd425a52283c",
 			"urls": [
-				"bzz-raw://d416e98dd70069c8c567f3c06c0365ab65831f7768243cd1af76c241ebe8cee7",
-				"dweb:/ipfs/QmeCJv9PzVr383Vj3cjp7GoCceUSFZpU3SWXEbMdSJ5WJR"
+				"bzz-raw://211759100a6f69aa0ea6b34ad796e5033a35625d2f887d3ced334aae8d222543",
+				"dweb:/ipfs/QmXWymADqQBGEwBocqoY9RZrJ8FJbxTtJdBGvNdHmxUHtG"
 			]
 		},
 		"contracts/TrustInsure.sol": {
-			"keccak256": "0xd626b9ffad372dadca9f4d1d8b85275b346b19eaac4ca48d0b62487d77b9a306",
+			"keccak256": "0xb4d6cb63e3219aaaea6c5c28366c54f51b4a1038136c5181e43ce3c95b8d9ddd",
 			"urls": [
-				"bzz-raw://984d3d6d2307d784e263a69dd98e980c304eb142d95154e956244cdc6a3a7f80",
-				"dweb:/ipfs/QmU4UpuGmeMNYzYrh5dknjshVZyAcmyoxqwftbUSZjfoi2"
+				"bzz-raw://3f92d8b7aebd7170a9715f80e092f4c01102e84ccbde306194b2197abd601585",
+				"dweb:/ipfs/QmV9wjhnbx2z2yAEMHDdw1rWskNsSManCBdnwzN7gDbW9e"
 			]
 		}
 	},

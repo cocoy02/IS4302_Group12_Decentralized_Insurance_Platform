@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -63,7 +63,14 @@
 			},
 			{
 				"anonymous": false,
-				"inputs": [],
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "hospitalId",
+						"type": "uint256"
+					}
+				],
 				"name": "registered",
 				"type": "event"
 			},
@@ -107,7 +114,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "personInfoId",
+						"name": "personId",
 						"type": "uint256"
 					},
 					{
@@ -280,6 +287,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getHospitalCounter",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -350,6 +370,32 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getNumOfPeople",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getNumOfReqs",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -488,6 +534,20 @@
 		"devdoc": {
 			"kind": "dev",
 			"methods": {
+				"addMC(uint256,string,uint256,uint8,string,string)": {
+					"details": "Create the medical certificate for the injured or dead person",
+					"params": {
+						"certifierName": "the certifier of the MC of the accident",
+						"hospital": "the id of the hospital",
+						"incidentType0incident1death2suicide": "the incident type of accident where 0 is incident 1 is death and 2 is suicide",
+						"incidentYYYYMMDDHHMM": "the incident date and time of the incident",
+						"password": "password for hospital",
+						"personId": "the id of the person who has accident"
+					},
+					"returns": {
+						"_0": "uint256 MC id in bytes"
+					}
+				},
 				"changePassword(uint256,string,string)": {
 					"details": "change password of hospital",
 					"params": {
@@ -500,7 +560,85 @@
 					"params": {
 						"NRIC": "president NRIC",
 						"hospitalId": "hospital id",
+						"password": "password of hospital"
+					}
+				},
+				"checkMCIdFromStakeholder(uint256,uint256,uint256)": {
+					"details": "check mc Ids from stakeholder",
+					"params": {
+						"_hospitalId": "hospital id",
+						"_requestId": "whether the MC is for some request",
+						"_stakeholderId": "if it's a request, what's the stakeholder id"
+					},
+					"returns": {
+						"_0": "uint256 mcId"
+					}
+				},
+				"checkRequestFromHospital(uint256,string)": {
+					"details": "check requests from hospital",
+					"params": {
+						"hospitalId": "the hospital id ",
 						"password": "password to register"
+					}
+				},
+				"createPersonalInfo(uint256,string,string,string,string,string,string)": {
+					"details": "Create information profile for the assured person",
+					"params": {
+						"NRIC": "the NRIC of the person who has accident",
+						"birthdateYYYYMMDD": "the birthdate of the person who has accident",
+						"hospitalId": "hospital id",
+						"name": "the name of the person who has accident",
+						"password": "password for hospital",
+						"race_nationality": "the race and nationality of the person who has accident",
+						"sex": "the sexof the person who has accident"
+					},
+					"returns": {
+						"_0": "uint256 number of people"
+					}
+				},
+				"getHospitalCounter()": {
+					"details": "Get number of hospital",
+					"returns": {
+						"_0": "uint256 number of hospital"
+					}
+				},
+				"getHospitalId(address)": {
+					"details": "Get the hospital Id",
+					"params": {
+						"president": "president of hospital"
+					},
+					"returns": {
+						"_0": "uint256 hospital id"
+					}
+				},
+				"getNumOfPeople()": {
+					"details": "Get number of people",
+					"returns": {
+						"_0": "uint256 number of people"
+					}
+				},
+				"getNumOfReqs()": {
+					"details": "Get number of requests",
+					"returns": {
+						"_0": "uint256 number of requests"
+					}
+				},
+				"getPassword(uint256)": {
+					"details": "Get the password of hospital",
+					"params": {
+						"hospitalId": "id of hospital"
+					},
+					"returns": {
+						"_0": "string password"
+					}
+				},
+				"getPresident(uint256)": {
+					"details": "Get the president of hospital",
+					"params": {
+						"hospitalId": "id of hospital"
+					},
+					"returns": {
+						"_0": "address president"
 					}
 				},
 				"register(string,string)": {
@@ -511,6 +649,28 @@
 					},
 					"returns": {
 						"_0": "uint256 registered hospital id"
+					}
+				},
+				"requestMC(uint256,uint256,string,string)": {
+					"details": "stakeholder request to create MC",
+					"params": {
+						"hospitalId": "the hospital id ",
+						"icAssured": "the assured person's NRIC",
+						"nameAssured": "the assured person's name",
+						"stakeholderId": "the stakeholder Id"
+					},
+					"returns": {
+						"_0": "uint256 number of requests"
+					}
+				},
+				"solveRequest(uint256,string,uint256,uint256,uint256)": {
+					"details": "Create the medical certificate for the injured or dead person",
+					"params": {
+						"hospitalId": "the id of the hospital",
+						"mcId": "the mc id of the request",
+						"password": "password for hospital",
+						"requestId": "the id of the request",
+						"stakeholderId": "the id of the stakeholder"
 					}
 				}
 			},
@@ -539,17 +699,17 @@
 	},
 	"sources": {
 		"contracts/Hospital.sol": {
-			"keccak256": "0x28fa8f51983be52f38078f2dfcdb91f90b42ce79a0e87b47a4fbd488e4adfa83",
+			"keccak256": "0xaad8b180b32af073943d6ea2fef69317796b55a2e1c099f38bf02c78015816bb",
 			"urls": [
-				"bzz-raw://cfe56bbf4cb7cc15f43c76bae454ad47a84a929b21e7247c7ad8bd9512f0e8d3",
-				"dweb:/ipfs/QmTR6AzENJ3YDWBJ5HdgXN1BKGyc5fVjxrP4zR4YmP4aFz"
+				"bzz-raw://e6730adf7b56f1c8cfa9b6a38280bf11b11cd24e25f8568fdd30bdd50b90ddf2",
+				"dweb:/ipfs/QmcUzXCdwyFh7TVbZoceAsvunhk8Gfgt2GjuRymEcDXVRc"
 			]
 		},
 		"contracts/MedicalCert.sol": {
-			"keccak256": "0xabc797203c4de12b50d288059783e3d204efde49d72752ca0344e08e0fb0c0c8",
+			"keccak256": "0xe8078b5ffb8c10d495e8a160c8116d357021c29f286bb87c63a3108fd346c6b9",
 			"urls": [
-				"bzz-raw://0f56f2fc648cd25829166b2683e1afc7654f5c138c2dfb3899a41d5ac473104f",
-				"dweb:/ipfs/QmQMeDdsD2mbZMeWzVGPxyUbu4RTpb2Y2BzGMsYfcPVEF1"
+				"bzz-raw://0023a5e3580c29c58154dee985efaf9113e0b7d6508f6ccd15201cb55ab65576",
+				"dweb:/ipfs/QmemFrBRkfjLfhtPfjp9vbFhysLvVbFLX6mcxhWTM5v9vU"
 			]
 		}
 	},

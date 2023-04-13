@@ -54,10 +54,8 @@ contract('InsuranceMarket', function (accounts){
     });
 
     it('Get TrustInsure', async () => {
-        // let t1 = await trustInsureInstance.getInsure({from : accounts[9], value: oneEth.dividedBy(10)});
+
         let t1 = await trustInsureInstance.getInsure({from : accounts[9], value: 2* oneEth});
-        //await truffleAssert.eventEmitted(t1, 'ERC20.Mint');        
-        //assert.strictEqual(lionbal.toNumber(),10, 'getToken not working properly');
 
         const lionbal = await trustInsureInstance.checkInsure(accounts[9]);
         assert.strictEqual(lionbal.toNumber(),205, 'getToken not working properly');
@@ -78,7 +76,6 @@ contract('InsuranceMarket', function (accounts){
  
         assert.strictEqual(lionbal1.toNumber(), 203, 'publish commission not paid');
         assert.strictEqual(marketbal.toNumber(), 2, 'publish commission not received');
-        //const pid, pprem, passured, ptype = insuranceCompanyInstance.getProductInfor()
         
     });
 
@@ -89,35 +86,21 @@ contract('InsuranceMarket', function (accounts){
         let b1 = await insuranceMarketInstance.wantToBuy(1, 1, 1, '91112222', {from: accounts[1]});
         truffleAssert.eventEmitted(b1, 'requestSucceed')
 
-        //let status1, empty = await insuranceCompanyInstance.checkRequestsFromStakeholder(1,1); frontend
-
-
-        //debug
-//        const status1 = await insuranceCompanyInstance.companies[1].requestLists[0].status;
-//        const empty = await insuranceCompanyInstance.companies[1].requestLists[0].reqId; 
-//        await assert.strictEqual(status1, InsuranceCompany.requestStatus.pending, 'Wrong status');
-//        await assert.strictEqual(empty, 0, 'Wrong request id'); 
-
     });
-
-//    it('Cannot Accept/Reject/check requests if not Company', async () => {  frontend
-//        await truffleAssert.reverts(insuranceMarketInstance.checkRequests({from: accounts[5]}));
-
-//    });
 
     it('Accept and Created', async () => {
 
         let si1 = await insuranceCompanyInstance.createStakeholderInfo(1,2,3,2, {from: accounts[9]});
         
-        //let l1 = await insuranceMarketInstance.checkRequests({from: accounts[9]}); frontend
+
         await truffleAssert.reverts(insuranceCompanyInstance.createInsurance(1, 2, 5, 20, Insurance.insuranceType.life, 20200401, 20490401, {from: accounts[9]}), "Invalid company id!");
         await truffleAssert.reverts(insuranceCompanyInstance.createInsurance(1, 1, 5, 20, Insurance.insuranceType.life, 20200401, 20490401, {from: accounts[7]}), "You are not the owner");
         await truffleAssert.reverts(insuranceCompanyInstance.createInsurance(1, 1, 5, 20, Insurance.insuranceType.life, 2023040, 20490401, {from: accounts[9]}), "Invalid issue date!");
         await truffleAssert.reverts(insuranceCompanyInstance.createInsurance(1, 1, 5, 20, Insurance.insuranceType.life, 20230401, 2049040, {from: accounts[9]}), 'Invalid expiry date!');
         await truffleAssert.reverts(insuranceCompanyInstance.createInsurance(1, 1, 5, 20, Insurance.insuranceType.life, 20230401, 20230329, {from: accounts[9]}), 'Invalid expiry date!');
-        // let a1 = await insuranceMarketInstance.approve(0, {from: accounts[9]}); not tested
 
-        let i1 = await insuranceCompanyInstance.createInsurance(1, 1, 5, 210, Insurance.insuranceType.life, 20230401, 20490401, {from: accounts[9]});
+
+        let i1 = await insuranceCompanyInstance.createInsurance(1, 1, 5, 210, Insurance.insuranceType.life, 20200401, 20490401, {from: accounts[9]});
 
         truffleAssert.eventEmitted(i1, 'create');
 
@@ -128,7 +111,7 @@ contract('InsuranceMarket', function (accounts){
         truffleAssert.eventEmitted(solve, 'requestSolve');
         let status2, approved = await insuranceCompanyInstance.checkRequestsFromStakeholder(1,1); 
         assert.strictEqual(status2, InsuranceCompany.requestStatus.unapproved, 'Wrong status');
-        // assert.strictEqual(approved.toNumber(), 1, 'Wrong request id'); 
+
 
     });
 
@@ -156,7 +139,6 @@ contract('InsuranceMarket', function (accounts){
         const numMCReq = await hospitalInstance.getNumOfReqs();
 
         assert.strictEqual(numMCReq.toNumber(), 1, 'requestMC incorrect');
-        // hospital checkmcrequest
 
 
         let pi1 = await hospitalInstance.createPersonalInfo(1, 'password', 'Bob Wang', 'S1234567A', 'Male', '19721023', 'Chinese Singaporean', {from: accounts[9]});
@@ -210,8 +192,7 @@ contract('InsuranceMarket', function (accounts){
         await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), "Stakeholder haven't paid the insurance");
 
         let prem2 = await stakeholderInstance.payPremium(1,3,1, {from: accounts[1]});
-        //await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 1, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), 'If suicide cannot claim within 2 years');
-
+      
         let m2 = await hospitalInstance.addMC(1, 'password', 1, 1, '202304061400', 'Strange', {from: accounts[9]});
         await truffleAssert.reverts(stakeholderInstance.claimInsurance(1, 1, 2, 2, 'Bob Wang', 'S1234567A', {from: accounts[2]}), 'not enough TrustInsure to pay!');
     });
