@@ -10,8 +10,6 @@ contract Stakeholder {
     InsuranceCompany insuranceCompanyContract;
     Hospital hospitalContract;
     TrustInsure insureContract;
-    //enum position { policyOwner, beneficiary, lifeAssured }
-
 
     constructor( InsuranceCompany insuranceCompanyAddress, 
     Hospital hospitalAddress, 
@@ -142,9 +140,10 @@ contract Stakeholder {
     * @param lifeAssuredName the name of the life assured
     * @param lifeAssuredNRIC the NRIC of the life assured
     */
-    function claimInsurance (uint256 insuranceID,uint256 companyId, 
-    uint256 mcId,uint256 beneficiaryID,
-    string memory lifeAssuredName, string memory lifeAssuredNRIC)   
+    function claimInsurance (
+        uint256 insuranceID,uint256 companyId, 
+        uint256 mcId,uint256 beneficiaryID,
+        string memory lifeAssuredName, string memory lifeAssuredNRIC)   
     public validStakeholder(beneficiaryID) {
         insuranceCompanyContract.claim(insuranceID,companyId,mcId,
          beneficiaryID, stakeholders[beneficiaryID].stakeholderAddress,
@@ -167,13 +166,6 @@ contract Stakeholder {
 // =====================================================================================
 // getters
 // =====================================================================================
-    // function getStakeholder(uint256 stakeholderID) public view returns(Stakeholder){
-    //     return stakeholders[stakeholderID];
-    // }
-
-    // function getInvolvingInsurances(uint256 stakeholderID, uint256 insuranceID) public view returns(Insurance){
-    //     return stakeholders[stakeholderID].involvingInsurances[insuranceID];
-    // }
     
     function getStakeholderId(address _stakeholder) public view returns(uint256) {
         return ids[_stakeholder];

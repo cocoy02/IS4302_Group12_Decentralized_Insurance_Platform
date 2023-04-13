@@ -72,18 +72,6 @@ contract Insurance {
     ) 
     public virtual returns(uint256) {}
 
-    //modifier to ensure a function is callable only by its policy owner    
-    // modifier policyOwnerOnly(uint256 insuranceId) {
-    //     //stakeholderContract.getStakeholderAddress(uint256 stakeholderID)
-    //     require(stakeholderContract.getStakeholderAddress(insurances[insuranceId].stakeholders.policyOwner) ==  msg.sender);
-    //     _;
-    // }
-
-    //modifier to ensure a function is callable only by its insurance company   
-    // modifier companyOnly(uint256 insuranceId) {
-    //     require(insurances[insuranceId].company == msg.sender);
-    //     _;
-    // }
 
 // =====================================================================================
 // setters
@@ -101,17 +89,6 @@ contract Insurance {
         insurances[insuranceId].expiryDate = date;
 
     }
-    
-    //return whether insured amount all paid
-    // function updateAmount(uint256 insuranceId, uint256 amount) public returns(bool) {
-    //     insurances[insuranceId].currentAmount += amount;
-    //     if (insurances[insuranceId].currentAmount == insurances[insuranceId].insuredAmount) {
-    //         insurances[insuranceId].status = status.paid;
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
 
 // =====================================================================================
 // getters

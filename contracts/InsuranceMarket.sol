@@ -79,12 +79,14 @@ contract InsuranceMarket {
 // functions
 // =====================================================================================
     
-    // /**
-    // * @dev Allow insurance company list product on the market
-    // * @param _premium The amount that should be paid yearly
-    // * @param _sumAssured Total amount to claim the insurance
-    // * @return uint256 productId
-    // */
+    /**
+    * @dev Allow insurance company list product on the market
+    * @param premium The amount that should be paid yearly
+    * @param sumOfClaim Total amount to claim the insurance
+    * @param companyId id of company
+    * @param productCategory insurance category
+    * @return uint256 productId
+    */
     function publishProduct(uint256 companyId, string memory productCategory, uint256 premium, uint256 sumOfClaim) 
     public companyOwnerOnly(companyId) validProduct(productCategory)
     returns(uint256)
@@ -117,10 +119,12 @@ contract InsuranceMarket {
         return numofProds;
     }
 
-    // /**
-    // * @dev Allow insurance company unlist product on the market
-    // * @return bool whether successfully withdraw the product
-    // */
+    /**
+    * @dev Allow insurance company unlist product on the market
+    * @param companyId id of company
+    * @param productId id of product
+    * @return bool whether successfully withdraw the product
+    */
     function withdrawProduct(uint256 companyId, uint256 productId)
     public companyOwnerOnly(companyId)
     returns(bool)
@@ -157,9 +161,9 @@ contract InsuranceMarket {
         return find;
     }
 
-    // /**
-    // * @dev Allow stakeholders to check every company's products
-    // */
+    /**
+    * @dev Allow stakeholders to check every company's products
+    */
     function viewProducts() public {
         uint256[] memory companyids = new uint256[](numofProds);
         string[] memory companynames = new string[](numofProds);
@@ -204,6 +208,10 @@ contract InsuranceMarket {
 
     /**
     * @dev stakeholder could initiate buying
+    * @param stakeholderId id of stakeholder
+    * @param companyId id of company
+    * @param productId id of product
+    * @param contact stakeholder contact
     * @return uint256 the request id for stakeholders to track its status if return 0 indicated unsuccessful
     */
     function wantToBuy(uint256 stakeholderId, uint256 companyId, uint256 productId, string memory contact) 
@@ -236,9 +244,5 @@ contract InsuranceMarket {
         
         emit requestFail();
         return 0;
-    }
-
-    function getNumProd() public view returns (uint256) {
-        return numofProds;
     }
 }

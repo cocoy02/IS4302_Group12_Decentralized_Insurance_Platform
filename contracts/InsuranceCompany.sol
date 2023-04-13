@@ -120,7 +120,8 @@ contract InsuranceCompany is Insurance {
     * @param payingAccount the id of the stakeholder who will receive the payment
     * @return uint256 number of stakeholder
     */
-    function createStakeholderInfo (uint256 policyOwner,
+    function createStakeholderInfo (
+        uint256 policyOwner,
         uint256  beneficiary,
         uint256 lifeAssured,
         uint256 payingAccount) 
@@ -219,7 +220,6 @@ contract InsuranceCompany is Insurance {
     * @param companyId the id of the company
     * @param policyOwnerID the id of the policy owner
     */
-    //stakeholder call this function to sign the insurance
     function signInsurance(uint256 insuranceId,uint256 companyId, uint256 policyOwnerID) 
     external
     validCompanyId(companyId) validPolicyOwner(insuranceId, policyOwnerID)
@@ -260,7 +260,8 @@ contract InsuranceCompany is Insurance {
     * @param policyOwnerID the id of the policy owner
     * @param policyOwner the address of policyowner
     */
-    function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID, address policyOwner) external validPolicyOwner(insuranceId, policyOwnerID){
+    function payPremium(uint256 insuranceId, uint256 amount, uint256 policyOwnerID, address policyOwner) 
+    external validPolicyOwner(insuranceId, policyOwnerID){
         address companyAddress = companies[insurances[insuranceId].companyId].owner;
         trustinsureInstance.transferFromInsure(policyOwner,companyAddress,amount);
 
@@ -297,13 +298,18 @@ contract InsuranceCompany is Insurance {
         emit claimingFromComp(insuranceID,mcId);
     }
 
-    //  /** 
-    // * @dev check stakeholder details and mc details, if correct auto transfer money
-    // * @param  {uint256} insuranceId, {uint256} companyId,{uint256} _hospitalId,{bytes} mcId
-    // */
+    /** 
+    * @dev check stakeholder details and mc details, if correct auto transfer money
+    * @param  insuranceId id of insurance
+    * @param  companyId id of company
+    * @param  mcId id of MC
+    * @param  beneficiaryAddress address of beneficiary
+    * @param  name life assured name
+    * @param  NRIC life assured NRIC
+    */
     function autoTransfer(uint256 insuranceId,uint256 companyId,uint256 mcId,
     address beneficiaryAddress,string memory name, string memory NRIC) private {
-        // Insurance memory insurance = insuranceInstance.getInsurance(insuranceId);
+
         require(insurances[insuranceId].status == Insurance.status.paid, "Stakeholder haven't paid the insurance!");
         //insurance valid from date 
         require(insurances[insuranceId].issueDate * 100 + 90 days >= block.timestamp, "Haven't take effect!");
@@ -327,11 +333,15 @@ contract InsuranceCompany is Insurance {
         emit transfer(beneficiaryAddress, value);
     }
 
-    // /**
-    // * @dev Allow insurance market to update requests
-    // * @return bool whether added successfullly
-    // * @return uint256 numOfReq request id
-    // */
+    /**
+    * @dev Allow insurance market to update requests
+    * @param _buyerId id of stakeholder
+    * @param _companyId id of company
+    * @param contact stakeholder contact
+    * @param _typeProduct life or accident product
+    * @return bool whether added successfullly
+    * @return uint256 numOfReq request id
+    */
     function addRequestLists(uint256 _buyerId, uint256 _companyId, string memory contact, string memory _typeProduct) 
     external 
     returns(bool, uint256) 
@@ -347,9 +357,10 @@ contract InsuranceCompany is Insurance {
         return (true, numOfReq);
     }
 
-    // /**
-    // * @dev Allow insurance company check all requests
-    // */
+    /**
+    * @dev Allow insurance company check all requests
+    * @param companyId id of company
+    */
     function checkRequestsFromCompany(uint256 companyId) 
     public validCompanyId(companyId) ownerOnly(companyId) 
     {
@@ -376,9 +387,11 @@ contract InsuranceCompany is Insurance {
        
     }
     
-    // /**
-    // * @dev Allow insurance company reject request
-    // */
+    /**
+    * @dev Allow insurance company reject request
+    * @param requestId id of reqeust
+    * @param companyId id of company
+    */
     function rejectRequest(uint256 requestId,uint256 companyId) public
     validCompanyId(companyId) ownerOnly(companyId)  
     {
@@ -403,10 +416,15 @@ contract InsuranceCompany is Insurance {
 
     }
 
-    // /**
-    // * @dev Allow stakeholder to check request status
-    // */
-    function checkRequestsFromStakeholder(uint256 companyId, uint256 requestId) external returns (requestStatus, uint256) {
+    /**
+    * @dev  Allow stakeholder to check request status
+    * @param requestId id of reqeust
+    * @param companyId id of company
+    */
+    function checkRequestsFromStakeholder(uint256 companyId, uint256 requestId) 
+    external 
+    returns (requestStatus, uint256) 
+    {
         require(requestId != 0, "Invalid request id!");
 
         uint256 index;

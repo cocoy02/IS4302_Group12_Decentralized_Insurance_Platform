@@ -30,11 +30,7 @@ contract Hospital is MedicalCertificate  {
     uint256 hospitalCounter = 0;
     uint256 numOfReqs = 0;
 
-    //mapping(uint256 => medicalCert) public MC;
-    //mapping(uint256 => personalInfo) public infos;
-
     uint256 numOfPeople = 0;
-    //event mcCreated(uint256 numMC);
 
     // events
     event registered(uint256 hospitalId);
@@ -83,13 +79,6 @@ contract Hospital is MedicalCertificate  {
         require(bytes(s).length == 12, "Invalid incident date!");
         _;
     }
-
-    
-    //since below function already check validity no need here
-    // modifier validRequest(uint256  _hospitalId, uint256 _stakeholderId, uint256 _requestId) {
-    //    require(registeredHospital[_hospitalId].requests[_stakeholderId] > 0, "You didn't make request!");
-    //     _;
-    // }
     
 // =====================================================================================
 // functions
@@ -130,10 +119,11 @@ contract Hospital is MedicalCertificate  {
     * @param race_nationality the race and nationality of the person who has accident
     * @return uint256 number of people
      */
-    function createPersonalInfo (uint256 hospitalId, string memory password, 
-    string memory name, string memory NRIC, string memory sex, 
-                string memory birthdateYYYYMMDD, string memory race_nationality) 
-    public validHospital(hospitalId) verifyPassword(hospitalId,password)  validDate(birthdateYYYYMMDD)
+    function createPersonalInfo (
+        uint256 hospitalId, string memory password, 
+        string memory name, string memory NRIC, string memory sex, 
+        string memory birthdateYYYYMMDD, string memory race_nationality) 
+    public validHospital(hospitalId) verifyPassword(hospitalId,password) validDate(birthdateYYYYMMDD)
     override returns (uint256) {
         numOfPeople++;
         personalInfo storage person = infos[numOfPeople];
@@ -146,6 +136,7 @@ contract Hospital is MedicalCertificate  {
 
         return numOfPeople;
     }
+
     /**
     * @dev Create the medical certificate for the injured or dead person
     * @param hospital the id of the hospital
@@ -156,9 +147,10 @@ contract Hospital is MedicalCertificate  {
     * @param certifierName the certifier of the MC of the accident
     * @return uint256 MC id in bytes
      */
-    function addMC(uint256 hospital, string memory password, uint256 personId,
-    certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
-    string memory certifierName
+    function addMC(
+        uint256 hospital, string memory password, uint256 personId,
+        certCategory incidentType0incident1death2suicide, string memory incidentYYYYMMDDHHMM, 
+        string memory certifierName
     ) 
     public validHospital(hospital) verifyPassword(hospital,password) validIncidentDate(incidentYYYYMMDDHHMM)
     override returns(uint256) {
@@ -186,8 +178,9 @@ contract Hospital is MedicalCertificate  {
     * @param requestId the id of the request
     * @param stakeholderId the id of the stakeholder
      */
-    function solveRequest(uint256 hospitalId, string memory password, uint256 mcId,
-    uint256 requestId, uint256 stakeholderId) 
+    function solveRequest(
+        uint256 hospitalId, string memory password, uint256 mcId,
+        uint256 requestId, uint256 stakeholderId) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password) 
     {
 
@@ -222,10 +215,11 @@ contract Hospital is MedicalCertificate  {
     * @param icAssured the assured person's NRIC
     * @return uint256 number of requests
     */
-    function requestMC(uint256 hospitalId, uint256 stakeholderId, string memory nameAssured, string memory icAssured) 
-    external validHospital(hospitalId) returns(uint256) {
-        //require(stakeholderContract.getStakeholderId(msg.sender) == stakeholderId, "Invalid stakeholder!");
-  
+    function requestMC(
+        uint256 hospitalId, uint256 stakeholderId, 
+        string memory nameAssured, string memory icAssured) 
+    external validHospital(hospitalId) returns(uint256) 
+    {     
         numOfReqs++;
         Request storage req =  registeredHospital[hospitalId].requests[stakeholderId].push();
         req.reqId = numOfReqs;
@@ -388,28 +382,4 @@ contract Hospital is MedicalCertificate  {
     function getHospitalCounter() public view returns(uint256) {
         return hospitalCounter;
     }
-
-// =====================================================================================
-// archived code
-// =====================================================================================
-
-    // function getMC(uint256 _hospitalId, bytes memory  _mcId) 
-    //     public view 
-    //     validMCId(_hospitalId,_mcId)
-    //     returns (uint256, string memory, string memory, uint256, uint256, string memory, string memory, MedicalCertificate.certCategory, string memory, string memory, string memory, string memory, string memory)
-    // {
-    //     return medicalCert.getMC(_mcId);
-    // }
-
-//    function getMCName(uint256 id) public view returns(string memory) {
-//        return infos[MC[id].personal_info].name;
-//    }
-
-//    function getMCNRIC(uint256 id) public view returns(string memory) {
-//        return infos[MC[id].personal_info].NRIC;
-//    }
-
-//    function getMCCategory(uint256 id) public view returns(certCategory) {
-//        return MC[id].incident;
-//    }
 }
