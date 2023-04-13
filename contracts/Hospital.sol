@@ -261,7 +261,8 @@ contract Hospital is MedicalCertificate  {
             for(uint256 j = 0; j < reqs.length; j++) {
                 Request memory req = reqs[j];
                 
-                if (keccak256(abi.encodePacked(req.mcid)) != keccak256(abi.encodePacked(bytes("0x")))) {
+                if (req.mcid == 0) {
+                //if (keccak256(abi.encodePacked(req.mcid)) != keccak256(abi.encodePacked(bytes("0x")))) {
                     requestids[total_reqs] = req.reqId;
                     stakeholderids[total_reqs] = req.stakeholderId;
                     names[total_reqs] = req.nameAssured;
@@ -282,7 +283,7 @@ contract Hospital is MedicalCertificate  {
     * @return uint256 mcId
     */
     function checkMCIdFromStakeholder(uint256 _hospitalId, uint256 _requestId, uint256 _stakeholderId)
-      external view validHospital(_hospitalId) //validRequest(_hospitalId, _stakeholderId,_requestId) 
+      external view validHospital(_hospitalId) 
       returns(uint256)
     {
         Request[] memory reqs = registeredHospital[_hospitalId].requests[_stakeholderId];
@@ -305,7 +306,7 @@ contract Hospital is MedicalCertificate  {
     /** 
     * @dev change president of hospital
     * @param NRIC president NRIC
-    * @param password password to register
+    * @param password password of hospital
     * @param hospitalId hospital id
     */
     function changePresident(uint256 hospitalId, string memory password, string memory NRIC)

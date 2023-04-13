@@ -238,16 +238,6 @@ contract InsuranceMarket {
         return 0;
     }
 
-    // then the company need to verify their requests within 7 days
-    // but usually they will check once a day so its quite fast
-    // then the company will approach to buyers to discuss the details of insurance - offline stuff
-    // then create contract in insuranceConpany contract
-    // then send it to policy owners to verify
-    // once the verification is done, the insurance is issued successfully
-    function getProductInfo(Product memory _product) internal view returns(uint256, uint256,uint256, productType) {
-        return (_product.productid, _product.premium, _product.sumAssured, _product.prodType);
-    }
-
     function getNumProd() public view returns (uint256) {
         return numofProds;
     }
