@@ -16,7 +16,7 @@ const oneEth = new BigNumber(1000000000000000000);
 contract('InsuranceMarket', function (accounts){
     before(async () => {
         trustInsureInstance = await TrustInsure.deployed();
-        //medicalCertInstance = await MedicalCert.deployed();
+        medicalCertInstance = await MedicalCert.deployed();
         hospitalInstance = await Hospital.deployed();
         insuranceInstance = await Insurance.deployed();
         insuranceCompanyInstance = await InsuranceCompany.deployed();

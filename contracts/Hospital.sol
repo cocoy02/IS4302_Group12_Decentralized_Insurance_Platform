@@ -208,7 +208,7 @@ contract Hospital is MedicalCertificate  {
             
             require(find == true, "Invalid request id!");
             if (find) {
-                reqs[index].mcid = mcId;
+                registeredHospital[hospitalId].requests[stakeholderId][index].mcid = mcId;
                 emit requestSolve(requestId);
             }
         }        
@@ -326,7 +326,7 @@ contract Hospital is MedicalCertificate  {
     function changePassword(uint256 hospitalId, string memory oldpassword, string memory newpassword)
     public onlyOwner(hospitalId) verifyPassword(hospitalId,oldpassword)
     {
-        registeredHospital[ hospitalId].password = abi.encode(newpassword,"password");
+        registeredHospital[hospitalId].password = abi.encode(newpassword,"password");
     }
 
 

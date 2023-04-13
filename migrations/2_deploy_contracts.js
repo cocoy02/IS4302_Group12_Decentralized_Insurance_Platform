@@ -12,6 +12,9 @@ module.exports = (deployer, network, accounts) => {
   deployer
     .deploy(TrustInsure)
     .then(function () {
+      return deployer.deploy(MedicalCert);
+    })
+    .then(function () {
       return deployer.deploy(Hospital);
     })
     .then(function() {
