@@ -34,3 +34,6 @@ The following table contains a brief description of the files and folders in thi
 | **contracts/MedicalCert.sol** | Medical certificate contract |
 | **contracts/Stakeholder.sol** | Representing stakeholder that buys contract|
 | **contracts/Migration.sol** | Admin file|
+| **test/test.js** | Test cases |
+| **migrations/1_initial_migration.js** | Initial migration |
+| **migrations/2_deploy_contracts.js** | Deploy contracts |
