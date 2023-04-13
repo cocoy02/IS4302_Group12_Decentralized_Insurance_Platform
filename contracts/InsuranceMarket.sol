@@ -90,7 +90,7 @@ contract InsuranceMarket {
     returns(uint256)
     {
         require(insureContract.checkInsure(msg.sender) > 1, 
-        "Do not have enought TrustInsure to publish products!");
+        "Do not have enough TrustInsure to publish products!");
         
         //Add in product list of the company
         Product storage newProduct =  productList[companyId].push();
@@ -126,7 +126,7 @@ contract InsuranceMarket {
     returns(bool)
     {
         require(insureContract.checkInsure(msg.sender) > 1, 
-        "Do not have enought TrustInsure to withdraw products!");
+        "Do not have enough TrustInsure to withdraw products!");
 
 
         //find product index in the list
@@ -246,5 +246,9 @@ contract InsuranceMarket {
     // once the verification is done, the insurance is issued successfully
     function getProductInfo(Product memory _product) internal view returns(uint256, uint256,uint256, productType) {
         return (_product.productid, _product.premium, _product.sumAssured, _product.prodType);
+    }
+
+    function getNumProd() public view returns (uint256) {
+        return numofProds;
     }
 }
