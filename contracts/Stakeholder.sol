@@ -12,7 +12,7 @@ contract Stakeholder {
     Hospital hospitalContract;
     TrustInsure insureContract;
 
-    constructor( InsuranceCompany insuranceCompanyAddress, 
+    constructor(InsuranceCompany insuranceCompanyAddress, 
     Hospital hospitalAddress, 
     TrustInsure insureAddress) 
     public 
@@ -113,6 +113,7 @@ contract Stakeholder {
     * @param policyOwnerID id of policy owner
     * @param signature  the signature of the stakeholder.
     */
+    //stakeholder need to put their signature for future implementation
     function signInsurance(uint256 insuranceId,uint256 companyId, 
     uint256 policyOwnerID, string memory signature) 
     public validStakeholder(policyOwnerID) {
