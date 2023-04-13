@@ -189,7 +189,6 @@ contract Hospital is MedicalCertificate  {
     function solveRequest(uint256 hospitalId, string memory password, uint256 mcId,
     uint256 requestId, uint256 stakeholderId) 
     public validHospital(hospitalId) verifyPassword(hospitalId,password) 
-    returns(uint256)
     {
 
         if (requestId != 0) {
@@ -212,8 +211,7 @@ contract Hospital is MedicalCertificate  {
                 emit requestSolve(requestId);
             }
         }        
-        
-
+    
     }
 
     /** 
