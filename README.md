@@ -25,6 +25,7 @@ truffle test
 The following table contains a brief description of the files and folders in this repository.
 | Folder / File | Description |
 | - | - |
+| **contracts/Datetime.sol** | Datetime library |
 | **contracts/ERC20.sol** | Fungible tokens created using Ethereum blockchain |
 | **contracts/TrustInsure.sol** | Native token curated for this project |
 | **contracts/Hospital.sol** | Representing registered hospitals that issue medical certificates|
